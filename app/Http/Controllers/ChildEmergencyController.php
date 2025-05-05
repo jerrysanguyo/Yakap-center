@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ChildInfo;
+use App\Models\ChildEmergency;
 use Illuminate\Http\Request;
 
-class ChildInfoController extends Controller
+class ChildEmergencyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class ChildInfoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ChildInfo $child_info)
+    public function show(ChildEmergency $childEmergency)
     {
         //
     }
@@ -42,7 +42,7 @@ class ChildInfoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ChildInfo $child_info)
+    public function edit(ChildEmergency $childEmergency)
     {
         //
     }
@@ -50,7 +50,7 @@ class ChildInfoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ChildInfo $child_info)
+    public function update(Request $request, ChildEmergency $childEmergency)
     {
         //
     }
@@ -58,7 +58,7 @@ class ChildInfoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ChildInfo $child_info)
+    public function destroy(ChildEmergency $childEmergency)
     {
         //
     }
