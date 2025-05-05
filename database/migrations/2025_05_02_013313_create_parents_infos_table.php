@@ -13,16 +13,29 @@ return new class extends Migration
     {
         Schema::create('parents_infos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('child_id')->constrained('child_infos')->cascadeOnDelete();
+            $table->foreignId('child_id')
+                ->constrained('child_infos')
+                ->cascadeOnDelete();
             $table->string('name');
-            $table->string('contact_number')->nullable();
-            $table->string('fb_account')->nullable();
+            $table->string('contact_number')
+                ->nullable();
+            $table->string('fb_account')
+                ->nullable();
             $table->date('birth_date');
-            $table->string('birth_place')->nullable();
-            $table->foreignId('education_id')->nullable()->constrained('educations')->nullOnDelete();
-            $table->string('work')->nullable();
-            $table->string('work_place')->nullable();
-            $table->foreignId('type_id')->nullable()->constrained('parent_types')->nullOnDelete();
+            $table->string('birth_place')
+                ->nullable();
+            $table->foreignId('education_id')
+                ->nullable()
+                ->constrained('educations')
+                ->nullOnDelete();
+            $table->string('work')
+                ->nullable();
+            $table->string('work_place')
+                ->nullable();
+            $table->foreignId('type_id')
+                ->nullable()
+                ->constrained('parent_types')
+                ->nullOnDelete();
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('contact_number');
             $table->foreignId('relationship_id')
                 ->nullable()
-                ->constrained('relationships')
+                ->constrained('relations')
                 ->nullOnDelete();
             $table->timestamps();
         });

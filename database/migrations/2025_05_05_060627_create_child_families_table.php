@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('child_families', function (Blueprint $table) {
             $table->id();
             $table->foreignId('child_id')
-                ->constrained()
+                ->constrained('child_infos')
                 ->cascadeOnDelete();
             $table->string('full_name');
             $table->date('birth_date')
@@ -25,7 +25,7 @@ return new class extends Migration
                 ->nullOndelete();
             $table->foreignId('relationship_id')
                 ->nullable()
-                ->constrained('relationships')
+                ->constrained('relations')
                 ->nullOndelete();
             $table->foreignId('civil_id')
                 ->nullable()

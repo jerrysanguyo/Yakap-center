@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('general_remarks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('child_id')
-                ->constrained('child_info')
+                ->constrained('child_infos')
                 ->cascadeOnDelete();
             $table->foreignId('progress_id')
                 ->nullable()

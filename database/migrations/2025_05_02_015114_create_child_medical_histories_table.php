@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('child_medical_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('child_id')
-                ->constrained()
+                ->constrained('child_infos')
                 ->cascadeOnDelete();
             $table->enum('check_up',['Oo','Hindi']);
             $table->foreignId('blood_type_id')

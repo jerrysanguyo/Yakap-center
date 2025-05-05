@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('domain_id')
                 ->constrained('learning_domains')
                 ->cascadeOnDelete();
-            $table->name()->unique();
+            $table->string('name')->unique();
             $table->string('remarks')->nullable();
             $table->timestamps();
         });
