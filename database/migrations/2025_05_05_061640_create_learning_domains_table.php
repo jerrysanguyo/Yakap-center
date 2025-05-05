@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('blood_types', function (Blueprint $table) {
+        Schema::create('learning_domains', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->string('remarks')->nullable();
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('blood_types');
+        Schema::dropIfExists('learning_domains');
     }
 };

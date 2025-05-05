@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('blood_types', function (Blueprint $table) {
+        Schema::create('general_remarks', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('remarks')->nullable();
+            $table->foreignId('child_id')
+                ->constrained('child_info')
+                ->cascadeOnDelete();
+            $table->foreignId('progress_id')
+                ->nullable()
+                ->constrained('progress_reports')
+                ->nullOnDelete();
             $table->timestamps();
         });
     }
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('blood_types');
+        Schema::dropIfExists('general_remarks');
     }
 };

@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('remarks')->nullable();
-            $table->foreignId('district_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('district_id')
+                ->constrained()
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }
