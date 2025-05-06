@@ -2,7 +2,6 @@
 
 namespace App\Services\Cms;
 
-use App\Models\Requirement;
 use Illuminate\Database\Eloquent\Model;
 
 class CmsService

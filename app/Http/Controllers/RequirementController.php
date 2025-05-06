@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Requirement;
-use Illuminate\Http\Request;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
@@ -11,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class RequirementController extends Controller
 {
-    
     protected CmsService $cmsService;
 
     public function __construct()
