@@ -3,63 +3,106 @@
 namespace App\Http\Controllers;
 
 use App\Models\District;
-use Illuminate\Http\Request;
+use App\Http\Requests\CmsRequest;
+use App\DataTables\CmsDataTable;
+use App\Services\CmsService;
+use Illuminate\Support\Facades\Auth;
 
 class DistrictController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CmsService $cmsService;
+
+    public function __construct()
     {
-        //
+        $this->cmsService = new CmsService(District::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(CmsDataTable $dataTable)
     {
-        //
-    }
+        $page_title = 'Districts';
+        $resource = 'districts';
+        $columns = ['name', 'remarks', 'actions'];
+        $data = District::getAllDistricts();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+        return $dataTable
+            ->render('cms.index', compact(
+                'page_title',
+                'resource',
+                'columns',
+                'data',
+                'dataTable',
+            ));
+    }
+    
+    public function store(CmsRequest $request)
     {
-        //
+        $request->merge(['cms_table' => 'districts']);
+        if($district = $this->cmsService->cmsStore($request->validated()))
+        {
+            activity()
+                ->performedOn($district)
+                ->causedBy(Auth::user())
+                ->log('District named ' . $district->name . ' created successfullly by: '. Auth::user()->id);
+            return redirect()
+                ->route(Auth::user()->getUserRoles->first() . '.district.index')
+                ->with('success', 'District named ' . $district->name . 'created successfullly!');
+        } else {
+            activity()
+                ->causedBy(Auth::user())
+                ->log('District creation failed by: '. Auth::user()->id);
+            
+            return redirect()
+                ->route(Auth::user()->getRoleNames()->first() . '.district.index')
+                ->with('failed', 'District creation failed.');
+        }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(District $district)
+    
+    public function update(CmsRequest $request, District $district)
     {
-        //
-    }
+        $request->merge(['cms_table' => 'districts', 'id' => $district->id]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(District $district)
-    {
-        //
+        if($district = $this->cmsService->cmsUpdate($request->validated()))
+        {
+            activity()
+                ->performedOn($district)
+                ->causedBy(Auth::user())
+                ->log('District name '. $district->name . ' updated successfully by: ' . Auth::user()->id);
+            
+            return redirect()
+                ->route(Auth::user()->getRoleNames()->first() . '.district.index')
+                ->with('success', 'District name ' . $district->name . ' updated successfully');
+        } else {
+            activity()
+                ->causedBy(Auth::user())
+                ->log('District name ' . $district->name . ' was faied to update');
+            
+            return redirect()
+                ->route(Auth::user()->getRoleNames()->first() . '.district.index')
+                ->with('failed', 'District name ' . $district->name . ' was failed to update by: ' . Auth::user()->id);
+        }
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, District $district)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(District $district)
     {
-        //
+        $districtName = $district->name;
+        if($district = $this->cmsService->cmsDestroy($district->id))
+        {
+            activity()
+                ->performedOn($district)
+                ->causedBy(Auth::user())
+                ->log('District name ' . $districtName . ' deleted successfully by: ' . Auth::user()->id);
+            
+            return redirect()
+                ->route(Auth::user()->getRoleNames()->first() . '.district.index')
+                ->with('success', 'District name ' . $districtName . ' deleted successfully');
+        } else {
+            activity()
+                ->causedBy(Auth::user())
+                ->log('District name ' . $districtName . ' was failed to delete by: ' . Auth::user()->id);
+            
+            return redirect()
+                ->route(Auth::user()->getRoleNames()->first() . '.district.index')
+                ->with('failed', 'District name ' . $districtName . ' was failed to delete');
+        }
     }
 }

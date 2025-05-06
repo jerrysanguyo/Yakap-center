@@ -53,7 +53,7 @@ class ParentTypeController extends Controller
                 ->log('Parent type creation failed by: ' . Auth::user()->id);
             
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
                 ->with('failed', 'Parent type creation failed');
         }
     }
@@ -77,7 +77,7 @@ class ParentTypeController extends Controller
                 ->log('Parent type update failed by: ' . Auth::user()->id);
             
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
                 ->with('failed', 'Parent type update failed');
         }
     }
@@ -101,7 +101,7 @@ class ParentTypeController extends Controller
                 ->log('Parent type deletion failed by: ' . Auth::user()->id);
             
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
                 ->with('failed', 'Parent type deletion failed');
         }
     }

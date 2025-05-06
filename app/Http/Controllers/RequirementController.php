@@ -53,7 +53,7 @@ class RequirementController extends Controller
                 ->log('Requirement creation failed by: ' . Auth::user()->id);
             
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.requirements.index')
                 ->with('failed', 'Requirement creation failed');
         }
     }
@@ -74,11 +74,11 @@ class RequirementController extends Controller
         } else {
             activity()
                 ->causedBy(Auth::user())
-                ->log('Requirement creation failed by: ' . Auth::user()->id);
+                ->log('Requirement update failed by: ' . Auth::user()->id);
             
             return redirect()
-                ->back()
-                ->with('failed', 'Requirement creation failed');
+                ->route(Auth::user()->getRoleNames()->first() . '.requirements.index')
+                ->with('failed', 'Requirement update failed');
         }
     }
     
@@ -100,7 +100,7 @@ class RequirementController extends Controller
                 ->log('Requirement deletion failed by: ' . Auth::user()->id);
     
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.requirements.index')
                 ->with('failed', 'Requirement deletion failed');
         }
     }

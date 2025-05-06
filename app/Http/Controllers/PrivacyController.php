@@ -52,7 +52,7 @@ class PrivacyController extends Controller
                 ->causedBy(Auth::user())
                 ->log('Privacy creation failed by: ' . Auth::user()->id);
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
                 ->with('failed', 'Privacy creation failed');
         }
     }
@@ -75,7 +75,7 @@ class PrivacyController extends Controller
                 ->causedBy(Auth::user())
                 ->log('Program named ' . $privacy->name . ' was failed to update by: ' . Auth::user()->id);
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
                 ->with('failed', 'Privacy update failed');
         }
     }
@@ -98,7 +98,7 @@ class PrivacyController extends Controller
                 ->causedBy(Auth::user())
                 ->log('Program named ' . $privacyName . ' was failed to delete by: ' . Auth::user()->id);
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
                 ->with('failed', 'Privacy deletion failed');
         }
     }

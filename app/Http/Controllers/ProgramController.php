@@ -51,7 +51,7 @@ class ProgramController extends Controller
                 ->causedBy(Auth::user())
                 ->log('Program creation failed by: ' . Auth::user()->id);
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.program.index')
                 ->with('failed', 'Program creation failed');
         }
     }
@@ -74,7 +74,7 @@ class ProgramController extends Controller
                 ->causedBy(Auth::user())
                 ->log('Program named ' . $program->name . ' was failed to update by: ' . Auth::user()->id);
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.program.index')
                 ->with('failed', 'Program update failed');
         }
     }
@@ -98,7 +98,7 @@ class ProgramController extends Controller
                 ->causedBy(Auth::user())
                 ->log('Program named ' . $programName . ' was failed to delete by: ' . Auth::user()->id);
             return redirect()
-                ->back()
+                ->route(Auth::user()->getRoleNames()->first() . '.program.index')
                 ->with('failed', 'Program deletion failed');
         }
     }
