@@ -16,7 +16,7 @@ class CmsRequest extends FormRequest
         $table = $this->get('cms_table'); 
         $id = $this->route('id');
 
-        $rule = [
+        $rules = [
             'name' => [
                 'required',
                 'string',
