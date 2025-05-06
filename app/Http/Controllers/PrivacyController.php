@@ -20,14 +20,14 @@ class PrivacyController extends Controller
     public function index(CmsDataTable $dataTable)
     {
         $page_title = 'Privacy Policy';
-        $resrouce = 'privacy';
+        $resource = 'privacy';
         $columns = ['name', 'remarks', 'action'];
         $data = Privacy::getAllPrivacy();
 
         return $dataTable
             ->render('cms.index', compact(
                 'page_title',
-                'resrouce',
+                'resource',
                 'columns',
                 'data',
                 'dataTable'
@@ -42,7 +42,7 @@ class PrivacyController extends Controller
             activity()
                 ->performedOn($privacy)
                 ->causedBy(Auth::user())
-                ->log('Privacy created by: ' . Auth::user()->id);
+                ->log('Privacy named ' . $privacy->name . 'created by: ' . Auth::user()->id);
 
             return redirect()
                 ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
@@ -73,7 +73,7 @@ class PrivacyController extends Controller
         } else {
             activity()
                 ->causedBy(Auth::user())
-                ->log('Privacy update failed by: ' . Auth::user()->id);
+                ->log('Program named ' . $privacy->name . ' was failed to update by: ' . Auth::user()->id);
             return redirect()
                 ->back()
                 ->with('failed', 'Privacy update failed');
@@ -96,7 +96,7 @@ class PrivacyController extends Controller
         } else {
             activity()
                 ->causedBy(Auth::user())
-                ->log('Privacy deletion failed by: ' . Auth::user()->id);
+                ->log('Program named ' . $privacyName . ' was failed to delete by: ' . Auth::user()->id);
             return redirect()
                 ->back()
                 ->with('failed', 'Privacy deletion failed');
