@@ -16,7 +16,7 @@ class CmsRequest extends FormRequest
         $table = $this->get('cms_table'); 
         $id = $this->route('id');
 
-        return [
+        $rule = [
             'name' => [
                 'required',
                 'string',
@@ -25,5 +25,12 @@ class CmsRequest extends FormRequest
             ],
             'remarks' => 'nullable|string|max:255',
         ];
+
+        if($table === 'barangays')
+        {
+            $rules['district_id'] = 'required|numeric|exists:districts,id';
+        }
+
+        return $rules;
     }
 }
