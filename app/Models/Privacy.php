@@ -18,4 +18,9 @@ class Privacy extends Model
     {
         return self::first();
     }
+
+    public function getAllPrivacy()
+    {
+        return self::all();
+    }
 }

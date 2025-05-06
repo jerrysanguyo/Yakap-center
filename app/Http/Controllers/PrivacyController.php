@@ -3,63 +3,103 @@
 namespace App\Http\Controllers;
 
 use App\Models\Privacy;
-use Illuminate\Http\Request;
+use App\Http\Requests\CmsRequest;
+use App\DataTables\CmsDataTable;
+use App\Services\CmsService;
+use Illuminate\Support\Facades\Auth;
 
 class PrivacyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CmsService $cmsService;
+
+    public function __construct()
     {
-        //
+        $this->cmsService = new CmsService(Privacy::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(CmsDataTable $dataTable)
     {
-        //
+        $page_title = 'Privacy Policy';
+        $resrouce = 'privacy';
+        $columns = ['name', 'remarks', 'action'];
+        $data = Privacy::getAllPrivacy();
+
+        return $dataTable
+            ->render('cms.index', compact(
+                'page_title',
+                'resrouce',
+                'columns',
+                'data',
+                'dataTable'
+            ));
+    }
+    
+    public function store(CmsRequest $request)
+    {
+        $request->merge(['cms_type' => 'privacy']);
+        if($privacy = $this->cmsService->store($request->validated()))
+        {
+            activity()
+                ->performedOn($privacy)
+                ->causedBy(Auth::user())
+                ->log('Privacy created by: ' . Auth::user()->id);
+
+            return redirect()
+                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
+                ->with('success', 'Privacy named ' . $privacy->name . ' created successfully');
+        } else {
+            activity()
+                ->causedBy(Auth::user())
+                ->log('Privacy creation failed by: ' . Auth::user()->id);
+            return redirect()
+                ->back()
+                ->with('failed', 'Privacy creation failed');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function update(CmsRequest $request, Privacy $privacy)
     {
-        //
-    }
+        $request->merge(['cms_type' => 'privacy', 'id' => $privacy->id]);
+        if($privacy = $this->cmsService->cmsUpdate($request->validated(), $privacy->id))
+        {
+            activity()
+                ->performedOn($privacy)
+                ->causedBy(Auth::user())
+                ->log('Privacy updated by: ' . Auth::user()->id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Privacy $privacy)
-    {
-        //
+            return redirect()
+                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
+                ->with('success', 'Privacy named ' . $privacy->name . ' updated successfully');
+        } else {
+            activity()
+                ->causedBy(Auth::user())
+                ->log('Privacy update failed by: ' . Auth::user()->id);
+            return redirect()
+                ->back()
+                ->with('failed', 'Privacy update failed');
+        }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Privacy $privacy)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Privacy $privacy)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Privacy $privacy)
     {
-        //
+        $privacyName = $privacy->name;
+        if($this->cmsService->cmsDelete($privacy->id))
+        {
+            activity()
+                ->performedOn($privacy)
+                ->causedBy(Auth::user())
+                ->log('Privacy deleted by: ' . Auth::user()->id);
+
+            return redirect()
+                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
+                ->with('success', 'Privacy named ' . $privacyName . ' deleted successfully');
+        } else {
+            activity()
+                ->causedBy(Auth::user())
+                ->log('Privacy deletion failed by: ' . Auth::user()->id);
+            return redirect()
+                ->back()
+                ->with('failed', 'Privacy deletion failed');
+        }
     }
 }

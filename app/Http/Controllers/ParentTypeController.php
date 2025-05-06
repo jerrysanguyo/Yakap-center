@@ -21,14 +21,14 @@ class ParentTypeController extends Controller
     {
         $page_title = 'Parent Types';
         $resource = 'type';
-        $column = ['name', 'remarks', 'Action'];
+        $columns = ['name', 'remarks', 'Action'];
         $data = ParentType::getAllParentTypes();
 
         return $dataTable
             ->render('cms.index', compact(
                 'page_title',
                 'resource',
-                'column',
+                'columns',
                 'data',
                 'dataTable'
             ));
@@ -42,19 +42,19 @@ class ParentTypeController extends Controller
             activity()
                 ->performedOn($type)
                 ->causedBy(Auth::user())
-                ->log('Parent Type created by: ' . Auth::user()->id);
+                ->log('Parent type created by: ' . Auth::user()->id);
 
             return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.parent_types.index')
-                ->with('success', 'Parent Type named ' . $type->name . ' created successfully');
+                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
+                ->with('success', 'Parent type named ' . $type->name . ' created successfully');
         } else {
             activity()
                 ->causedBy(Auth::user())
-                ->log('Parent Type creation failed by: ' . Auth::user()->id);
+                ->log('Parent type creation failed by: ' . Auth::user()->id);
             
             return redirect()
                 ->back()
-                ->with('failed', 'Parent Type creation failed');
+                ->with('failed', 'Parent type creation failed');
         }
     }
     
@@ -66,19 +66,19 @@ class ParentTypeController extends Controller
             activity()
                 ->performedOn($parentType)
                 ->causedBy(Auth::user())
-                ->log('Parent Type updated by: ' . Auth::user()->id);
+                ->log('Parent type updated by: ' . Auth::user()->id);
 
             return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.parent_types.index')
-                ->with('success', 'Parent Type named ' . $parentType->name . ' updated successfully');
+                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
+                ->with('success', 'Parent type named ' . $parentType->name . ' updated successfully');
         } else {
             activity()
                 ->causedBy(Auth::user())
-                ->log('Parent Type update failed by: ' . Auth::user()->id);
+                ->log('Parent type update failed by: ' . Auth::user()->id);
             
             return redirect()
                 ->back()
-                ->with('failed', 'Parent Type update failed');
+                ->with('failed', 'Parent type update failed');
         }
     }
     
@@ -93,16 +93,16 @@ class ParentTypeController extends Controller
                 ->log('Parent Type deleted by: ' . Auth::user()->id);
 
             return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.parent_types.index')
-                ->with('success', 'Parent Type named ' . $parentTypeName . ' deleted successfully');
+                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
+                ->with('success', 'Parent type named ' . $parentTypeName . ' deleted successfully');
         } else {
             activity()
                 ->causedBy(Auth::user())
-                ->log('Parent Type deletion failed by: ' . Auth::user()->id);
+                ->log('Parent type deletion failed by: ' . Auth::user()->id);
             
             return redirect()
                 ->back()
-                ->with('failed', 'Parent Type deletion failed');
+                ->with('failed', 'Parent type deletion failed');
         }
     }
 }

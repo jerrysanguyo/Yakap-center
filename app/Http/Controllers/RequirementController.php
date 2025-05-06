@@ -21,14 +21,14 @@ class RequirementController extends Controller
     {
         $page_title = 'Requirements';
         $resource = 'requirements';
-        $column = ['name', 'remarks', 'Action'];
+        $columns = ['name', 'remarks', 'Action'];
         $data = Requirement::getAllRequirements();
 
         return $dataTable
             ->render('cms.index', compact(
                 'page_title',
                 'resource',
-                'column',
+                'columns',
                 'data',
                 'dataTable'
             ));
