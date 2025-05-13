@@ -3,63 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rating;
-use Illuminate\Http\Request;
+use App\Http\Requests\CmsRequest;
+use App\DataTables\CmsDataTable;
+use App\Services\CmsService;
 
 class RatingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CmsService $cmsService;
+    protected string $resource = 'rating';
+    protected string $table = 'ratings';
+
+    public function __construct()
     {
-        //
+        $this->cmsService = new CmsService(Rating::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(CmsDataTable $dataTable)
     {
-        //
+        $page_title = 'Rating';
+        $resource = 'rating';
+        $columns = ['name', 'remarks', 'action'];
+        $data = Rating::getAllRatings();
+
+        return $dataTable
+            ->render('cms.index', compact(
+                'page_title',
+                'resource',
+                'columns',
+                'data',
+                'dataTable'
+            ));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(CmsRequest $request)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Rating $rating)
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
+    }
+    
+    public function update(CmsRequest $request, Rating $rating)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table, 'id' => $rating->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $rating->id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Rating $rating)
-    {
-        //
+        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Rating $rating)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Rating $rating)
     {
-        //
+        $destroy = $this->cmsService->cmsDestroy($rating->id);
+        
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }
