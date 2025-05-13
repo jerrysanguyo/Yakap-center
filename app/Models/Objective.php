@@ -29,4 +29,9 @@ class Objective extends Model
     {
         return $this->belongsTo(Goal::class, 'goal_id');
     }
+
+    public function accommodation()
+    {
+        return $this->hasMany(Accommodation::class);
+    }
 }

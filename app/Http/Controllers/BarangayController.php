@@ -10,8 +10,8 @@ use App\Services\CmsService;
 class BarangayController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'program';
-    protected string $table = 'programs';
+    protected string $resource = 'barangay';
+    protected string $table = 'barangays';
 
     public function __construct()
     {

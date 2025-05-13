@@ -15,9 +15,14 @@ class Accommodation extends Model
         'remarks',
     ];
 
-    public static function getAllAccomodations($objective)
+    public static function getAccomodations($objective)
     {
         return self::where('objective_id', $objective)->get();
+    }
+
+    public static function getAllAccommodations()
+    {
+        return self::all();
     }
 
     public function objective()
