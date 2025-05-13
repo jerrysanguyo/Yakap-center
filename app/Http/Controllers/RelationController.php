@@ -3,63 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Models\Relation;
-use Illuminate\Http\Request;
+use App\Http\Requests\CmsRequest;
+use App\DataTables\CmsDataTable;
+use App\Services\CmsService;
+
 
 class RelationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CmsService $cmsService;
+    protected string $resource = 'relation';
+    protected string $table = 'relations';
+
+    public function __construct()
     {
-        //
+        $this->cmsService = new CmsService(Relation::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(CmsDataTable $dataTable)
     {
-        //
+        $page_title = 'Relation';
+        $resource = 'relation';
+        $columns = ['name', 'remarks', 'action'];
+        $data = Relation::getAllRelations();
+
+        return $dataTable
+            ->render('cms.index', compact(
+                'page_title',
+                'resource',
+                'columns',
+                'data',
+                'dataTable'
+            ));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(CmsRequest $request)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Relation $relation)
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
+    }
+    
+    public function update(CmsRequest $request, Relation $relation)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table, 'id' => $relation->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $relation->id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Relation $relation)
-    {
-        //
+        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Relation $relation)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Relation $relation)
     {
-        //
+        $destroy = $this->cmsService->cmsDestroy($relation->id);
+        
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }
