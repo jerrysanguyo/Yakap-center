@@ -6,7 +6,6 @@ use App\Models\District;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
-use Illuminate\Support\Facades\Auth;
 
 class DistrictController extends Controller
 {
@@ -23,7 +22,7 @@ class DistrictController extends Controller
     {
         $page_title = 'Districts';
         $resource = $this->resource;
-        $columns = ['name', 'remarks', 'actions'];
+        $columns = ['id', 'name', 'remarks', 'actions'];
         $data = District::getAllDistricts();
 
         return $dataTable

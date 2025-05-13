@@ -3,63 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Models\Education;
-use Illuminate\Http\Request;
+use App\Http\Requests\CmsRequest;
+use App\DataTables\CmsDataTable;
+use App\Services\CmsService;
 
 class EducationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CmsService $cmsService;
+    protected string $resource = 'education';
+    protected string $table = 'educations';
+
+    public function __construct()
     {
-        //
+        $this->cmsService = new CmsService(Education::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(CmsDataTable $dataTable)
     {
-        //
-    }
+        $page_title = 'Educations';
+        $resource = $this->resource;
+        $columns = ['id', 'name', 'remarks', 'actions'];
+        $data = Education::getAllEducations();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+        return $dataTable
+            ->render('cms.index', compact(
+                'page_title',
+                'resource',
+                'columns',
+                'data',
+                'dataTable',
+            ));
+    }
+    
+    public function store(CmsRequest $request)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Education $education)
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
+    }
+    
+    public function update(CmsRequest $request, Education $education)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table, 'id' => $education->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $education->id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Education $education)
-    {
-        //
+        return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Education $education)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Education $education)
     {
-        //
+        $destroy = $this->cmsService->cmsDestroy($education->id);
+
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }
