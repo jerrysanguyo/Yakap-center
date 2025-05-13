@@ -3,63 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
-use Illuminate\Http\Request;
+use App\Http\Requests\CmsRequest;
+use App\DataTables\CmsDataTable;
+use App\Services\CmsService;
 
 class ServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CmsService $cmsService;
+    protected string $resource = 'Service';
+    protected string $table = 'Services';
+
+    public function __construct()
     {
-        //
+        $this->cmsService = new CmsService(Service::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(CmsDataTable $dataTable)
     {
-        //
+        $page_title = 'Service';
+        $resource = 'Service';
+        $columns = ['name', 'remarks', 'action'];
+        $data = Service::getAllServices();
+
+        return $dataTable
+            ->render('cms.index', compact(
+                'page_title',
+                'resource',
+                'columns',
+                'data',
+                'dataTable'
+            ));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(CmsRequest $request)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Service $service)
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
+    }
+    
+    public function update(CmsRequest $request, Service $service)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table, 'id' => $service->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $service->id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Service $service)
-    {
-        //
+        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Service $service)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Service $service)
     {
-        //
+        $destroy = $this->cmsService->cmsDestroy($service->id);
+        
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }
