@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 class DistrictController extends Controller
 {
     protected CmsService $cmsService;
+    protected string $resource = 'district';
+    protected string $table = 'districts';
 
     public function __construct()
     {
@@ -20,7 +22,7 @@ class DistrictController extends Controller
     public function index(CmsDataTable $dataTable)
     {
         $page_title = 'Districts';
-        $resource = 'districts';
+        $resource = $this->resource;
         $columns = ['name', 'remarks', 'actions'];
         $data = District::getAllDistricts();
 
@@ -36,73 +38,24 @@ class DistrictController extends Controller
     
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => 'districts']);
-        if($district = $this->cmsService->cmsStore($request->validated()))
-        {
-            activity()
-                ->performedOn($district)
-                ->causedBy(Auth::user())
-                ->log('District named ' . $district->name . ' created successfullly by: '. Auth::user()->id);
-            return redirect()
-                ->route(Auth::user()->getUserRoles->first() . '.district.index')
-                ->with('success', 'District named ' . $district->name . 'created successfullly!');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('District creation failed by: '. Auth::user()->id);
-            
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.district.index')
-                ->with('failed', 'District creation failed.');
-        }
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
+
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
     public function update(CmsRequest $request, District $district)
     {
-        $request->merge(['cms_table' => 'districts', 'id' => $district->id]);
+        $request->merge(['cms_table' => $this->table, 'id' => $district->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $district->id);
 
-        if($district = $this->cmsService->cmsUpdate($request->validated()))
-        {
-            activity()
-                ->performedOn($district)
-                ->causedBy(Auth::user())
-                ->log('District name '. $district->name . ' updated successfully by: ' . Auth::user()->id);
-            
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.district.index')
-                ->with('success', 'District name ' . $district->name . ' updated successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('District name ' . $district->name . ' was faied to update');
-            
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.district.index')
-                ->with('failed', 'District name ' . $district->name . ' was failed to update by: ' . Auth::user()->id);
-        }
+        return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
     }
     
     public function destroy(District $district)
     {
-        $districtName = $district->name;
-        if($district = $this->cmsService->cmsDestroy($district->id))
-        {
-            activity()
-                ->performedOn($district)
-                ->causedBy(Auth::user())
-                ->log('District name ' . $districtName . ' deleted successfully by: ' . Auth::user()->id);
-            
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.district.index')
-                ->with('success', 'District name ' . $districtName . ' deleted successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('District name ' . $districtName . ' was failed to delete by: ' . Auth::user()->id);
-            
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.district.index')
-                ->with('failed', 'District name ' . $districtName . ' was failed to delete');
-        }
+        $destroy = $this->cmsService->cmsDestroy($district->id);
+
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }
