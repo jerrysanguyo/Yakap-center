@@ -6,11 +6,12 @@ use App\Models\Requirement;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
-use Illuminate\Support\Facades\Auth;
 
 class RequirementController extends Controller
 {
     protected CmsService $cmsService;
+    protected string $resource = 'requirement';
+    protected string $table = 'requirements';
 
     public function __construct()
     {
@@ -19,9 +20,9 @@ class RequirementController extends Controller
 
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Requirements';
-        $resource = 'requirements';
-        $columns = ['name', 'remarks', 'Action'];
+        $page_title = 'Requirement';
+        $resource = 'requirement';
+        $columns = ['name', 'remarks', 'action'];
         $data = Requirement::getAllRequirements();
 
         return $dataTable
@@ -33,75 +34,27 @@ class RequirementController extends Controller
                 'dataTable'
             ));
     }
-    
+
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => 'requirements']);
-        if($requirement = $this->cmsService->cmsStore($request->validated()))
-        {
-            activity()
-                ->performedOn($requirement)
-                ->causedBy(Auth::user())
-                ->log('Requirement created by: ' . Auth::user()->id);
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.requirements.index')
-                ->with('success', 'Requirement named ' . $requirement->name . ' created successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Requirement creation failed by: ' . Auth::user()->id);
-            
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.requirements.index')
-                ->with('failed', 'Requirement creation failed');
-        }
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
     public function update(CmsRequest $request, Requirement $requirement)
     {
-        $request->merge(['cms_table' => 'requirements', 'id' => $requirement->id]);
-        if($requirement = $this->cmsService->cmsUpdate($request->validated(), $requirement->id))
-        {
-            activity()
-                ->performedOn($requirement)
-                ->causedBy(Auth::user())
-                ->log('Requirement updated by: ' . Auth::user()->id);
+        $request->merge(['cms_table' => $this->table, 'id' => $requirement->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $requirement->id);
 
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.requirements.index')
-                ->with('success', 'Requirement named ' . $requirement->name . ' updated successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Requirement update failed by: ' . Auth::user()->id);
-            
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.requirements.index')
-                ->with('failed', 'Requirement update failed');
-        }
+        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
     
     public function destroy(Requirement $requirement)
     {
-        $requirementName = $requirement->name;
+        $destroy = $this->cmsService->cmsDestroy($requirement->id);
         
-        if ($this->cmsService->cmsDestroy($requirement->id)) {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Requirement deleted by: ' . Auth::user()->id);
-    
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.requirements.index')
-                ->with('success', 'Requirement named ' . $requirementName . ' deleted successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Requirement deletion failed by: ' . Auth::user()->id);
-    
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.requirements.index')
-                ->with('failed', 'Requirement deletion failed');
-        }
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }
