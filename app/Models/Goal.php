@@ -15,9 +15,9 @@ class Goal extends Model
         'remarks',
     ];
 
-    public static function getAllGoals($domain)
+    public static function getAllGoals()
     {
-        return self::where('domain', $domain)->get();
+        return self::all();
     }
 
     public function domain()

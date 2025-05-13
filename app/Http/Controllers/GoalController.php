@@ -3,63 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Goal;
-use Illuminate\Http\Request;
+use App\Http\Requests\CmsRequest;
+use App\DataTables\CmsDataTable;
+use App\Services\CmsService;
 
 class GoalController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CmsService $cmsService;
+    protected string $resource = 'program';
+    protected string $table = 'programs';
+
+    public function __construct()
     {
-        //
+        $this->cmsService = new CmsService(Goal::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(CmsDataTable $dataTable)
     {
-        //
-    }
+        $page_title = 'Goal';
+        $resource = $this->resource;
+        $column = ['id', 'name', 'district', 'Action'];
+        $data = Goal::getAllGoals();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+        return $dataTable->render('cms.view', compact(
+            'page_title',
+            'resource',
+            'column',
+            'data',
+            'dataTable'
+        ));
+    }
+    
+    public function store(CmsRequest $request)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Goal $goal)
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
+    }
+    
+    public function update(CmsRequest $request, Goal $goal)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table, 'id' => $goal->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $goal->id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Goal $goal)
-    {
-        //
+        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Goal $goal)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Goal $goal)
     {
-        //
+        $destroy = $this->cmsService->cmsDestroy($goal->id);
+        
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }

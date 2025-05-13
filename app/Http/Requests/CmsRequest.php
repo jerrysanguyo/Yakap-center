@@ -31,6 +31,11 @@ class CmsRequest extends FormRequest
             $rules['district_id'] = 'required|numeric|exists:districts,id';
         }
 
+        if($table === 'goals')
+        {
+            $rules['domain_id'] = 'required|numeric|exists:learning_domains,id';
+        }
+
         return $rules;
     }
 }
