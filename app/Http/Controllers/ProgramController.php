@@ -6,100 +6,55 @@ use App\Models\Program;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
-use Illuminate\Support\Facades\Auth;
 
 class ProgramController extends Controller
 {
     protected CmsService $cmsService;
+    protected string $resource = 'program';
+    protected string $table = 'programs';
 
     public function __construct()
     {
         $this->cmsService = new CmsService(Program::class);
     }
 
-    public function index()
+    public function index(CmsDataTable $dataTable)
     {
         $page_title = 'Program';
         $resource = 'program';
         $columns = ['name', 'remarks', 'action'];
-        $data = Program::getAllPrograms();
+        $data = Program::getAllProgram();
 
-        return view('cms.index', compact(
-            'page_title',
-            'resource',
-            'columns',
-            'data',
-            'dataTable'
-        ));
+        return $dataTable
+            ->render('cms.index', compact(
+                'page_title',
+                'resource',
+                'columns',
+                'data',
+                'dataTable'
+            ));
     }
-    
+
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => 'programs']);
-        if($program = $this->cmsService->cmsStore($request->validated()))
-        {
-            activity()
-                ->performedOn($program)
-                ->causedBy(Auth::user())
-                ->log('Program named ' . $program->name . ' created successfully by: ' . Auth::user()->id);
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.program.index')
-                ->with('success', 'Program named ' . $program->name . ' created successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Program creation failed by: ' . Auth::user()->id);
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.program.index')
-                ->with('failed', 'Program creation failed');
-        }
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
     public function update(CmsRequest $request, Program $program)
     {
-        $request->merge(['cms_table' => 'programs', 'id' => $program->id]);
-        if($program = $this->cmsService->cmsUpdate($request->validated()))
-        {
-            activity()
-                ->performedOn($program)
-                ->causedBy(Auth::user())
-                ->log('Program named ' . $program->name . ' updated successfully by: ' . Auth::user()->id);
+        $request->merge(['cms_table' => $this->table, 'id' => $program->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $program->id);
 
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.program.index')
-                ->with('success', 'Program named ' . $program->name . ' updated successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Program named ' . $program->name . ' was failed to update by: ' . Auth::user()->id);
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.program.index')
-                ->with('failed', 'Program update failed');
-        }
+        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
     
     public function destroy(Program $program)
     {
-        $programName = $program->name;
-
-        if($program = $this->cmsService->cmsDestroy($program->id))
-        {
-            activity()
-                ->performedOn($program)
-                ->causedBy(Auth::user())
-                ->log('Program named ' . $programName . ' deleted successfully by: ' . Auth::user()->id);
-
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.program.index')
-                ->with('success', 'Program named ' . $programName . ' deleted successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Program named ' . $programName . ' was failed to delete by: ' . Auth::user()->id);
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.program.index')
-                ->with('failed', 'Program deletion failed');
-        }
+        $destroy = $this->cmsService->cmsDestroy($program->id);
+        
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }

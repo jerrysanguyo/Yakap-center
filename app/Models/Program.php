@@ -14,8 +14,8 @@ class Program extends Model
         'remarks',
     ];
 
-    public static function getAllPrograms()
+    public static function getAllProgram()
     {
-        return self::all();
+        return self::first();
     }
 }

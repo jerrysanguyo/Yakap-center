@@ -6,11 +6,12 @@ use App\Models\Privacy;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
-use Illuminate\Support\Facades\Auth;
 
 class PrivacyController extends Controller
 {
     protected CmsService $cmsService;
+    protected string $resource = 'privacy';
+    protected string $table = 'privacies';
 
     public function __construct()
     {
@@ -33,73 +34,27 @@ class PrivacyController extends Controller
                 'dataTable'
             ));
     }
-    
+
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_type' => 'privacy']);
-        if($privacy = $this->cmsService->store($request->validated()))
-        {
-            activity()
-                ->performedOn($privacy)
-                ->causedBy(Auth::user())
-                ->log('Privacy named ' . $privacy->name . 'created by: ' . Auth::user()->id);
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
-                ->with('success', 'Privacy named ' . $privacy->name . ' created successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Privacy creation failed by: ' . Auth::user()->id);
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
-                ->with('failed', 'Privacy creation failed');
-        }
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
-
+    
     public function update(CmsRequest $request, Privacy $privacy)
     {
-        $request->merge(['cms_type' => 'privacy', 'id' => $privacy->id]);
-        if($privacy = $this->cmsService->cmsUpdate($request->validated(), $privacy->id))
-        {
-            activity()
-                ->performedOn($privacy)
-                ->causedBy(Auth::user())
-                ->log('Privacy updated by: ' . Auth::user()->id);
+        $request->merge(['cms_table' => $this->table, 'id' => $privacy->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $privacy->id);
 
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
-                ->with('success', 'Privacy named ' . $privacy->name . ' updated successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Program named ' . $privacy->name . ' was failed to update by: ' . Auth::user()->id);
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
-                ->with('failed', 'Privacy update failed');
-        }
+        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
     
     public function destroy(Privacy $privacy)
     {
-        $privacyName = $privacy->name;
-        if($this->cmsService->cmsDelete($privacy->id))
-        {
-            activity()
-                ->performedOn($privacy)
-                ->causedBy(Auth::user())
-                ->log('Privacy deleted by: ' . Auth::user()->id);
-
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
-                ->with('success', 'Privacy named ' . $privacyName . ' deleted successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Program named ' . $privacyName . ' was failed to delete by: ' . Auth::user()->id);
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.privacy.index')
-                ->with('failed', 'Privacy deletion failed');
-        }
+        $destroy = $this->cmsService->cmsDestroy($privacy->id);
+        
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }
