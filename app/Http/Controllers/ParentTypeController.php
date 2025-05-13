@@ -6,11 +6,12 @@ use App\Models\ParentType;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
-use Illuminate\Support\Facades\Auth;
 
 class ParentTypeController extends Controller
 {
     protected CmsService $cmsService;
+    protected string $resource = 'parentType';
+    protected string $table = 'parent_types';
 
     public function __construct()
     {
@@ -19,10 +20,10 @@ class ParentTypeController extends Controller
 
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Parent Types';
-        $resource = 'type';
-        $columns = ['name', 'remarks', 'Action'];
-        $data = ParentType::getAllParentTypes();
+        $page_title = 'Parent type';
+        $resource = 'ParentType';
+        $columns = ['name', 'remarks', 'action'];
+        $data = ParentType::getAllParentType();
 
         return $dataTable
             ->render('cms.index', compact(
@@ -33,76 +34,27 @@ class ParentTypeController extends Controller
                 'dataTable'
             ));
     }
-    
+
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => 'parent_types']);
-        if($type = $this->cmsService->cmsStore($request->validated()))
-        {
-            activity()
-                ->performedOn($type)
-                ->causedBy(Auth::user())
-                ->log('Parent type created by: ' . Auth::user()->id);
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
-                ->with('success', 'Parent type named ' . $type->name . ' created successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Parent type creation failed by: ' . Auth::user()->id);
-            
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
-                ->with('failed', 'Parent type creation failed');
-        }
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
     public function update(CmsRequest $request, ParentType $parentType)
     {
-        $request->merge(['cms_table' => 'parent_types', 'id' => $parentType->id]);
-        if($parentType = $this->cmsService->cmsUpdate($request->validated(), $parentType->id))
-        {
-            activity()
-                ->performedOn($parentType)
-                ->causedBy(Auth::user())
-                ->log('Parent type updated by: ' . Auth::user()->id);
+        $request->merge(['cms_table' => $this->table, 'id' => $parentType->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $parentType->id);
 
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
-                ->with('success', 'Parent type named ' . $parentType->name . ' updated successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Parent type update failed by: ' . Auth::user()->id);
-            
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
-                ->with('failed', 'Parent type update failed');
-        }
+        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
     
     public function destroy(ParentType $parentType)
     {
-        $parentTypeName = $parentType->name;
-
-        if ($this->cmsService->cmsDestroy($parentType->id)) {
-            activity()
-                ->performedOn($parentType)
-                ->causedBy(Auth::user())
-                ->log('Parent Type deleted by: ' . Auth::user()->id);
-
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
-                ->with('success', 'Parent type named ' . $parentTypeName . ' deleted successfully');
-        } else {
-            activity()
-                ->causedBy(Auth::user())
-                ->log('Parent type deletion failed by: ' . Auth::user()->id);
-            
-            return redirect()
-                ->route(Auth::user()->getRoleNames()->first() . '.type.index')
-                ->with('failed', 'Parent type deletion failed');
-        }
+        $destroy = $this->cmsService->cmsDestroy($parentType->id);
+        
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }
