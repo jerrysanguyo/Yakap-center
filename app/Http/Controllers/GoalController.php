@@ -10,8 +10,8 @@ use App\Services\CmsService;
 class GoalController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'program';
-    protected string $table = 'programs';
+    protected string $resource = 'goal';
+    protected string $table = 'goals';
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ class GoalController extends Controller
     {
         $page_title = 'Goal';
         $resource = $this->resource;
-        $column = ['id', 'name', 'district', 'Action'];
+        $column = ['id', 'name', 'domain', 'Action'];
         $data = Goal::getAllGoals();
 
         return $dataTable->render('cms.view', compact(

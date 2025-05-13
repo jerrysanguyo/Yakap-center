@@ -20,6 +20,11 @@ class Goal extends Model
         return self::all();
     }
 
+    public static function getGoal($domain)
+    {
+        return self::where('domain_id', $domain)->get();
+    }
+
     public function domain()
     {
         return $this->belongsTo(LearningDomain::class, 'domain_id');

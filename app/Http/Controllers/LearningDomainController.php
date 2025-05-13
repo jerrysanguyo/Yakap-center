@@ -3,63 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\LearningDomain;
-use Illuminate\Http\Request;
+use App\Http\Requests\CmsRequest;
+use App\DataTables\CmsDataTable;
+use App\Services\CmsService;
 
 class LearningDomainController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CmsService $cmsService;
+    protected string $resource = 'domain';
+    protected string $table = 'learning_domains';
+
+    public function __construct()
     {
-        //
+        $this->cmsService = new CmsService(LearningDomain::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(CmsDataTable $dataTable)
     {
-        //
+        $page_title = 'Learning Domain';
+        $resource = $this->resource;
+        $column = ['id', 'name', 'district', 'Action'];
+        $data = LearningDomain::getAllLearningDomains();
+
+        return $dataTable->render('cms.view', compact(
+            'page_title',
+            'resource',
+            'column',
+            'data',
+            'dataTable'
+        ));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(CmsRequest $request)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(LearningDomain $learningDomain)
-    {
-        //
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(LearningDomain $learningDomain)
+    
+    public function update(CmsRequest $request, LearningDomain $domain)
     {
-        //
+        $request->merge(['cms_table' => $this->table, 'id' => $domain->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $domain->id);
+
+        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, LearningDomain $learningDomain)
+    
+    public function destroy(LearningDomain $domain)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(LearningDomain $learningDomain)
-    {
-        //
+        $destroy = $this->cmsService->cmsDestroy($domain->id);
+        
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }

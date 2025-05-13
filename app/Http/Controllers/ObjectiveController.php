@@ -3,63 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Objective;
-use Illuminate\Http\Request;
+use App\Http\Requests\CmsRequest;
+use App\DataTables\CmsDataTable;
+use App\Services\CmsService;
 
 class ObjectiveController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CmsService $cmsService;
+    protected string $resource = 'objective';
+    protected string $table = 'objectives';
+
+    public function __construct()
     {
-        //
+        $this->cmsService = new CmsService(Objective::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(CmsDataTable $dataTable)
     {
-        //
+        $page_title = 'Objective';
+        $resource = $this->resource;
+        $column = ['id', 'name', 'goal', 'Action'];
+        $data = Objective::getAllObjectives();
+
+        return $dataTable->render('cms.view', compact(
+            'page_title',
+            'resource',
+            'column',
+            'data',
+            'dataTable'
+        ));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(CmsRequest $request)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table]);
+        $store = $this->cmsService->cmsStore($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Objective $objective)
+        return $this->cmsService->handleRedirect($store, $this->resource, 'created');
+    }
+    
+    public function update(CmsRequest $request, Objective $objective)
     {
-        //
-    }
+        $request->merge(['cms_table' => $this->table, 'id' => $objective->id]);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $objective->id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Objective $objective)
-    {
-        //
+        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Objective $objective)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Objective $objective)
     {
-        //
+        $destroy = $this->cmsService->cmsDestroy($objective->id);
+        
+        return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }

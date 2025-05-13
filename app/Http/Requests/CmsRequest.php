@@ -21,21 +21,30 @@ class CmsRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'unique:' . $table . ',name' . ($id ? ',' . $id : '')
+                'unique:' . $table . ',name' . ($id ? ',' . $id : ''),
             ],
-            'remarks' => 'nullable|string|max:255',
+            'remarks' => ['nullable', 'string', 'max:255'],
         ];
-
-        if($table === 'barangays')
-        {
-            $rules['district_id'] = 'required|numeric|exists:districts,id';
-        }
-
-        if($table === 'goals')
-        {
-            $rules['domain_id'] = 'required|numeric|exists:learning_domains,id';
-        }
-
-        return $rules;
+        
+        return array_merge($rules, $this->getAdditionalRulesForTable($table));
+    }
+    
+    protected function getAdditionalRulesForTable(?string $table): array
+    {
+        return match ($table) {
+            'barangays' => [
+                'district_id' => ['required', 'numeric', 'exists:districts,id'],
+            ],
+            'goals' => [
+                'domain_id' => ['required', 'numeric', 'exists:learning_domains,id'],
+            ],
+            'learning_competencies' => [
+                'domain_id' => ['required', 'numeric', 'exists:learning_domains,id'],
+            ],
+            'objectives' => [
+                'goal_id' => ['required', 'numeric', 'exists:goals,id'],
+            ],
+            default => [],
+        };
     }
 }

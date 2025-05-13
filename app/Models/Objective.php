@@ -15,9 +15,14 @@ class Objective extends Model
         'remarks',
     ];
 
-    public static function getAllObjectives($goal)
+    public static function getObjectives($goal)
     {
         return self::where('goal_id', $goal)->get();
+    }
+
+    public static function getAllObjectives()
+    {
+        return self::all();
     }
 
     public function goal()

@@ -15,9 +15,14 @@ class learningCompetency extends Model
         'remarks',
     ];
 
-    public static function getAllLearningCompetencies($domain)
+    public static function getLearningCompetencies($domain)
     {
         return self::where('domain_id', $domain)->get();
+    }
+
+    public static function getAllLearningCompetencies()
+    {
+        return self::all();
     }
 
     public function domain()

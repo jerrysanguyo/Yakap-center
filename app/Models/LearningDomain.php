@@ -18,4 +18,14 @@ class LearningDomain extends Model
     {
         return self::all(); 
     }
+
+    public function goal()
+    {
+        return $this->hasMany(Goal::class);
+    }
+
+    public function learningCompetency()
+    {
+        return $this->hasMany(learningCompetency::class);
+    }
 }
