@@ -46,7 +46,7 @@ class BloodTypeController extends Controller
     public function update(CmsRequest $request, BloodType $bloodType)
     {
         $request->merge(['cms_table' => $this->table, 'id' => $bloodType->id]);
-        $update = $this->cmsService->cmsUpdate($request->validated());
+        $update = $this->cmsService->cmsUpdate($request->validated(), $bloodType->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
     }
