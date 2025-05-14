@@ -12,5 +12,16 @@ class Consent extends Model
     protected $fillable = [
         'user_id',
         'answer',
+        'relation_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function relation()
+    {
+        return $this->belongsTo(Relation::class, 'relation_id');
+    }
 }

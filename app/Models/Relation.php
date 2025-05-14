@@ -18,4 +18,9 @@ class Relation extends Model
     {
         return self::all();
     }
+
+    public function consent()
+    {
+        return $this->hasOne(Consent::class);
+    }
 }

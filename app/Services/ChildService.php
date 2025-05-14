@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\ChildInfo;
+use App\Models\Consent;
 
 class ChildService
 {
@@ -19,15 +20,34 @@ class ChildService
         return $year . $paddedId;
     }
 
+    public function consent(array $data)
+    {
+        $consent = Consent::create([
+            'user_id' => Auth::user()->id,
+            'answer' => $data['consent_answer'],
+            'relation' => $data['relation'],
+        ]);
+
+        if($consent)
+        {
+            ChildInfo::create([
+                'first_name' => $data['first_name'],
+                'middle_name' => $data['middle_name'],
+                'last_name' => $data['last_name'],
+                'birth_date' => $data['birth_date'],
+            ]);
+
+            return $consent;
+        }
+
+        return null;
+    }
+
     public function childInfo(array $data): ChildInfo
     {
-        $childInfo = ChildInfo::create([
+        $childInfo = ChildInfo::updateOrCreate([
             'parent_id' => Auth::user()->id(),
-            'first_name' => $data['first_name'],
-            'middle_name' => $data['middle_name'],
-            'last_name' => $data['last_name'],
             'gender_id' => $data['gender'],
-            'birth_date' => $data['birth_date'],
             'house_number' => $data['house_number'],
             'barangay_id' => $data['barangay'],
             'district_id' => $data['district'],

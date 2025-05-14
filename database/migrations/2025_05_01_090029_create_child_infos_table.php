@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('child_infos', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_number');
+            $table->integer('id_number')->nullable();
             $table->foreignId('parents_id')->constrained('users')->cascadeOnDelete();
             $table->string('first_name');
             $table->string('midle_name')->nullable();   
             $table->string('last_name');
             $table->foreignId('gender_id')->nullable()->constrined('genders')->nullOnDelete();
             $table->date('birth_date');
-            $table->string('house_number');
+            $table->string('house_number')->nullable();
             $table->foreignId('barangay_id')->nullable()->constrained('barangays')->nullOnDelete();
             $table->foreignId('district_id')->nullable()->constraned('districts')->nullOnDelete();
-            $table->enum('city',['Taguig City']);
+            $table->enum('city',['Taguig City'])->nullable();
             $table->timestamps();
         });
     }

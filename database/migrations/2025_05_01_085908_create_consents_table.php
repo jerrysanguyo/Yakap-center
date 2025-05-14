@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('consents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->enum('answer',['Oo','Hindi']);
+            $table->foreignId('relation_id')->nullable()->constrained('relations')->nullOnDelete();
             $table->timestamps();
         });
     }
