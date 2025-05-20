@@ -13,7 +13,7 @@ class ChildInfo extends Model
         'id_number',
         'parents_id',
         'first_name',
-        'midle_name',
+        'middle_name',
         'last_name',
         'gender_id',
         'birth_date',
@@ -46,5 +46,10 @@ class ChildInfo extends Model
     public function district()
     {
         return $this->belongsTo(District::class, 'district_id');
+    }
+
+    public function files()
+    {
+        return $this->morphMany(Files::class, 'imageable');
     }
 }

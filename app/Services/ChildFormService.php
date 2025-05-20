@@ -16,6 +16,7 @@ use App\Models\ChildEmergency;
 use App\Models\ChildFamily;
 use App\Models\ParentsInfo;
 use App\Models\Consent;
+use App\Models\Files;
 
 class ChildFormService
 {
@@ -60,20 +61,38 @@ class ChildFormService
     {
         $childInfo = ChildInfo::updateOrCreate(
         [
-            'first_name' => $data['first_name'],
-            'middle_name' => $data['middle_name'],
-            'last_name' => $data['last_name'],
-            'birth_date' => $data['birth_date'],
+            'first_name'    => $data['first_name'],
+            'middle_name'   => $data['middle_name'],
+            'last_name'     => $data['last_name'],
+            'birth_date'    => $data['birth_date'],
         ],
         [
-            'parent_id' => Auth::user()->id(),
-            'gender_id' => $data['gender'],
-            'house_number' => $data['house_number'],
-            'barangay_id' => $data['barangay'],
-            'district_id' => $data['district'],
-            'city' => $data['city'],
-            'id_number' => $this->idNumber(),
+            'parent_id'     => Auth::user()->id(),
+            'gender_id'     => $data['gender'],
+            'house_number'  => $data['house_number'],
+            'barangay_id'   => $data['barangay'],
+            'district_id'   => $data['district'],
+            'city'          => $data['city'],
+            'id_number'     => $this->idNumber(),
         ]);
+
+        if($childInfo && isset($data['picture']))
+        {
+            $pic = $data['picture'];
+            $extension = $pic->getClientOriginalExtension();
+            $fullName = $data['first_name'] . $data['last_name'];
+            $pic_name = $childInfo->id . '-' . $fullName . '-picture.' . $extension; // 1-JerrySanguyo-picture.png
+            $destination  = public_path('idPicture');
+
+            $pic->move($destination, $pic_name);
+
+            $childInfo->files()->create([
+                'file_name' => $pic_name,
+                'file_path' => "idPicture/{$pic_name}",
+                'file_type' => 'image',
+                'remarks'   => 'picture',
+            ]);
+        }
 
         return $childInfo;
     }
@@ -202,6 +221,21 @@ class ChildFormService
             ]);
 
             return $family;
+        }
+    }
+
+    public function childRequirements(array $data, $child): Files
+    {
+        if(isset($data['requirements']))
+        {
+            $requirements = $data['requirements'];
+            foreach($requirements as $requirement)
+            {
+                Files::create([
+                    'imageable_id' => $child,
+                    'imageable_type' => 'App\Models\ChildInfo',
+                ]);
+            }
         }
     }
 }
