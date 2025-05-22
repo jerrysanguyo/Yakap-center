@@ -129,7 +129,7 @@ class ChildFormService
         return $disability;
     }
 
-    public function childEducationa(array $data, $child): ChildEducation
+    public function childEducational(array $data, $child): ChildEducation
     {
         $education = ChildEducation::create([
             'child_id' => $this->childId($child),
