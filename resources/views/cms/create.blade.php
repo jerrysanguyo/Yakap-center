@@ -28,7 +28,7 @@
             $foreignKeyMap = [
                 'barangay' => 'district_id',
                 'goal' => 'domain_id',
-                'learning_competency' => 'domain_id',
+                'competency' => 'domain_id',
                 'objective' => 'goal_id',
                 ];
             $field = $foreignKeyMap[$resource] ?? null;

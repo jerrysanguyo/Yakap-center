@@ -37,9 +37,11 @@
                 'permission' => 'guard_name',
                 'barangay' => 'district.name',
                 'goal' => 'domain.name',
+                'competency' => 'domain.name',
+                'objective' => 'goal.name',
                 ];
                 $firstCol = isset($fieldMap[$resource]) ? data_get($record, $fieldMap[$resource]) : $record->remarks;
-                $secondCol = in_array($resource, ['barangay','goal']) ? $record->remarks : null;
+                $secondCol = in_array($resource, ['barangay','goal','competency','objective']) ? $record->remarks : null;
             @endphp
             <tr class="border border-gray-200 hover:bg-gray-100 transition-colors">
                 <td class="py-1 px-4">{{ $record->id }}</td>

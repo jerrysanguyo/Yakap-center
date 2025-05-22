@@ -10,8 +10,7 @@ use App\Services\CmsService;
 class ParentTypeController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'parentType';
-    protected string $table = 'parent_types';
+    protected string $resource = 'parent';
 
     public function __construct()
     {
@@ -21,9 +20,9 @@ class ParentTypeController extends Controller
     public function index(CmsDataTable $dataTable)
     {
         $page_title = 'Parent type';
-        $resource = 'ParentType';
-        $columns = ['name', 'remarks', 'action'];
-        $data = ParentType::getAllParentType();
+        $resource = 'parent';
+        $columns = ['id', 'name', 'remarks', 'action'];
+        $data = ParentType::getAllParentTypes();
 
         return $dataTable
             ->render('cms.index', compact(
@@ -37,23 +36,21 @@ class ParentTypeController extends Controller
 
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, ParentType $parentType)
+    public function update(CmsRequest $request, ParentType $parent)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $parentType->id]);
-        $update = $this->cmsService->cmsUpdate($request->validated(), $parentType->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $parent->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
     
-    public function destroy(ParentType $parentType)
+    public function destroy(ParentType $parent)
     {
-        $destroy = $this->cmsService->cmsDestroy($parentType->id);
+        $destroy = $this->cmsService->cmsDestroy($parent->id);
         
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }

@@ -11,7 +11,6 @@ class PrivacyController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'privacy';
-    protected string $table = 'privacies';
 
     public function __construct()
     {
@@ -22,7 +21,7 @@ class PrivacyController extends Controller
     {
         $page_title = 'Privacy Policy';
         $resource = 'privacy';
-        $columns = ['name', 'remarks', 'action'];
+        $columns = ['id', 'name', 'remarks', 'action'];
         $data = Privacy::getAllPrivacy();
 
         return $dataTable
@@ -37,7 +36,6 @@ class PrivacyController extends Controller
 
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -45,7 +43,6 @@ class PrivacyController extends Controller
     
     public function update(CmsRequest $request, Privacy $privacy)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $privacy->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $privacy->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');

@@ -11,7 +11,12 @@ use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\GoalController;
+use App\Http\Controllers\LearningCompetencyController;
 use App\Http\Controllers\LearningDomainController;
+use App\Http\Controllers\ObjectiveController;
+use App\Http\Controllers\ParentTypeController;
+use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\ProgramController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -40,6 +45,11 @@ Route::middleware(['auth'])
                 Route::resource('gender', GenderController::class)->middleware('merge_cms:genders,gender');
                 Route::resource('goal', GoalController::class)->middleware('merge_cms:goals,goal');
                 Route::resource('domain', LearningDomainController::class)->middleware('merge_cms:learning_domains,domain');
+                Route::resource('competency', LearningCompetencyController::class)->middleware('merge_cms:learning_competencies,competency');
+                Route::resource('objective', ObjectiveController::class)->middleware('merge_cms:objectives,objective');
+                Route::resource('parent', ParentTypeController::class)->middleware('merge_cms:parent_types,parent');
+                Route::resource('privacy', PrivacyController::class)->middleware('merge_cms:privacies,privacy');
+                Route::resource('program', ProgramController::class)->middleware('merge_cms:programs,program');
             });
 
         Route::middleware('role:admin')
@@ -56,6 +66,12 @@ Route::middleware(['auth'])
                 Route::resource('education', EducationController::class)->middleware('merge_cms:educations,education');
                 Route::resource('gender', GenderController::class)->middleware('merge_cms:genders,gender');
                 Route::resource('goal', GoalController::class)->middleware('merge_cms:goals,goal');
+                Route::resource('domain', LearningDomainController::class)->middleware('merge_cms:learning_domains,domain');
+                Route::resource('competency', LearningCompetencyController::class)->middleware('merge_cms:learning_competencies,competency');
+                Route::resource('objective', ObjectiveController::class)->middleware('merge_cms:objectives,objective');
+                Route::resource('parent', ParentTypeController::class)->middleware('merge_cms:parent_types,parent');
+                Route::resource('privacy', PrivacyController::class)->middleware('merge_cms:privacies,privacy');
+                Route::resource('program', ProgramController::class)->middleware('merge_cms:programs,program');
             });
 
         Route::middleware('role:user')

@@ -11,7 +11,6 @@ class ProgramController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'program';
-    protected string $table = 'programs';
 
     public function __construct()
     {
@@ -22,8 +21,8 @@ class ProgramController extends Controller
     {
         $page_title = 'Program';
         $resource = 'program';
-        $columns = ['name', 'remarks', 'action'];
-        $data = Program::getAllProgram();
+        $columns = ['id', 'name', 'remarks', 'action'];
+        $data = Program::getAllPrograms();
 
         return $dataTable
             ->render('cms.index', compact(
@@ -37,7 +36,6 @@ class ProgramController extends Controller
 
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -45,7 +43,6 @@ class ProgramController extends Controller
     
     public function update(CmsRequest $request, Program $program)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $program->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $program->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Goal;
 use App\Models\Objective;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
@@ -11,7 +12,6 @@ class ObjectiveController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'objective';
-    protected string $table = 'objectives';
 
     public function __construct()
     {
@@ -22,21 +22,22 @@ class ObjectiveController extends Controller
     {
         $page_title = 'Objective';
         $resource = $this->resource;
-        $column = ['id', 'name', 'goal', 'Action'];
+        $columns = ['id', 'name', 'goal', 'remarks', 'Action'];
         $data = Objective::getAllObjectives();
+        $subRecords = Goal::getAllGoals();
 
-        return $dataTable->render('cms.view', compact(
+        return $dataTable->render('cms.index', compact(
             'page_title',
             'resource',
-            'column',
+            'columns',
             'data',
+            'subRecords',
             'dataTable'
         ));
     }
 
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -44,7 +45,6 @@ class ObjectiveController extends Controller
     
     public function update(CmsRequest $request, Objective $objective)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $objective->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $objective->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
