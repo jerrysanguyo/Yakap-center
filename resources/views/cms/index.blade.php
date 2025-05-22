@@ -31,16 +31,22 @@
         </thead>
         <tbody class="text-gray-600 text-sm font-normal text-center">
             @foreach ($data as $record)
+            @php
+                $fieldMap = [
+                'role' => 'guard_name',
+                'permission' => 'guard_name',
+                'barangay' => 'district.name',
+                'goal' => 'domain.name',
+                ];
+                $firstCol = isset($fieldMap[$resource]) ? data_get($record, $fieldMap[$resource]) : $record->remarks;
+                $secondCol = in_array($resource, ['barangay','goal']) ? $record->remarks : null;
+            @endphp
             <tr class="border border-gray-200 hover:bg-gray-100 transition-colors">
                 <td class="py-1 px-4">{{ $record->id }}</td>
                 <td class="py-1 px-4">{{ $record->name }}</td>
-                @if($resource === 'role' || $resource === 'permission')
-                    <td class="py-1 px-4">{{ $record->guard_name }}</td>
-                @elseif($resource === 'barangay')
-                    <td class="py-1 px-4">{{ $record->district->name }}</td>
-                    <td class="py-1 px-4">{{ $record->remarks }}</td>
-                @else
-                    <td class="py-1 px-4">{{ $record->remarks }}</td>
+                <td class="py-1 px-4">{{ $firstCol }}</td>
+                @if($secondCol)
+                <td class="py-1 px-4">{{ $secondCol }}</td>
                 @endif
                 <td class="py-1 px-4">
                     <div class="inline-flex items-center space-x-2">

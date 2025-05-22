@@ -11,7 +11,6 @@ class LearningDomainController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'domain';
-    protected string $table = 'learning_domains';
 
     public function __construct()
     {
@@ -22,13 +21,13 @@ class LearningDomainController extends Controller
     {
         $page_title = 'Learning Domain';
         $resource = $this->resource;
-        $column = ['id', 'name', 'district', 'Action'];
+        $columns = ['id', 'name', 'domain', 'Action'];
         $data = LearningDomain::getAllLearningDomains();
 
-        return $dataTable->render('cms.view', compact(
+        return $dataTable->render('cms.index', compact(
             'page_title',
             'resource',
-            'column',
+            'columns',
             'data',
             'dataTable'
         ));
@@ -36,7 +35,6 @@ class LearningDomainController extends Controller
 
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -44,7 +42,6 @@ class LearningDomainController extends Controller
     
     public function update(CmsRequest $request, LearningDomain $domain)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $domain->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $domain->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');

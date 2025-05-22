@@ -11,7 +11,6 @@ class EducationController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'education';
-    protected string $table = 'educations';
 
     public function __construct()
     {
@@ -37,7 +36,6 @@ class EducationController extends Controller
     
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -45,7 +43,6 @@ class EducationController extends Controller
     
     public function update(CmsRequest $request, Education $education)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $education->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $education->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource, 'updated');

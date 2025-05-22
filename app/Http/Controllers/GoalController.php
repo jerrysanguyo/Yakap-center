@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Goal;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
+use App\Models\LearningDomain;
 use App\Services\CmsService;
 
 class GoalController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'goal';
-    protected string $table = 'goals';
 
     public function __construct()
     {
@@ -22,21 +22,22 @@ class GoalController extends Controller
     {
         $page_title = 'Goal';
         $resource = $this->resource;
-        $column = ['id', 'name', 'domain', 'Action'];
+        $columns = ['id', 'name', 'domain', 'remarks', 'Action'];
         $data = Goal::getAllGoals();
+        $subRecords = LearningDomain::getAllLearningDomains();
 
-        return $dataTable->render('cms.view', compact(
+        return $dataTable->render('cms.index', compact(
             'page_title',
             'resource',
-            'column',
+            'columns',
             'data',
+            'subRecords',
             'dataTable'
         ));
     }
     
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -44,7 +45,6 @@ class GoalController extends Controller
     
     public function update(CmsRequest $request, Goal $goal)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $goal->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $goal->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');

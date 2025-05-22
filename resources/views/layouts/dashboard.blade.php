@@ -175,14 +175,14 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-building-user"></i></span>
                 </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.education.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-school me-2"></i>
                         Education</span>
                     <span x-show="sidebarCollapsed" x-cloak
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-school"></i></span>
                 </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.gender.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-venus-mars me-2"></i>
                         Gender</span>
@@ -190,7 +190,7 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-venus-mars"></i></span>
                 </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.goal.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-flag-checkered me-2"></i>
                         Goal</span>
@@ -206,7 +206,7 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-graduation-cap"></i></span>
                 </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.domain.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-book-open me-2"></i>
                         Learning Domain</span>

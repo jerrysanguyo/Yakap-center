@@ -8,6 +8,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\BarangayController;
+use App\Http\Controllers\EducationController;
+use App\Http\Controllers\GenderController;
+use App\Http\Controllers\GoalController;
+use App\Http\Controllers\LearningDomainController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,6 +36,10 @@ Route::middleware(['auth'])
                 Route::resource('disability', DisabilityController::class)->middleware('merge_cms:disabilities,disability');
                 Route::resource('district', DistrictController::class)->middleware('merge_cms:districts,district');
                 Route::resource('barangay', BarangayController::class)->middleware('merge_cms:barangays,barangay');
+                Route::resource('education', EducationController::class)->middleware('merge_cms:educations,education');
+                Route::resource('gender', GenderController::class)->middleware('merge_cms:genders,gender');
+                Route::resource('goal', GoalController::class)->middleware('merge_cms:goals,goal');
+                Route::resource('domain', LearningDomainController::class)->middleware('merge_cms:learning_domains,domain');
             });
 
         Route::middleware('role:admin')
@@ -45,6 +53,9 @@ Route::middleware(['auth'])
                 Route::resource('disability', DisabilityController::class)->middleware('merge_cms:disabilities,disability');
                 Route::resource('district', DistrictController::class)->middleware('merge_cms:districts,district');
                 Route::resource('barangay', BarangayController::class)->middleware('merge_cms:barangays,barangay');
+                Route::resource('education', EducationController::class)->middleware('merge_cms:educations,education');
+                Route::resource('gender', GenderController::class)->middleware('merge_cms:genders,gender');
+                Route::resource('goal', GoalController::class)->middleware('merge_cms:goals,goal');
             });
 
         Route::middleware('role:user')
