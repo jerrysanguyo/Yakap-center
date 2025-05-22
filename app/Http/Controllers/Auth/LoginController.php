@@ -15,12 +15,12 @@ class LoginController extends Controller
 
     public function __construct(LoginService $loginService)
     {
-        $this->loginServices = $loginService;
+        $this->loginService = $loginService;
     }
 
     public function index()
     {
-        return view('');
+        return view('auth.login');
     }
 
     public function authenticate(LoginRequest $request)
@@ -34,10 +34,10 @@ class LoginController extends Controller
             activity()
                 ->performedOn($user)
                 ->causedBy($user)
-                ->log('User'. $user->first_name . $user->last_name . " logged in successfully. ({$ip} - {$browser})");
+                ->log('User '. $user->first_name . $user->last_name . " logged in successfully. ({$ip} - {$browser})");
     
             return redirect()
-                ->route($user->getRoleNames()->first() . '.dashboard')
+                ->route('superadmin.dashboard')
                 ->with('success', 'Logged in successfully!');
         } catch (AuthenticationException $e) {
             activity()
@@ -56,7 +56,7 @@ class LoginController extends Controller
         
         $user = Auth::user();
         
-        $this->authServices->logout(); 
+        $this->loginService->logout(); 
         
         activity()
             ->performedOn($user)

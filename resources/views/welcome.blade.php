@@ -51,7 +51,7 @@
                 consequat.
                 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
             </p>
-            <a href="#contact"
+            <a href="{{ auth()->check() ? route(Auth::user()->getRoleNames()->first() . '.dashboard') : route('login.index') }}"
                 class="mt-8 inline-block px-8 py-4 bg-blue-700 text-white font-semibold rounded-full shadow-md hover:bg-blue-800 hover:scale-105 transition-transform duration-300">
                 Enroll Now
             </a>
