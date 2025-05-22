@@ -34,7 +34,7 @@ class LoginController extends Controller
             activity()
                 ->performedOn($user)
                 ->causedBy($user)
-                ->log('User '. $user->first_name . $user->last_name . " logged in successfully. ({$ip} - {$browser})");
+                ->log('User '. $user->first_name .' '. $user->last_name . " logged in successfully. ({$ip} - {$browser})");
     
             return redirect()
                 ->route('superadmin.dashboard')
@@ -56,15 +56,15 @@ class LoginController extends Controller
         
         $user = Auth::user();
         
-        $this->loginService->logout(); 
-        
         activity()
             ->performedOn($user)
             ->causedBy($user)
-            ->log('User'. $user->first_name . $user->last_name . " logged out successfully. ({$ip} - {$browser})");
+            ->log('User'. $user->first_name .' '. $user->last_name . " logged out successfully. ({$ip} - {$browser})");
+        
+        $this->loginService->logout(); 
 
         return redirect()
-            ->route('login')
+            ->route('login.index')
             ->with('success', 'You have successfully logged out!');
     }
 }

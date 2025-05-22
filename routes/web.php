@@ -20,6 +20,7 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RelationController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ActivityLog;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -37,6 +38,7 @@ Route::middleware(['auth'])
             ->prefix('sa')
             ->name('superadmin.')
             ->group(function () {
+                Route::get('/activity-logs', [ActivityLog::class, 'index'])->name('log.index');
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');

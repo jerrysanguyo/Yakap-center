@@ -119,6 +119,24 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-file-contract"></i></span>
                 </a>
+                @role('superadmin')
+                <!-- Activity logs -->
+                <div class="flex items-center gap-4 mt-5">
+                    <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Logs</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium">
+                        <i class="fa-solid fa-minus text-white"></i>
+                    </span>
+                </div>
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.log.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-history me-2"></i>
+                        Activity logs</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-history"></i></span>
+                </a>
+                @endrole
                 @role('superadmin|admin')
                 <!-- Cms -->
                 <div class="flex items-center gap-4 mt-5">
@@ -312,7 +330,7 @@
                             <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
                                     class="fa-solid fa-user"></i></span>
                         </a>
-                        <form action="#" method="POST" class="block">
+                        <form action="{{ route('logout') }}" method="POST" class="block">
                             @csrf
                             <button type="submit"
                                 class="block w-full text-left py-2 px-3 hover:bg-[#F4C027] hover:text-black text-black transition focus:outline-none">
@@ -337,7 +355,7 @@
                     @yield('breadcrumb')
                     @endif
                 </nav>
-                <main class="p-5 overflow-y-auto">
+                <main class="p-5 no-scrollbar overflow-auto max-h-[85vh] min-h-[85vh]">
                     @yield('content')
                 </main>
             </div>
