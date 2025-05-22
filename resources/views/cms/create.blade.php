@@ -31,7 +31,7 @@
                     <select id="district_id" name="district_id"
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
                         @foreach($subRecords as $material)
-                        <option value="{{ $material->id }}">{{ $material->remarks }}</option>
+                        <option value="{{ $material->id }}">{{ $material->name }}</option>
                         @endforeach
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">

@@ -35,9 +35,12 @@
                 <td class="py-1 px-4">{{ $record->id }}</td>
                 <td class="py-1 px-4">{{ $record->name }}</td>
                 @if($resource === 'role' || $resource === 'permission')
-                <td class="py-1 px-4">{{ $record->guard_name }}</td>
+                    <td class="py-1 px-4">{{ $record->guard_name }}</td>
+                @elseif($resource === 'barangay')
+                    <td class="py-1 px-4">{{ $record->district->name }}</td>
+                    <td class="py-1 px-4">{{ $record->remarks }}</td>
                 @else
-                <td class="py-1 px-4">{{ $record->remarks }}</td>
+                    <td class="py-1 px-4">{{ $record->remarks }}</td>
                 @endif
                 <td class="py-1 px-4">
                     <div class="inline-flex items-center space-x-2">
