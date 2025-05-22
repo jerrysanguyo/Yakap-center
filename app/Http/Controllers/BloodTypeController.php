@@ -20,15 +20,15 @@ class BloodTypeController extends Controller
 
     public function index(CmsDataTable $dataTable)
     {
-        $page_tite = 'Blood type';
+        $page_title = 'Blood type';
         $resource = $this->resource;
-        $column = ['id', 'name', 'remarks', 'Action'];
+        $columns = ['id', 'name', 'remarks', 'Action'];
         $data = BloodType::getAllBloodTypes();
 
         return $dataTable
             ->render('cms.index', compact(
                 'page_title',
-                'column',
+                'columns',
                 'data',
                 'resource',
                 'dataTable'
@@ -37,23 +37,21 @@ class BloodTypeController extends Controller
     
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, BloodType $bloodType)
+    public function update(CmsRequest $request, BloodType $blood)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $bloodType->id]);
-        $update = $this->cmsService->cmsUpdate($request->validated(), $bloodType->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $blood->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
     }
     
-    public function destroy(BloodType $bloodType)
+    public function destroy(BloodType $blood)
     {
-        $destroy = $this->cmsService->cmsDestroy($bloodType->id);
+        $destroy = $this->cmsService->cmsDestroy($blood->id);
 
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }

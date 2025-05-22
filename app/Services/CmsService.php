@@ -47,7 +47,7 @@ class CmsService
         string $action): RedirectResponse
     {
         $role = Auth::user()->getRoleNames()->first();
-        $userId = Auth::id();
+        $userName = Auth::user()->first_name . ' ' . Auth::user()->last_name;
 
         $modelName = $modelOrBool instanceof Model
             ? ($modelOrBool->name ?? class_basename($modelOrBool))
@@ -55,11 +55,12 @@ class CmsService
 
         $success = $modelOrBool ? true : false;
         $message = "$modelName {$action}" . ($success ? ' successfully' : ' failed');
-
-        activity()
-            ->performedOn($modelOrBool instanceof Model ? $modelOrBool : null)
-            ->causedBy(Auth::user())
-            ->log("{$modelName} {$action} by user {$userId}");
+        
+        $activity = activity()->causedBy(Auth::user());
+        if ($modelOrBool instanceof Model) {
+            $activity->performedOn($modelOrBool);
+        }
+        $activity->log("{$modelName} {$action} by user {$userName}");
 
         return redirect()
             ->route("$role.$resource.index")

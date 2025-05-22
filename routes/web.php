@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BloodTypeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,21 +17,23 @@ Route::middleware(['auth'])
     ->group(function () {
 
         Route::middleware('role:superadmin')
-            ->prefix('superadmin')
+            ->prefix('sa')
             ->name('superadmin.')
             ->group(function () {
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+                Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
             });
 
         Route::middleware('role:admin')
-            ->prefix('admin')
+            ->prefix('ad')
             ->name('admin.')
             ->group(function () {
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+                Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types');
             });
 
         Route::middleware('role:user')
-            ->prefix('user')
+            ->prefix('us')
             ->name('user.')
             ->group(function () {
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

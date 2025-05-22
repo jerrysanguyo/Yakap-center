@@ -18,7 +18,7 @@
     x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-300"
     x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-2"
     class="fixed right-6 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-lg z-50 w-80"
-    :style="'top: ' + (1.5 + (6 * {{ $index }})) + 'rem'" role="alert">
+    style="top: {{ 1.5 + (6 * $index) }}rem;" role="alert">
     <div class="flex items-center justify-between space-x-4">
         <span class="text-sm font-medium">{{ $error }}</span>
         <button @click="open = false" class="text-red-700 hover:text-red-900 text-lg">&times;</button>

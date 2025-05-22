@@ -1,1 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import "tailwindcss";
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  :root {
+    --font-overpass-mono: 'Overpass Mono', monospace;
+    --font-montserrat: 'Montserrat', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-montserrat); 
+  }
+}

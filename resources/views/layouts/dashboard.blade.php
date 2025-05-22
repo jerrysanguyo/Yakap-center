@@ -27,128 +27,250 @@
             <div
                 class="block m-3 flex items-center justify-center h-16 rounded hover:bg-[#F4C027] hover:text-black text-white">
                 <span x-show="!sidebarCollapsed" x-cloak class="flex items-center">
-                    <img src="{{ asset('images/CSWDO.webp') }}" alt="" class="w-10 mr-2">
+                    <img src="{{ asset('images/logoyakap.jpg') }}" alt="" class="w-10 mr-2">
                     Taguig Yakap Center
                 </span>
                 <span x-show="sidebarCollapsed" x-cloak class="font-bold text-xl">
-                    <img src="{{ asset('images/CSWDO.webp') }}" alt="" class="w-10">
+                    <img src="{{ asset('images/logoyakap.webp') }}" alt="" class="w-10">
                 </span>
             </div>
 
-            <nav class="p-4 space-y-2">
-                <a href="#"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+            <nav class="p-4 space-y-2 overflow-auto no-scrollbar">
+                <!-- home -->
+                <div class="flex items-center gap-4">
+                    <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Home</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-minus text-white"></i></span>
+                </div>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-table-columns me-2"></i> Dashboard</span>
-                    <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-table-columns"></i></span>
                 </a>
-
-                <a href="#"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-person me-2"></i>
-                        Clients</span>
-                    <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-person"></i></span>
-                </a>
-
-                <a href="#"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-person me-2"></i>
-                        Enrollment Forms</span>
-                    <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-person"></i></span>
-                </a>
-
-                <div x-data="{ cmsOpen: false }" class="block">
-                    <button @click="cmsOpen = !cmsOpen"
-                        class="w-full text-left py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition focus:outline-none">
-                        <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                                class="fa-solid fa-toolbox me-2"></i>
-                            Cms</span>
-                        <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                class="fa-solid fa-toolbox"></i></span>
-                        <svg x-show="!sidebarCollapsed" x-cloak
-                            class="w-4 h-4 inline ml-2 transform transition-transform duration-200"
-                            :class="{'rotate-180': cmsOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div x-show="cmsOpen" x-cloak class="mt-2 space-y-2">
-                        <a href="#"
-                            class="font-medium block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium pl-4">
-                                <i class="fa-solid fa-venus-mars me-2"></i> Gender
-                            </span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium">
-                                <i class="fa-solid fa-venus-mars"></i>
-                            </span>
-                        </a>
-                        <a href="#"
-                            class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium pl-4"><i
-                                    class="fa-solid fa-cross me-2"></i> Religion</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-cross"></i></span>
-                        </a>
-                        <a href="#"
-                            class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium pl-4"><i
-                                    class="fa-solid fa-earth-americas me-2"></i> Nationality</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-earth-americas"></i></span>
-                        </a>
-                        <a href="#"
-                            class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium pl-4"><i
-                                    class="fa-solid fa-heart me-2"></i> Civil Status</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-heart"></i></span>
-                        </a>
-                        <a href="#"
-                            class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium pl-4"><i
-                                    class="fa-solid fa-people-roof me-2"></i> Relationship</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-people-roof"></i></span>
-                        </a>
-                        <a href="#"
-                            class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium pl-4"><i
-                                    class="fa-solid fa-book me-2"></i> Education</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-book"></i></span>
-                        </a>
-                        <a href="#"
-                            class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium pl-4"><i
-                                    class="fa-solid fa-handshake-angle me-2"></i> Assistance</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-handshake-angle"></i></span>
-                        </a>
-                        <a href="#"
-                            class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium pl-4"><i
-                                    class="fa-solid fa-map-pin me-2"></i> District</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-map-pin"></i></span>
-                        </a>
-                        <a href="#"
-                            class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium pl-4"><i
-                                    class="fa-solid fa-building me-2"></i> Barangay</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-building"></i></span>
-                        </a>
-                        <a href="#"
-                            class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium pl-4"><i
-                                    class="fa-solid fa-money-bill me-2"></i> Mode of Assitance</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-money-bill"></i></span>
-                        </a>
-                    </div>
+                <!-- student -->
+                <div class="flex items-center gap-4 mt-5">
+                    <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Student</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-minus text-white"></i></span>
                 </div>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-hands-holding-child me-2"></i>
+                        Children profile</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-hands-holding-child"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-list-check me-2"></i>
+                        Progress report</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-list-check"></i>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-book me-2"></i>
+                        Educational plan</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-book"></i>
+                </a>
+                <!-- enrollment -->
+                <div class="flex items-center gap-4 mt-5">
+                    <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Enrollment</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-minus text-white"></i></span>
+                </div>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-folder-open me-2"></i>
+                        Enrollment</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-folder-open"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-paperclip me-2"></i>
+                        Requirements</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-paperclip"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-clipboard-user me-2"></i>
+                        Therapy</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-clipboard-user"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-file-contract me-2"></i>
+                        Consent form</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-file-contract"></i></span>
+                </a>
+                @role('superadmin|admin')
+                <!-- Cms -->
+                <div class="flex items-center gap-4 mt-5">
+                    <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Cms</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium">
+                        <i class="fa-solid fa-minus text-white"></i>
+                    </span>
+                </div>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-hand-dots me-2"></i>
+                        Allergy</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-hand-dots"></i></span>
+                </a>
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.blood.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-droplet me-2"></i>
+                        Blood type</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-droplet"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-heart me-2"></i>
+                        Civil status</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-heart"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-wheelchair me-2"></i>
+                        Disability</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-wheelchair"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-building-columns me-2"></i>
+                        District</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-building-columns"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-building-user me-2"></i>
+                        Barangay</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-building-user"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-school me-2"></i>
+                        Education</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-school"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-venus-mars me-2"></i>
+                        Gender</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-venus-mars"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-flag-checkered me-2"></i>
+                        Goal</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-flag-checkered"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-graduation-cap me-2"></i>
+                        Learning Competency</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-graduation-cap"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-book-open me-2"></i>
+                        Learning Domain</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-book-open"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-bullseye me-2"></i>
+                        Objective</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-bullseye"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-user-friends me-2"></i>
+                        Parent type</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-user-friends"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-lock me-2"></i>
+                        Privacy</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-lock"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-laptop-code me-2"></i>
+                        program</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-laptop-code"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-star me-2"></i>
+                        Rating</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-star"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-sitemap me-2"></i>
+                        Relation</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-sitemap"></i></span>
+                </a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
+                            class="fa-solid fa-hands-helping me-2"></i>
+                        Service</span>
+                    <span x-show="sidebarCollapsed" x-cloak
+                        class="flex items-center justify-center w-full h-full font-medium"><i
+                            class="fa-solid fa-hands-helping"></i></span>
+                </a>
+                @endrole
             </nav>
             <div class="mt-auto p-4 border-gray-200" x-data="{ userDropdownOpen: false }">
                 <div class="relative">
@@ -156,13 +278,13 @@
                         class="w-full flex items-center justify-between py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition focus:outline-none">
                         <span x-show="!sidebarCollapsed" x-cloak class="text-xs font-medium uppercase">
                             @auth
-                                {{ Auth::user()->first_name }} {{ Auth::user()->middle_name }} {{ Auth::user()->last_name }}
+                            {{ Auth::user()->first_name }} {{ Auth::user()->middle_name }}
+                            {{ Auth::user()->last_name }}
                             @endauth
                         </span>
-                        <span x-show="sidebarCollapsed" x-cloak
-                            class="font-medium">
+                        <span x-show="sidebarCollapsed" x-cloak class="font-medium">
                             @auth
-                                {{ strtoupper(substr(Auth::user()->first_name, 0, 1)) }}{{  strtoupper(substr(Auth::user()->last_name, 0, 1)) }}
+                            {{ strtoupper(substr(Auth::user()->first_name, 0, 1)) }}{{  strtoupper(substr(Auth::user()->last_name, 0, 1)) }}
                             @endauth
                         </span>
                         <svg x-show="!sidebarCollapsed" x-cloak class="w-4 h-4 ml-2" fill="none" stroke="currentColor"
@@ -172,15 +294,13 @@
                     </button>
                     <div x-show="userDropdownOpen" x-cloak x-transition
                         class="absolute left-0 bottom-full mb-2 w-full bg-white shadow-md rounded z-10">
-                        <a href="#"
-                            class="block py-2 px-3 hover:bg-[#F4C027] hover:text-black text-black transition">
+                        <a href="#" class="block py-2 px-3 hover:bg-[#F4C027] hover:text-black text-black transition">
                             <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                                     class="fa-solid fa-user-tie me-2"></i> Role</span>
                             <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
                                     class="fa-solid fa-user-tie"></i></span>
                         </a>
-                        <a href="#"
-                            class="block py-2 px-3 hover:bg-[#F4C027] hover:text-black text-black transition">
+                        <a href="#" class="block py-2 px-3 hover:bg-[#F4C027] hover:text-black text-black transition">
                             <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                                     class="fa-solid fa-lock me-2"></i> Permission</span>
                             <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
@@ -225,4 +345,5 @@
     </div>
     @stack('scripts')
 </body>
+
 </html>

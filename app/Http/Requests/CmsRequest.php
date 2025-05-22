@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CmsRequest extends FormRequest
 {
@@ -13,15 +14,17 @@ class CmsRequest extends FormRequest
 
     public function rules(): array
     {
-        $table = $this->get('cms_table'); 
-        $id = $this->route('id');
+        $table       = $this->get('cms_table');
+        $resourceKey = $this->get('resource');
+        $model       = $this->route($resourceKey);
+        $id          = $model?->getKey();   
 
         $rules = [
-            'name' => [
+            'name'    => [
                 'required',
                 'string',
                 'max:255',
-                'unique:' . $table . ',name' . ($id ? ',' . $id : ''),
+                Rule::unique($table, 'name')->ignore($id),
             ],
             'remarks' => ['nullable', 'string', 'max:255'],
         ];
