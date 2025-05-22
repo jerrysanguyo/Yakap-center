@@ -11,7 +11,6 @@ class DistrictController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'district';
-    protected string $table = 'districts';
 
     public function __construct()
     {
@@ -37,7 +36,6 @@ class DistrictController extends Controller
     
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -45,7 +43,6 @@ class DistrictController extends Controller
     
     public function update(CmsRequest $request, District $district)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $district->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $district->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource, 'updated');

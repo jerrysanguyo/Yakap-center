@@ -11,7 +11,6 @@ class DisabilityController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'disability';
-    protected string $table = 'disabilities';
 
     public function __construct()
     {
@@ -22,14 +21,14 @@ class DisabilityController extends Controller
     {
         $page_title = 'Disability';
         $resource = $this->resource;
-        $column = ['id', 'name', 'remarks', 'action'];
+        $columns = ['id', 'name', 'remarks', 'action'];
         $data = Disability::getAllDisabilities();
 
         return $dataTable
             ->render('cms.index', compact(
                 'page_title',
                 'resource', 
-                'column',
+                'columns',
                 'data',
                 'dataTable'
             ));
@@ -37,7 +36,6 @@ class DisabilityController extends Controller
     
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -45,7 +43,6 @@ class DisabilityController extends Controller
     
     public function update(CmsRequest $request, Disability $disability)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $disability->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $disability->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
