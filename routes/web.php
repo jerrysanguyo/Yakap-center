@@ -17,6 +17,9 @@ use App\Http\Controllers\ObjectiveController;
 use App\Http\Controllers\ParentTypeController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\RatingController;
+use App\Http\Controllers\RelationController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -50,6 +53,9 @@ Route::middleware(['auth'])
                 Route::resource('parent', ParentTypeController::class)->middleware('merge_cms:parent_types,parent');
                 Route::resource('privacy', PrivacyController::class)->middleware('merge_cms:privacies,privacy');
                 Route::resource('program', ProgramController::class)->middleware('merge_cms:programs,program');
+                Route::resource('rating', RatingController::class)->middleware('merge_cms:ratings,rating');
+                Route::resource('relation', RelationController::class)->middleware('merge_cms:relations,relation');
+                Route::resource('service', ServiceController::class)->middleware('merge_cms:services,service');
             });
 
         Route::middleware('role:admin')
@@ -72,6 +78,9 @@ Route::middleware(['auth'])
                 Route::resource('parent', ParentTypeController::class)->middleware('merge_cms:parent_types,parent');
                 Route::resource('privacy', PrivacyController::class)->middleware('merge_cms:privacies,privacy');
                 Route::resource('program', ProgramController::class)->middleware('merge_cms:programs,program');
+                Route::resource('rating', RatingController::class)->middleware('merge_cms:ratings,rating');
+                Route::resource('relation', RelationController::class)->middleware('merge_cms:relations,relation');
+                Route::resource('service', ServiceController::class)->middleware('merge_cms:services,service');
             });
 
         Route::middleware('role:user')

@@ -10,8 +10,7 @@ use App\Services\CmsService;
 class ServiceController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'Service';
-    protected string $table = 'Services';
+    protected string $resource = 'service';
 
     public function __construct()
     {
@@ -21,8 +20,8 @@ class ServiceController extends Controller
     public function index(CmsDataTable $dataTable)
     {
         $page_title = 'Service';
-        $resource = 'Service';
-        $columns = ['name', 'remarks', 'action'];
+        $resource = 'service';
+        $columns = ['id', 'name', 'remarks', 'action'];
         $data = Service::getAllServices();
 
         return $dataTable
@@ -37,7 +36,6 @@ class ServiceController extends Controller
 
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -45,7 +43,6 @@ class ServiceController extends Controller
     
     public function update(CmsRequest $request, Service $service)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $service->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $service->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');

@@ -246,7 +246,7 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-laptop-code"></i></span>
                 </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.rating.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-star me-2"></i>
                         Rating</span>
@@ -254,7 +254,7 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-star"></i></span>
                 </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.relation.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-sitemap me-2"></i>
                         Relation</span>
@@ -262,7 +262,7 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-sitemap"></i></span>
                 </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.service.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-hands-helping me-2"></i>
                         Service</span>

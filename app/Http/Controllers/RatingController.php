@@ -11,7 +11,6 @@ class RatingController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'rating';
-    protected string $table = 'ratings';
 
     public function __construct()
     {
@@ -22,7 +21,7 @@ class RatingController extends Controller
     {
         $page_title = 'Rating';
         $resource = 'rating';
-        $columns = ['name', 'remarks', 'action'];
+        $columns = ['id', 'name', 'remarks', 'action'];
         $data = Rating::getAllRatings();
 
         return $dataTable
@@ -37,7 +36,6 @@ class RatingController extends Controller
 
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -45,7 +43,6 @@ class RatingController extends Controller
     
     public function update(CmsRequest $request, Rating $rating)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $rating->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $rating->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');

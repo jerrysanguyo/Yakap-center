@@ -12,7 +12,6 @@ class RelationController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'relation';
-    protected string $table = 'relations';
 
     public function __construct()
     {
@@ -23,7 +22,7 @@ class RelationController extends Controller
     {
         $page_title = 'Relation';
         $resource = 'relation';
-        $columns = ['name', 'remarks', 'action'];
+        $columns = ['id', 'name', 'remarks', 'action'];
         $data = Relation::getAllRelations();
 
         return $dataTable
@@ -38,7 +37,6 @@ class RelationController extends Controller
 
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
@@ -46,7 +44,6 @@ class RelationController extends Controller
     
     public function update(CmsRequest $request, Relation $relation)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $relation->id]);
         $update = $this->cmsService->cmsUpdate($request->validated(), $relation->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
