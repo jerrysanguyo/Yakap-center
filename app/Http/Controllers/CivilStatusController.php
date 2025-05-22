@@ -11,7 +11,6 @@ class CivilStatusController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'civil';
-    protected string $table = 'civil_statuses';
 
     public function __construct()
     {
@@ -22,14 +21,14 @@ class CivilStatusController extends Controller
     {
         $page_title = 'Civil status';
         $resource = $this->resource;
-        $column = ['id', 'name', 'remarks', 'action'];
+        $columns = ['id', 'name', 'remarks', 'action'];
         $data = CivilStatus::getAllCivilStatuses();
 
         return $dataTable
             ->render('cms.index', compact(
                 'page_title',
                 'resource', 
-                'column',
+                'columns',
                 'data',
                 'dataTable'
             ));
@@ -37,23 +36,21 @@ class CivilStatusController extends Controller
     
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, CivilStatus $civilStatus)
+    public function update(CmsRequest $request, CivilStatus $civil)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $civilStatus->id]);
-        $update = $this->cmsService->cmsUpdate($request->validated, $civilStatus->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $civil->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
     }
     
-    public function destroy(CivilStatus $civilStatus)
+    public function destroy(CivilStatus $civil)
     {
-        $destroy = $this->cmsService->cmsDestroy($civilStatus->id);
+        $destroy = $this->cmsService->cmsDestroy($civil->id);
 
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }

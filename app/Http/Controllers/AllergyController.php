@@ -11,7 +11,6 @@ class AllergyController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'allergy';
-    protected string $table = 'allergies';
 
     public function __construct()
     {

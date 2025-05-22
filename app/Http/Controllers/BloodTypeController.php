@@ -11,7 +11,6 @@ class BloodTypeController extends Controller
 {
     protected CmsService $cmsService;
     protected string $resource = 'blood';
-    protected string $table = 'blood_types';
 
     public function __construct()
     {

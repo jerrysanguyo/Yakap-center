@@ -144,7 +144,7 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-droplet"></i></span>
                 </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.civil.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-heart me-2"></i>
                         Civil status</span>
                     <span x-show="sidebarCollapsed" x-cloak

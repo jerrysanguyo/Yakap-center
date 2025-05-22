@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BloodTypeController;
 use App\Http\Controllers\AllergyController;
+use App\Http\Controllers\CivilStatusController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,6 +25,7 @@ Route::middleware(['auth'])
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');
+                Route::resource('civil', CivilStatusController::class)->middleware('merge_cms:civil_statuses,civil');
             });
 
         Route::middleware('role:admin')
@@ -33,6 +35,7 @@ Route::middleware(['auth'])
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');
+                Route::resource('civil', CivilStatusController::class)->middleware('merge_cms:civil_statuses,civil');
             });
 
         Route::middleware('role:user')
