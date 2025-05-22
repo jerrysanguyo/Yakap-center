@@ -8,6 +8,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 </head>
@@ -59,56 +61,71 @@
     <section id="services" x-intersect:enter="activeSection = 'services'"
         class="py-20 px-6 md:px-20 bg-gradient-to-b from-white via-blue-50 to-white">
         <h2 class="text-5xl font-extrabold text-center text-blue-900 mb-20 tracking-wide">Our Services</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-4 md:px-8 lg:px-12">
             <div
-                class="relative bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transform hover:-translate-y-4 transition-all duration-300 text-center border border-blue-100">
+                class="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 text-center border border-blue-100">
                 <div
-                    class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center shadow-md">
-                    <img src="/path-to-your-icon1.png" alt="Emergency Icon" class="w-14 h-14">
+                    class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center shadow-md">
+                    <i class="fas fa-stethoscope text-3xl text-blue-700"></i>
                 </div>
-
-                <h3 class="text-2xl font-bold mt-16 mb-4 text-blue-800">Sample</h3>
-                <p class="text-gray-600 text-base leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    pariatur.
+                <h3 class="text-xl font-bold mt-14 mb-3 text-blue-800">Medical & Therapy Services</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    The Yakap Center provides essential medical and therapeutic interventions tailored to the individual
+                    needs of children with disabilities. These include pediatric physical therapy to improve mobility
+                    and motor skills, occupational therapy for daily functional independence, and speech therapy to
+                    enhance communication abilities. The center also facilitates consultations with rehabilitation
+                    doctors and developmental pediatricians, ensuring a holistic medical approach to each child’s
+                    development and well-being.
                 </p>
             </div>
 
             <div
-                class="relative bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transform hover:-translate-y-4 transition-all duration-300 text-center border border-blue-100">
+                class="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 text-center border border-blue-100">
                 <div
-                    class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center shadow-md">
-                    <img src="/path-to-your-icon2.png" alt="Surgery Icon" class="w-14 h-14">
+                    class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center shadow-md">
+                    <i class="fas fa-book-open text-3xl text-blue-700"></i>
                 </div>
-                <h3 class="text-2xl font-bold mt-16 mb-4 text-blue-800">Sample</h3>
-                <p class="text-gray-600 text-base leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    pariatur.
+                <h3 class="text-xl font-bold mt-14 mb-3 text-blue-800">Educational Programs</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Education at the Yakap Center is specialized and inclusive, designed to accommodate varying learning
+                    needs and developmental stages. Programs include the Early Intervention Program for younger children
+                    to stimulate growth during formative years, and the Transition Program that prepares older children
+                    for further education or integration into society. They also offer tailored instruction through the
+                    Deaf/Hard of Hearing Program and the Braille Literacy Program, as well as a Pre-Vocational Program
+                    that equips students with practical skills for independent living and future employment.
                 </p>
             </div>
 
             <div
-                class="relative bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transform hover:-translate-y-4 transition-all duration-300 text-center border border-blue-100">
+                class="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 text-center border border-blue-100">
                 <div
-                    class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center shadow-md">
-                    <img src="/path-to-your-icon3.png" alt="Pediatrics Icon" class="w-14 h-14">
+                    class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center shadow-md">
+                    <i class="fas fa-palette text-3xl text-blue-700"></i>
                 </div>
-                <h3 class="text-2xl font-bold mt-16 mb-4 text-blue-800">Sample</h3>
-                <p class="text-gray-600 text-base leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    pariatur.
+                <h3 class="text-xl font-bold mt-14 mb-3 text-blue-800">Creative & Developmental Facilities</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    To support holistic development, the Yakap Center features diverse creative and sensory facilities.
+                    These include an E-Library and Multimedia Room to enhance cognitive and literacy development, as
+                    well as spaces like an Arts & Crafts Room, Music Room, and Dance Studio to nurture expression and
+                    creativity. The center also provides therapy-specific areas such as hydrotherapy pools and sensory
+                    rooms, along with braille signage and accessibility features to ensure an inclusive environment for
+                    all.
+                </p>
+            </div>
+
+            <div
+                class="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 text-center border border-blue-100">
+                <div
+                    class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center shadow-md">
+                    <i class="fas fa-coffee text-3xl text-blue-700"></i>
+                </div>
+                <h3 class="text-xl font-bold mt-14 mb-3 text-blue-800">Livelihood Program</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    The Yakap Center extends its services beyond therapy and education through the Equal Grounds
+                    Café—its livelihood program. This initiative empowers individuals with disabilities by providing
+                    real-world work experience in a supportive setting. Through hands-on roles in the café, participants
+                    gain valuable skills in communication, service, and responsibility, helping them move toward
+                    self-reliance and long-term employment opportunities.
                 </p>
             </div>
         </div>
@@ -139,7 +156,7 @@
         </h2>
         <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
             <div
-                class="bg-white p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-shadow duration-300 transform hover:-translate-y-2">
+                class="bg-white p-10 rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
                 <h3 class="text-3xl font-bold text-blue-700 mb-6 font-poppins text-center">
                     Our Mission
                 </h3>
@@ -149,7 +166,7 @@
                 </p>
             </div>
             <div
-                class="bg-white p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-shadow duration-300 transform hover:-translate-y-2">
+                class="bg-white p-10 rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
                 <h3 class="text-3xl font-bold text-blue-700 mb-6 font-poppins text-center">
                     Our Vision
                 </h3>
@@ -167,38 +184,3 @@
 </body>
 
 </html>
-<script>
-function scrollHandler() {
-    return {
-        activeSection: '',
-        sectionIds: ['services', 'about', 'contact'],
-        scrollTo(id) {
-            const el = document.getElementById(id);
-            if (el) {
-                const yOffset = (window.innerHeight / 2) - (el.offsetHeight / 2);
-                window.scrollTo({
-                    top: el.offsetTop - yOffset,
-                    behavior: 'smooth'
-                });
-            }
-        },
-        init() {
-            this.onScroll();
-        },
-        onScroll() {
-            const fromTop = window.scrollY + window.innerHeight / 2;
-            for (let id of this.sectionIds) {
-                const el = document.getElementById(id);
-                if (el) {
-                    const top = el.offsetTop;
-                    const bottom = top + el.offsetHeight;
-                    if (fromTop >= top && fromTop <= bottom) {
-                        this.activeSection = id;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-}
-</script>

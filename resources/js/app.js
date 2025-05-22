@@ -1,8 +1,10 @@
 import './bootstrap';
-import Alpine from 'alpinejs'
-import intersect from '@alpinejs/intersect'
+import Alpine from 'alpinejs';
+import intersect from '@alpinejs/intersect';
+import scrollHandler from './components/scrollHandler'; 
+Alpine.plugin(intersect);
 
-Alpine.plugin(intersect)
+window.Alpine = Alpine;
+window.scrollHandler = scrollHandler;
 
-window.Alpine = Alpine
-Alpine.start()
+Alpine.start();
