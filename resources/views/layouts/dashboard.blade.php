@@ -21,13 +21,15 @@
 
     <div class="flex h-screen overflow-hidden">
         <aside
-            class="fixed inset-y-0 left-0 z-30 transform transition-transform duration-200 ease-in-out flex flex-col bg-[#ff5147] lg:bg-[#ff5147]"
-            :class="{'-translate-x-full': !sidebarOpen, 'w-18': sidebarCollapsed, 'w-64': !sidebarCollapsed}">
+            class="fixed inset-y-0 left-0 z-30 transform transition-transform duration-200 ease-in-out flex flex-col bg-[#ff5147]"
+            - :class="{'-translate-x-full': !sidebarOpen, 'w-18': sidebarCollapsed, 'w-64': !sidebarCollapsed}"
+            + :class="{'-translate-x-full': !sidebarOpen, 'w-18': sidebarCollapsed, 'w-64': !sidebarCollapsed}
+            overflow-visible">
 
             <div
                 class="block m-3 flex items-center justify-center h-16 rounded hover:bg-[#F4C027] hover:text-black text-white">
                 <span x-show="!sidebarCollapsed" x-cloak class="flex items-center">
-                    <img src="{{ asset('images/logoyakap.jpg') }}" alt="" class="w-10 mr-2">
+                    <img src="{{ asset('images/logoyakap.webp') }}" alt="" class="w-10 mr-2">
                     Taguig Yakap Center
                 </span>
                 <span x-show="sidebarCollapsed" x-cloak class="font-bold text-xl">
@@ -35,7 +37,7 @@
                 </span>
             </div>
 
-            <nav class="p-4 space-y-2 overflow-auto no-scrollbar">
+            <nav class="p-4 space-y-2 overflow-auto  no-scrollbar">
                 <!-- home -->
                 <div class="flex items-center gap-4">
                     <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Home</span>
@@ -43,7 +45,8 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-minus text-white"></i></span>
                 </div>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.dashboard') }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-table-columns me-2"></i> Dashboard</span>
                     <span x-show="sidebarCollapsed" x-cloak
@@ -128,7 +131,8 @@
                         <i class="fa-solid fa-minus text-white"></i>
                     </span>
                 </div>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.log.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.log.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-history me-2"></i>
                         Activity logs</span>
@@ -146,7 +150,8 @@
                         <i class="fa-solid fa-minus text-white"></i>
                     </span>
                 </div>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.allergy.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.allergy.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-hand-dots me-2"></i>
                         Allergy</span>
@@ -154,7 +159,8 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-hand-dots"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.blood.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.blood.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-droplet me-2"></i>
                         Blood type</span>
@@ -162,14 +168,16 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-droplet"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.civil.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.civil.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-heart me-2"></i>
                         Civil status</span>
                     <span x-show="sidebarCollapsed" x-cloak
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-heart"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.disability.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.disability.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-wheelchair me-2"></i>
                         Disability</span>
@@ -177,7 +185,8 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-wheelchair"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.district.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.district.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-building-columns me-2"></i>
                         District</span>
@@ -185,7 +194,8 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-building-columns"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.barangay.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.barangay.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-building-user me-2"></i>
                         Barangay</span>
@@ -193,14 +203,16 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-building-user"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.education.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.education.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-school me-2"></i>
                         Education</span>
                     <span x-show="sidebarCollapsed" x-cloak
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-school"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.gender.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.gender.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-venus-mars me-2"></i>
                         Gender</span>
@@ -208,7 +220,8 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-venus-mars"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.goal.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.goal.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-flag-checkered me-2"></i>
                         Goal</span>
@@ -216,7 +229,8 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-flag-checkered"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.competency.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.competency.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-graduation-cap me-2"></i>
                         Learning Competency</span>
@@ -224,7 +238,8 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-graduation-cap"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.domain.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.domain.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-book-open me-2"></i>
                         Learning Domain</span>
@@ -232,7 +247,8 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-book-open"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.objective.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.objective.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-bullseye me-2"></i>
                         Objective</span>
@@ -240,7 +256,8 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-bullseye"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.parent.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.parent.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-user-friends me-2"></i>
                         Parent type</span>
@@ -248,15 +265,16 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-user-friends"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.privacy.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-lock me-2"></i>
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.privacy.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-lock me-2"></i>
                         Privacy</span>
                     <span x-show="sidebarCollapsed" x-cloak
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-lock"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.program.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.program.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-laptop-code me-2"></i>
                         Program</span>
@@ -264,15 +282,16 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-laptop-code"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.rating.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-star me-2"></i>
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.rating.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-star me-2"></i>
                         Rating</span>
                     <span x-show="sidebarCollapsed" x-cloak
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-star"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.relation.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.relation.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-sitemap me-2"></i>
                         Relation</span>
@@ -280,7 +299,8 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-sitemap"></i></span>
                 </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.service.index')  }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.service.index')  }}"
+                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-hands-helping me-2"></i>
                         Service</span>

@@ -61,7 +61,7 @@
     <section id="services" x-intersect:enter="activeSection = 'services'"
         class="py-20 px-6 md:px-20 bg-gradient-to-b from-white via-blue-50 to-white">
         <h2 class="text-5xl font-extrabold text-center text-blue-900 mb-20 tracking-wide">Our Services</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 px-4 md:px-8 lg:px-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:grid-cols-2 gap-10 px-4 md:px-8 lg:px-12">
             <div
                 class="relative bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 text-center border border-blue-100">
                 <div
@@ -136,9 +136,9 @@
             class="absolute inset-0 w-full h-full object-cover opacity-70" />
 
         <div class="relative max-w-4xl mx-auto text-center z-10 animate-fade-up">
-            <h2 class="text-4xl md:text-5xl font-extrabold text-blue-800 mb-6  drop-shadow-lg" style="color: #ED1C24;">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-blue-800 mb-6  drop-shadow-lg">
                 About Taguig Yakap Center</h2>
-            <div class="w-24 h-1 bg-red-600 mx-auto mb-8 rounded-full"></div>
+            <!-- <div class="w-24 h-1 bg-red-600 mx-auto mb-8 rounded-full"></div> -->
             <p
                 class="text-gray-800 text-lg md:text-xl leading-relaxed px-4 md:px-0  backdrop-blur-sm p-6 rounded-2xl shadow-md">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -157,7 +157,7 @@
         <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
             <div
                 class="bg-white p-10 rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
-                <h3 class="text-3xl font-bold text-blue-700 mb-6 font-poppins text-center">
+                <h3 class="text-3xl font-bold text-[#F4CD27] mb-6 font-poppins text-center">
                     Our Mission
                 </h3>
                 <p class="text-gray-600 text-lg leading-relaxed font-poppins text-center">
@@ -167,7 +167,7 @@
             </div>
             <div
                 class="bg-white p-10 rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
-                <h3 class="text-3xl font-bold text-blue-700 mb-6 font-poppins text-center">
+                <h3 class="text-3xl font-bold text-[#F4CD27] mb-6 font-poppins text-center">
                     Our Vision
                 </h3>
                 <p class="text-gray-600 text-lg leading-relaxed font-poppins text-center">
