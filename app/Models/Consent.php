@@ -15,6 +15,11 @@ class Consent extends Model
         'relation_id'
     ];
 
+    public static function getConsent($id)
+    {
+        return self::where('user_id', $id)->first();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

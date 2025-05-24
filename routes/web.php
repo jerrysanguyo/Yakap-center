@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\GenderController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\LearningCompetencyController;
@@ -40,6 +41,9 @@ Route::middleware(['auth'])
             ->group(function () {
                 Route::get('/activity-logs', [ActivityLog::class, 'index'])->name('log.index');
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+                Route::get('/enrollment', [EnrollmentController::class, 'index'])->name('enrollment.index');
+                Route::get('consent-form', [EnrollmentController::class, 'consentForm'])->name('consent.index');
+                Route::post('consent-form/store', [EnrollmentController::class, 'consentStore'])->name('consent.store');
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');
                 Route::resource('civil', CivilStatusController::class)->middleware('merge_cms:civil_statuses,civil');

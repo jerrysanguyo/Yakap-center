@@ -14,7 +14,12 @@ class ConsentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'answer' => 'required|string|in:Oo,Hindi',
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'birth_date' => 'required|date|before:today',
+            'relation' => 'required|numeric|exists:parent_types,id',
+            'consent_answer' => 'required|string|in:Oo,Hindi',
         ];
     }
 }

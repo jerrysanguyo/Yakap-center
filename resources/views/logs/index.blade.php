@@ -25,10 +25,7 @@
         <tr class="border border-gray-200 hover:bg-gray-100 transition-colors">
             <td class="py-1 px-4">
                 <div class="mb-1">
-                    <strong>Created:</strong> {{ $record->created_at }}
-                </div>
-                <div>
-                    <strong>Updated:</strong> {{ $record->updated_at }}
+                    {{ $record->created_at }}
                 </div>
             </td>
             <td class="py-1 px-4">

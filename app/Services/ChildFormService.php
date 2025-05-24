@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 use App\Models\ChildInfo;
 use App\Models\ChildDisability;
 use App\Models\ChildEducation;
@@ -45,6 +44,7 @@ class ChildFormService
         if($consent)
         {
             ChildInfo::create([
+                'parents_id'     => Auth::user()->id,
                 'first_name' => $data['first_name'],
                 'middle_name' => $data['middle_name'],
                 'last_name' => $data['last_name'],
@@ -67,7 +67,6 @@ class ChildFormService
             'birth_date'    => $data['birth_date'],
         ],
         [
-            'parent_id'     => Auth::user()->id(),
             'gender_id'     => $data['gender'],
             'house_number'  => $data['house_number'],
             'barangay_id'   => $data['barangay'],

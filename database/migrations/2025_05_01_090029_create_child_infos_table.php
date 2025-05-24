@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('id_number')->nullable();
             $table->foreignId('parents_id')->constrained('users')->cascadeOnDelete();
             $table->string('first_name');
-            $table->string('midle_name')->nullable();   
+            $table->string('middle_name')->nullable();   
             $table->string('last_name');
             $table->foreignId('gender_id')->nullable()->constrined('genders')->nullOnDelete();
             $table->date('birth_date');

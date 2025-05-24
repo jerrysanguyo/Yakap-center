@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'sms' => [
+        'base_url' => env('SMS_API_BASE_URL'),
+        'uuid'     => env('SMS_API_UUID'),
+    ],
 ];

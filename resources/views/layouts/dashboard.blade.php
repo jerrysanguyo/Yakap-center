@@ -90,7 +90,7 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-minus text-white"></i></span>
                 </div>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.enrollment.index') }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-folder-open me-2"></i>
                         Enrollment</span>
@@ -114,7 +114,7 @@
                         class="flex items-center justify-center w-full h-full font-medium"><i
                             class="fa-solid fa-clipboard-user"></i></span>
                 </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
+                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.consent.index') }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
                     <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
                             class="fa-solid fa-file-contract me-2"></i>
                         Consent form</span>
