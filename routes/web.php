@@ -44,6 +44,7 @@ Route::middleware(['auth'])
                 Route::get('/enrollment', [EnrollmentController::class, 'index'])->name('enrollment.index');
                 Route::get('consent-form', [EnrollmentController::class, 'consentForm'])->name('consent.index');
                 Route::post('consent-form/store', [EnrollmentController::class, 'consentStore'])->name('consent.store');
+                Route::post('enrollment/child-info/store', [EnrollmentController::class, 'storeChildInfo'])->name('childInfo.store');
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');
                 Route::resource('civil', CivilStatusController::class)->middleware('merge_cms:civil_statuses,civil');

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->enum('answer',['Oo','Hindi']);
             $table->foreignId('relation_id')->nullable()->constrained('relations')->nullOnDelete();
+            $table->foreignId('child_id')->constrained('child_infos')->cascadeOnDelete();
             $table->timestamps();
         });
     }

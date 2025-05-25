@@ -12,12 +12,18 @@ class Consent extends Model
     protected $fillable = [
         'user_id',
         'answer',
-        'relation_id'
+        'relation_id',
+        'child_id'
     ];
 
     public static function getConsent($id)
     {
         return self::where('user_id', $id)->first();
+    }
+
+    public static function getConsentPerChild($id)
+    {
+        return self::where('child_id', $id)->get();
     }
 
     public function user()

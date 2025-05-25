@@ -35,23 +35,32 @@ class ChildFormService
 
     public function consent(array $data)
     {
-        $consent = Consent::create([
-            'user_id' => Auth::user()->id,
-            'answer' => $data['consent_answer'],
-            'relation' => $data['relation'],
-        ]);
-
-        if($consent)
-        {
-            ChildInfo::create([
+        $child = ChildInfo::firstOrCreate(
+            [
+                'first_name' => $data['first_name'],
+                'middle_name' => $data['middle_name'],
+                'last_name' => $data['last_name'],
+                'birth_date' => $data['birth_date'],
+            ],
+            [
                 'parents_id'     => Auth::user()->id,
                 'first_name' => $data['first_name'],
                 'middle_name' => $data['middle_name'],
                 'last_name' => $data['last_name'],
                 'birth_date' => $data['birth_date'],
+            ]
+        );
+
+        if($child)
+        {
+            Consent::create([
+                'user_id' => Auth::user()->id,
+                'answer' => $data['consent_answer'],
+                'relation' => $data['relation'],
+                'child_id' => $child->id,
             ]);
 
-            return $consent;
+            return $child;
         }
 
         return null;
@@ -59,7 +68,7 @@ class ChildFormService
     
     public function childInfo(array $data): ChildInfo
     {
-        $childInfo = ChildInfo::updateOrCreate(
+        $childInfo = ChildInfo::UpdateOrCreate(
         [
             'first_name'    => $data['first_name'],
             'middle_name'   => $data['middle_name'],

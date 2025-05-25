@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barangay;
 use App\Models\ChildInfo;
+use App\Models\District;
+use App\Models\Gender;
 use App\Models\ParentType;
 use App\Models\Consent;
 use App\Http\requests\ConsentRequest;
+use App\Http\requests\ChildInfoRequest;
 use App\Services\ChildFormService;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,12 +21,22 @@ class EnrollmentController extends Controller
     {
         $this->childFormService = $childFormService;
     }
+
     public function index()
     {
         $consent = Consent::getConsent(Auth::user()->id);
         if ($consent)
         {
-            return view('enrollment.enrollmentForm');
+            $genders = Gender::getAllGenders();
+            $districts = District::getAllDistricts();
+            $barangays = Barangay::getAllBarangays();
+            $childInfo = ChildInfo::getChildInfo(Auth::user()->id);
+            return view('enrollment.enrollmentForm', compact(
+                'genders', 
+                'districts',
+                'barangays',
+                'childInfo',
+            ));
         } else {
             return redirect()
                 ->route(Auth::user()->getRoleNames()->first() . '.consent.index')
@@ -40,7 +54,6 @@ class EnrollmentController extends Controller
 
     public function consentStore(ConsentRequest $request)
     {
-        // dd($request->validated());
         $consent = $this->childFormService->consent($request->validated());
 
         activity()
@@ -53,8 +66,17 @@ class EnrollmentController extends Controller
             ->with('success', 'Cosent form submitted successfully!');
     }
 
-    public function storeChildInfo()
+    public function storeChildInfo(ChildInfoRequest $request)
     {
+        $childInfo = $this->childFormService->childInfo($request->validated());
 
+        activity()
+            ->performedOn($childInfo)
+            ->causedBy(Auth::user())
+            ->log('Child information submitted by ' . Auth::user()->first_name . ' ' . Auth::user()->last_name);
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
+            ->with('success', 'Child information submitted successfully!');
     }
 }
