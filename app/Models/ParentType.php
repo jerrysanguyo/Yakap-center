@@ -18,4 +18,9 @@ class ParentType extends Model
     {
         return self::all();
     }
+
+    public function user()
+    {
+        return $this->hasMany(User::class);
+    }
 }

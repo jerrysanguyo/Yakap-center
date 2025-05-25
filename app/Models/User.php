@@ -14,8 +14,12 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
     
     protected $fillable = [
-        'name',
+        'first_name',
+        'middle_name',
+        'last_name',
         'email',
+        'contact_number',
+        'type_id',
         'password',
     ];
     
@@ -32,5 +36,15 @@ class User extends Authenticatable
     public function consent()
     {
         return $this->hasMany(Consent::class);
+    }
+
+    public function child()
+    {
+        return $this->hasMany(ChildInfo::class, 'parents_id');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(ParentType::class, 'type_id');
     }
 }

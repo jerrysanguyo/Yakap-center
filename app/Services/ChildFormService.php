@@ -70,16 +70,17 @@ class ChildFormService
     {
         $childInfo = ChildInfo::UpdateOrCreate(
         [
+            'parents_id'     => Auth::user()->id,
             'first_name'    => $data['first_name'],
             'middle_name'   => $data['middle_name'],
             'last_name'     => $data['last_name'],
             'birth_date'    => $data['birth_date'],
         ],
         [
-            'gender_id'     => $data['gender'],
+            'gender_id'     => $data['gender_id'],
             'house_number'  => $data['house_number'],
-            'barangay_id'   => $data['barangay'],
-            'district_id'   => $data['district'],
+            'barangay_id'   => $data['barangay_id'],
+            'district_id'   => $data['district_id'],
             'city'          => $data['city'],
             'id_number'     => $this->idNumber(),
         ]);
@@ -107,6 +108,7 @@ class ChildFormService
 
     public function parentInfo(array $data, $child): ParentsInfo
     {  
+        $parent = Auth::user()->child->first()->id;
         $name = $data['parent_name'];
         foreach($name as $parent)
         {

@@ -17,11 +17,11 @@ class ChildInfoRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
-            'gender' => 'required|numeric|exists:genders,id',
+            'gender_id' => 'required|numeric|exists:genders,id',
             'birth_date' => 'required|date|before:today',
             'house_number' => 'required|string|max:255',
-            'district' => 'required|numeric|exists:districts,id',
-            'barangay' => 'required|numeric|exists:barangays,id',
+            'district_id' => 'required|numeric|exists:districts,id',
+            'barangay_id' => 'required|numeric|exists:barangays,id',
             'city' => 'required|string|in:Taguig City',
         ];
     }

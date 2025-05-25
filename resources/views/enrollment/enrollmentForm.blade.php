@@ -32,12 +32,10 @@
     </nav>
     
     <div x-show="currentPage === 1" class="bg-white shadow-lg p-6 rounded-lg">
-        <h2 class="text-lg font-semibold text-gray-800">Child’s Information</h2>
         @include('enrollment.partial.ChildInfo')
     </div>
 
     <div x-show="currentPage === 2" class="bg-white shadow-lg p-6 rounded-lg">
-        <h2 class="text-lg font-semibold text-gray-800">Guardian Information</h2>
         @include('enrollment.partial.GuardianInfo')
     </div>
 
