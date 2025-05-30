@@ -18,7 +18,7 @@
         receivedService: '{{ $oldReceived }}',
         showYesOthers : {{ $showYesOthers ? 'true' : 'false' }},
         showNoOthers  : {{ $showNoOthers  ? 'true' : 'false' }}
-    }" class="bg-white shadow-lg p-6 rounded-lg mb-6">
+    }" class="p-6 mb-6">
         <h3 class="text-lg font-semibold mb-4 text-gray-700">
             Nakatanggap na ba ng serbisyo upang matulungan ang batang may kapansanan?
             <span class="text-red-500">*</span>

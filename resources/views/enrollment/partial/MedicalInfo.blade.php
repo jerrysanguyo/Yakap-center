@@ -1,6 +1,6 @@
 <form action="{{ route(Auth::user()->getRoleNames()->first() . '.medicalInfo.store') }}" method="POST">
     @csrf
-    <div class="bg-white shadow-lg p-6 rounded-lg mb-6">
+    <div class="p-6 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
                 <label class="block font-semibold text-gray-700 mb-2">
