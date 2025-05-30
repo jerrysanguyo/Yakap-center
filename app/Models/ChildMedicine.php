@@ -16,7 +16,9 @@ class ChildMedicine extends Model
 
     public static function getChildMedicines($childId)
     {
-        return self::where('child_id', $childId)->get();
+        return self::where('child_id', $childId)
+            ->pluck('medicine')
+            ->toArray();
     }
 
     public function child()

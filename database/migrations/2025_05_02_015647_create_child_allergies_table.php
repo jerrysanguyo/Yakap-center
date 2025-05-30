@@ -16,10 +16,7 @@ return new class extends Migration
             $table->foreignId('child_id')
                 ->constrained('child_infos')
                 ->cascadeOnDelete();
-            $table->foreignId('allergy_id')
-                ->nullable()
-                ->constrained('allergies')
-                ->nullOnDelete();
+            $table->string('allergy');
             $table->timestamps();
         });
     }

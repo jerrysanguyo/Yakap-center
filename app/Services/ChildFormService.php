@@ -209,46 +209,45 @@ class ChildFormService
 
         return $created;
     }
-
-    public function childMedicalHistory(array $data, $child): ChildMedicalHistory
+    
+     public function medicalInfo(array $data): ChildMedicalHistory
     {
-        $medical = ChildMedicalHistory::create([
-            'child_id' => $this->childId($child),
-            'check_up' => $data['child_check_up'],
-            'blood_type_id' => $data['child_blood_type'],
-        ]);
-        
-        if($medical)
-        {
-            $this->childMedicine($data, $child);
-            $this->childAllergy($data, $child);
+        $childId = Auth::user()->child->first()->id;
+        $medical = ChildMedicalHistory::updateOrCreate(
+            ['child_id' => $childId],
+            [
+                'check_up'      => $data['checkUp'],
+                'blood_type_id' => $data['bloodType'],
+            ]
+        );
+
+        ChildMedicine::where('child_id', $childId)->delete();
+        foreach ($data['medication'] as $med) {
+            $med = trim($med);
+            if ($med === '') {
+                continue;
+            }
+
+            ChildMedicine::updateOrCreate(
+                ['child_id' => $childId, 'medicine' => $med],
+                ['medicine' => $med]
+            );
+        }
+
+        ChildAllergy::where('child_id', $childId)->delete();
+        foreach ($data['allergy'] as $alg) {
+            $alg = trim($alg);
+            if ($alg === '') {
+                continue;
+            }
+
+            ChildAllergy::updateOrCreate(
+                ['child_id' => $childId, 'allergy' => $alg],
+                ['allergy'  => $alg]
+            );
         }
 
         return $medical;
-    }
-
-    public function childMedicine(array $data, $child): ChildMedicine
-    {
-        $medicines = $data['child_medicine'];
-        foreach($medicines as $medicine)
-        {
-            ChildMedicine::create([
-                'child_id' => $this->childId($child),
-                'medicine' => $medicine,
-            ]);
-        }
-    }
-
-    public function childAllergy(array $data, $child): ChildAllergy
-    {
-        $allergies = $data['child_allergy'];
-        foreach($allergies as $allergy)
-        {
-            ChildAllergy::create([
-                'child_id' => $this->childId($child),
-                'allergy' => $allergy,
-            ]);
-        }
     }
 
     public function childEmergency(array $data, $child): ChildEmergency

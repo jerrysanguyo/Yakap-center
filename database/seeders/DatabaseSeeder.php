@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             EducationSeeder::class,
             DisabilitySeeder::class,
             ServiceSeeder::class,
+            BloodSeeder::class,
         ]);
     }
 }

@@ -11,21 +11,18 @@ class ChildAllergy extends Model
     protected $table = 'child_allergies';
     protected $fillable = [
         'child_id',
-        'allergy_id',
+        'allergy',
     ];
 
     public static function getChildAllergies($childId)
     {
-        return self::where('child_id', $childId)->get();
+        return self::where('child_id', $childId)
+            ->pluck('allergy')
+            ->toArray();
     }
 
     public function child()
     {
         return $this->belongsTo(ChildInfo::class, 'child_id');
-    }
-
-    public function allergy()
-    {
-        return $this->belongsTo(Allergy::class, 'allergy_id');
     }
 }

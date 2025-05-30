@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DisabilityRequest;
 use App\Http\Requests\EducationRequest;
 use App\Http\Requests\GuardianRequest;
+use App\Http\Requests\MedicalRequest;
 use App\Http\Requests\ServiceRequest;
 use App\Models\Barangay;
+use App\Models\BloodType;
+use App\Models\ChildAllergy;
 use App\Models\ChildDisability;
 use App\Models\ChildInfo;
+use App\Models\ChildMedicalHistory;
+use App\Models\ChildMedicine;
 use App\Models\ChildService;
 use App\Models\Disability;
 use App\Models\District;
@@ -46,6 +51,7 @@ class EnrollmentController extends Controller
             $educations = Education::getAllEducations();
             $yesServices = Service::getYesServices();
             $noServices = Service::getNoServices();
+            $bloodTypes = BloodType::getAllBloodTypes();
             $childInfo = ChildInfo::getChildInfo(Auth::user()->id);
             $fatherInfo = Consent::getFatherChild(Auth::user()->id);
             $motherInfo = Consent::getMotherChild(Auth::user()->id);
@@ -55,6 +61,9 @@ class EnrollmentController extends Controller
             $existingNoIds   = ChildService::getNoServiceIds(Auth::user()->child->first()->id);
             $existingOtherYes = ChildService::getOtherYes(Auth::user()->child->first()->id);
             $existingOtherNo  = ChildService::getOtherNo(Auth::user()->child->first()->id);
+            $existingMedications = ChildMedicine::getChildMedicines(Auth::user()->child->first()->id);
+            $existingAllergies = ChildAllergy::getChildAllergies(Auth::user()->child->first()->id);
+            $existingChildMedical = ChildMedicalHistory::getChildMedicalHistory(Auth::user()->child->first()->id);
 
             return view('enrollment.enrollmentForm', compact(
                 'genders', 
@@ -65,6 +74,7 @@ class EnrollmentController extends Controller
                 'educations',
                 'yesServices',
                 'noServices',
+                'bloodTypes',
                 'childInfo',
                 'fatherInfo',
                 'motherInfo',
@@ -74,6 +84,9 @@ class EnrollmentController extends Controller
                 'existingNoIds',
                 'existingOtherYes',
                 'existingOtherNo',
+                'existingMedications',
+                'existingAllergies',
+                'existingChildMedical',
             ));
         } else {
             return redirect()
@@ -179,5 +192,20 @@ class EnrollmentController extends Controller
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
             ->with('success', 'Service information submitted successfully!')
             ->with('currentPage', 6);
+    }
+
+    public function storeMedicalInfo(MedicalRequest $request)
+    {
+        $medicalInfo = $this->childFormService->medicalInfo($request->validated());
+
+        activity()
+            ->performedOn($medicalInfo)
+            ->causedBy(Auth::user())
+            ->log('Medical information submitted by ' . Auth::user()->first_name . ' ' . Auth::user()->last_name);
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
+            ->with('success', 'Medical information submitted successfully!')
+            ->with('currentPage', 7);
     }
 }

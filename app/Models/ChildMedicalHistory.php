@@ -15,6 +15,11 @@ class ChildMedicalHistory extends Model
         'blood_type_id',
     ];
 
+    public static function getChildMedicalHistory($childId)
+    {
+        return self::where('child_id', $childId)->first();
+    }
+
     public function child()
     {
         return $this->belongsTo(ChildInfo::class);
