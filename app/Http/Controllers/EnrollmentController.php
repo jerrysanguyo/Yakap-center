@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DisabilityRequest;
 use App\Http\Requests\EducationRequest;
 use App\Http\Requests\GuardianRequest;
+use App\Http\Requests\ServiceRequest;
 use App\Models\Barangay;
 use App\Models\ChildDisability;
 use App\Models\ChildInfo;
+use App\Models\ChildService;
 use App\Models\Disability;
 use App\Models\District;
 use App\Models\Education;
@@ -18,6 +20,7 @@ use App\Models\Consent;
 use App\Http\requests\ConsentRequest;
 use App\Http\requests\ChildInfoRequest;
 use App\Models\Relation;
+use App\Models\Service;
 use App\Services\ChildFormService;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,11 +44,18 @@ class EnrollmentController extends Controller
             $educations = Education::getAllEducations();
             $disabilities = Disability::getAllDisabilities();
             $educations = Education::getAllEducations();
+            $yesServices = Service::getYesServices();
+            $noServices = Service::getNoServices();
             $childInfo = ChildInfo::getChildInfo(Auth::user()->id);
             $fatherInfo = Consent::getFatherChild(Auth::user()->id);
             $motherInfo = Consent::getMotherChild(Auth::user()->id);
             $fetchedFather = ParentsInfo::getFatherInfo(Auth::user()->child->first()->id);
             $fetchedMother = ParentsInfo::getMotherInfo(Auth::user()->child->first()->id);
+            $existingYesIds  = ChildService::getYesServiceIds(Auth::user()->child->first()->id);
+            $existingNoIds   = ChildService::getNoServiceIds(Auth::user()->child->first()->id);
+            $existingOtherYes = ChildService::getOtherYes(Auth::user()->child->first()->id);
+            $existingOtherNo  = ChildService::getOtherNo(Auth::user()->child->first()->id);
+
             return view('enrollment.enrollmentForm', compact(
                 'genders', 
                 'districts',
@@ -53,11 +63,17 @@ class EnrollmentController extends Controller
                 'educations',
                 'disabilities',
                 'educations',
+                'yesServices',
+                'noServices',
                 'childInfo',
                 'fatherInfo',
                 'motherInfo',
                 'fetchedFather',
                 'fetchedMother',
+                'existingYesIds',
+                'existingNoIds',
+                'existingOtherYes',
+                'existingOtherNo',
             ));
         } else {
             return redirect()
@@ -146,5 +162,22 @@ class EnrollmentController extends Controller
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
             ->with('success', 'Education information submitted successfully!')
             ->with('currentPage', 5);
+    }
+
+    public function storeServiceInfo(ServiceRequest $request)
+    {
+        $serviceInfo = $this->childFormService->serviceInfo($request->validated());
+
+        foreach ($serviceInfo as $service) {
+            activity()
+                ->performedOn($service)
+                ->causedBy(Auth::user())
+                ->log("Service “{$service->service->name}” saved for child {$service->child_id}");
+        }
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
+            ->with('success', 'Service information submitted successfully!')
+            ->with('currentPage', 6);
     }
 }

@@ -10,13 +10,13 @@
         </div>
         <div>
             <label class="block mb-1 font-medium text-gray-700">Middle Name</label>
-            <input type="text" name="middle_name" value="{{ old('first_name', $childInfo->middle_name ?? '') }}"
+            <input type="text" name="middle_name" value="{{ old('middle_name', $childInfo->middle_name ?? '') }}"
                 class="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 readonly>
         </div>
         <div>
             <label class="block mb-1 font-medium text-gray-700">Last Name <span class="text-red-500">*</span></label>
-            <input type="text" name="last_name" value="{{ old('first_name', $childInfo->last_name ?? '') }}"
+            <input type="text" name="last_name" value="{{ old('last_name', $childInfo->last_name ?? '') }}"
                 class="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required readonly>
         </div>

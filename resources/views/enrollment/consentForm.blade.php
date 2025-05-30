@@ -20,22 +20,22 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">First name</label>
-                    <input type="text" name="first_name" placeholder="Name of Learner"
+                    <input type="text" name="first_name" placeholder="Name of Learner" value="{{ old('first_name') }}"
                         class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-[#1A4798] focus:border-[#1A4798]" />
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Middle name</label>
-                    <input type="text" name="middle_name" placeholder="Name of Learner"
+                    <input type="text" name="middle_name" placeholder="Name of Learner" value="{{ old('middle_name') }}"
                         class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-[#1A4798] focus:border-[#1A4798]" />
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Last name</label>
-                    <input type="text" name="last_name" placeholder="Name of Learner"
+                    <input type="text" name="last_name" placeholder="Name of Learner" value="{{ old('last_name') }}"
                         class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-[#1A4798] focus:border-[#1A4798]" />
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Petsa ng Kapanganakan</label>
-                    <input type="date" name="birth_date"
+                    <input type="date" name="birth_date" value="{{ old('birth_date') }}"
                         class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-[#1A4798] focus:border-[#1A4798]" />
                 </div>
             </div>
@@ -54,7 +54,7 @@
                         class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-[#1A4798] focus:border-[#1A4798]">
                         <option disabled selected>Select Relationship</option>
                         @foreach ($parentType as $types)
-                        <option value="{{ $types->id }}">{{ $types->name }}</option>
+                        <option value="{{ $types->id }}" {{ old('relation') == $types->id ? 'selected'  : ''}}>{{ $types->name }}</option>
                         @endforeach
                     </select>
                 </div>

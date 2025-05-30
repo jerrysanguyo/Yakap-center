@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\ChildInfo;
@@ -16,6 +17,7 @@ use App\Models\ChildFamily;
 use App\Models\ParentsInfo;
 use App\Models\Consent;
 use App\Models\Files;
+use Illuminate\Support\Collection; 
 
 class ChildFormService
 {
@@ -172,15 +174,40 @@ class ChildFormService
         return $education;
     }
 
-    public function childService(array $data, $child): ChildService
+    public function serviceInfo(array $data): Collection
     {
-        $service = ChildService::create([
-            'child_id' => $this->childId($child),
-            'service_id' => $data['child_service'],
-            'answer' => $data['child_answer']
-        ]);
+        $childId = Auth::user()->child->first()->id;
+        $answer  = $data['receivedService'];
+        $field   = $answer === 'Oo' ? 'yesService' : 'noService';
+        $items   = $data[$field] ?? [];
+        $otherYes = $data['otherYes'] ?? null;
+        $otherNo  = $data['otherNo']  ?? null;
+        $other    = $answer === 'Oo' ? $otherYes : $otherNo;
 
-        return $service;
+        ChildService::where('child_id', $childId)->delete();
+
+        $othersService = Service::whereRaw('LOWER(name)=?', ['others'])
+            ->orWhereRaw('LOWER(name)=?', ['other'])
+            ->pluck('id')
+            ->toArray();
+            
+        $created = collect();
+
+        foreach ($items as $serviceId) {
+            $isOthers = in_array((int)$serviceId, $othersService);
+
+            $record = ChildService::updateOrCreate(
+                ['child_id'   => $childId, 'service_id' => $serviceId],
+                [
+                'answer' => $answer,
+                'others' => $isOthers ? $other : null,
+                ]
+            );
+
+            $created->push($record);
+        }
+
+        return $created;
     }
 
     public function childMedicalHistory(array $data, $child): ChildMedicalHistory

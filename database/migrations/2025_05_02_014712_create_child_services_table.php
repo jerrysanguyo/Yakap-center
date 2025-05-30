@@ -20,8 +20,8 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('services')
                 ->nullOnDelete();
-            $table->string('answer');
-            $table->string('others');
+            $table->enum('answer', ['Oo','Hindi']);
+            $table->string('others')->nullable();
             $table->timestamps();
         });
     }
