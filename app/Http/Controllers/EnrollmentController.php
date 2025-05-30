@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DisabilityRequest;
 use App\Http\Requests\GuardianRequest;
 use App\Models\Barangay;
+use App\Models\ChildDisability;
 use App\Models\ChildInfo;
+use App\Models\Disability;
 use App\Models\District;
 use App\Models\Education;
 use App\Models\Gender;
@@ -35,6 +38,7 @@ class EnrollmentController extends Controller
             $districts = District::getAllDistricts();
             $barangays = Barangay::getAllBarangays();
             $educations = Education::getAllEducations();
+            $disabilities = Disability::getAllDisabilities();
             $childInfo = ChildInfo::getChildInfo(Auth::user()->id);
             $fatherInfo = Consent::getFatherChild(Auth::user()->id);
             $motherInfo = Consent::getMotherChild(Auth::user()->id);
@@ -45,6 +49,7 @@ class EnrollmentController extends Controller
                 'districts',
                 'barangays',
                 'educations',
+                'disabilities',
                 'childInfo',
                 'fatherInfo',
                 'motherInfo',
@@ -77,7 +82,7 @@ class EnrollmentController extends Controller
 
         return redirect()
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Cosent form submitted successfully!');
+            ->with('success', 'Consent form submitted successfully!');
     }
 
     public function storeChildInfo(ChildInfoRequest $request)
@@ -91,7 +96,8 @@ class EnrollmentController extends Controller
 
         return redirect()
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Child information submitted successfully!');
+            ->with('success', 'Child information submitted successfully!')
+            ->with('currentPage', 2);
     }
 
     public function storeGuardianInfo(GuardianRequest $request)
@@ -105,6 +111,22 @@ class EnrollmentController extends Controller
 
         return redirect()
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Guardian information submitted successfully!');
+            ->with('success', 'Guardian information submitted successfully!')
+            ->with('currentPage', 3);
+    }
+
+    public function storeDisabilityInfo(DisabilityRequest $request)
+    {
+        $disabilityInfo = $this->childFormService->disabilityInfo($request->validated());
+
+        activity()
+            ->performedOn($disabilityInfo)
+            ->causedBy(Auth::user())
+            ->log('Disability information submitted by ' . Auth::user()->first_name . ' ' . Auth::user()->last_name);
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
+            ->with('success', 'Disability information submitted successfully!')
+            ->with('currentPage', 4);
     }
 }

@@ -146,12 +146,12 @@ class ChildFormService
         return $father;
     }
 
-    public function childDisability(array $data, $child): ChildDisability
+    public function disabilityInfo(array $data): ChildDisability
     {
         $disability = ChildDisability::create([
-            'child_id' => $this->childId($child),
-            'disability_id' => $data['child_disability'],
-            'pwd_id' => $data['child_pwd_id'],
+            'child_id' => Auth::user()->child->first()->id,
+            'disability_id' => $data['disability'],
+            'pwd_id' => $data['pwd_no'],
         ]);
 
         return $disability;

@@ -8,7 +8,7 @@
     <h1 class="text-3xl font-bold text-gray-800">Enrollment Forms</h1>
 </div>
 @include('components.alert')
-<div x-data="{ currentPage: 1, pages: [
+<div x-data="{ currentPage: {{ session('currentPage', 1) }}, pages: [
         'Child\'s Information',
         'Guardian Information',
         'Disability Details',
@@ -32,6 +32,7 @@
     </nav>
     
     <div x-show="currentPage === 1" class="bg-white shadow-lg p-6 rounded-lg">
+        <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">Disability Details</h2>
         @include('enrollment.partial.ChildInfo')
     </div>
 
@@ -40,32 +41,32 @@
     </div>
 
     <div x-show="currentPage === 3" class="bg-white shadow-lg p-6 rounded-lg">
-        <h2 class="text-lg font-semibold text-gray-800">Disability Details</h2>
+        <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">Disability Details</h2>
         @include('enrollment.partial.DisabilityInfo')
     </div>
 
     <div x-show="currentPage === 4" class="bg-white shadow-lg p-6 rounded-lg">
-        <h2 class="text-lg font-semibold text-gray-800">Educational Details</h2>
+        <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">Educational Details</h2>
         @include('enrollment.partial.EducationalInfo')
     </div>
 
     <div x-show="currentPage === 5" class="bg-white shadow-lg p-6 rounded-lg">
-        <h2 class="text-lg font-semibold text-gray-800">Service Details</h2>
+        <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">Service Details</h2>
         @include('enrollment.partial.ServiceInfo')
     </div>
 
     <div x-show="currentPage === 6" class="bg-white shadow-lg p-6 rounded-lg">
-        <h2 class="text-lg font-semibold text-gray-800">Medical Details</h2>
+        <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">Medical Details</h2>
         @include('enrollment.partial.MedicalInfo')
     </div>
 
     <div x-show="currentPage === 7" class="bg-white shadow-lg p-6 rounded-lg">
-        <h2 class="text-lg font-semibold text-gray-800">Family Composition</h2>
+        <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">Family Composition</h2>
         @include('enrollment.partial.FamilyInfo')
     </div>
 
     <div x-show="currentPage === 8" class="bg-white shadow-lg p-6 rounded-lg">
-        <h2 class="text-lg font-semibold text-gray-800">Emergency Contact</h2>
+        <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">Emergency Contact</h2>
         @include('enrollment.partial.EmergencyInfo')
     </div>
 </div>

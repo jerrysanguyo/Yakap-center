@@ -52,4 +52,9 @@ class ChildInfo extends Model
     {
         return $this->morphMany(Files::class, 'imageable');
     }
+
+    public function disability()
+    {
+        return $this->hasOne(ChildDisability::class, 'child_id');
+    }
 }

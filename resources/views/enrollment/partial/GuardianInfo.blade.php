@@ -1,7 +1,7 @@
 <form action="{{ route(Auth::user()->getRoleNames()->first() . '.guardianInfo.store') }}" method="POST">
     @csrf
     <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
-        <h3 class="text-2xl font-semibold mb-6 border-b pb-2">Mother’s Information</h3>
+        <h3 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">Mother’s Information</h3>
         <div x-data="{
             mother_birthdate: '{{ old('mother_birthdate', $fetchedMother->birth_date ?? '') }}',
             get age() {
@@ -89,7 +89,7 @@
     </div>
     {{-- Father’s Information --}}
     <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
-        <h3 class="text-2xl font-semibold mb-6 border-b pb-2">Father’s Information</h3>
+        <h3 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">Father’s Information</h3>
         <div x-data="{
         father_birthdate: '{{ old('father_birthdate', $fetchedFather->birth_date ?? '') }}',
         get age() {

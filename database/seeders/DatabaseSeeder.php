@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             BarangaySeeder::class,
             GenderSeeder::class,
             EducationSeeder::class,
+            DisabilitySeeder::class,
         ]);
     }
 }
