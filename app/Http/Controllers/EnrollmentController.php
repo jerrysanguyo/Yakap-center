@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DisabilityRequest;
+use App\Http\Requests\EducationRequest;
 use App\Http\Requests\GuardianRequest;
 use App\Models\Barangay;
 use App\Models\ChildDisability;
@@ -39,6 +40,7 @@ class EnrollmentController extends Controller
             $barangays = Barangay::getAllBarangays();
             $educations = Education::getAllEducations();
             $disabilities = Disability::getAllDisabilities();
+            $educations = Education::getAllEducations();
             $childInfo = ChildInfo::getChildInfo(Auth::user()->id);
             $fatherInfo = Consent::getFatherChild(Auth::user()->id);
             $motherInfo = Consent::getMotherChild(Auth::user()->id);
@@ -50,6 +52,7 @@ class EnrollmentController extends Controller
                 'barangays',
                 'educations',
                 'disabilities',
+                'educations',
                 'childInfo',
                 'fatherInfo',
                 'motherInfo',
@@ -128,5 +131,20 @@ class EnrollmentController extends Controller
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
             ->with('success', 'Disability information submitted successfully!')
             ->with('currentPage', 4);
+    }
+
+    public function storeEducationInfo(EducationRequest $request)
+    {
+        $educationInfo = $this->childFormService->educationInfo($request->validated());
+
+        activity()
+            ->performedOn($educationInfo)
+            ->causedBy(Auth::user())
+            ->log('Education information submitted by ' . Auth::user()->first_name . ' ' . Auth::user()->last_name);
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
+            ->with('success', 'Education information submitted successfully!')
+            ->with('currentPage', 5);
     }
 }

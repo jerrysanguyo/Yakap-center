@@ -28,9 +28,11 @@ class ChildFormService
         return $year . $paddedId;
     }
 
-    public function childId($child): ChildInfo
+    public function childId($child): Int
     {
-        return ChildInfo::findOrFail($child);
+        ChildInfo::findOrFail($child);
+
+        return $child;
     }
 
     public function consent(array $data)
@@ -108,10 +110,9 @@ class ChildFormService
 
     public function guardianInfo(array $data): ParentsInfo
     {  
-        $child = Auth::user()->child->first()->id;
         $mother = ParentsInfo::updateOrCreate(
             [
-                'child_id' => $child,
+                'child_id' => $this->childId(Auth::user()->child->first()->id),
                 'type_id'  => 2,
             ],
             [
@@ -128,7 +129,7 @@ class ChildFormService
         
         $father = ParentsInfo::updateOrCreate(
             [
-                'child_id' => $child,
+                'child_id' => $this->childId(Auth::user()->child->first()->id),
                 'type_id'  => 1,
             ],
             [
@@ -148,8 +149,9 @@ class ChildFormService
 
     public function disabilityInfo(array $data): ChildDisability
     {
-        $disability = ChildDisability::create([
-            'child_id' => Auth::user()->child->first()->id,
+        $disability = ChildDisability::updateOrCreate(
+        ['child_id' => $this->childId(Auth::user()->child->first()->id)],
+        [
             'disability_id' => $data['disability'],
             'pwd_id' => $data['pwd_no'],
         ]);
@@ -157,12 +159,14 @@ class ChildFormService
         return $disability;
     }
 
-    public function childEducational(array $data, $child): ChildEducation
+    public function educationInfo(array $data): ChildEducation
     {
-        $education = ChildEducation::create([
-            'child_id' => $this->childId($child),
-            'education_id' => $data['child_education'],
-            'school' => $data['child_school']
+        $education = ChildEducation::updateOrCreate(
+        ['child_id' => $this->childId(Auth::user()->child->first()->id)],
+        [
+            
+            'education_id' => $data['education'],
+            'school' => $data['school']
         ]);
 
         return $education;

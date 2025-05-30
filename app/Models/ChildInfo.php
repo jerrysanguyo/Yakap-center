@@ -57,4 +57,9 @@ class ChildInfo extends Model
     {
         return $this->hasOne(ChildDisability::class, 'child_id');
     }
+
+    public function education()
+    {
+        return $this->hasOne(ChildEducation::class, 'child_id');
+    }
 }
