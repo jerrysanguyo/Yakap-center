@@ -6,15 +6,17 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "autoprefixer": "^10.4.21",
         "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.0.0",
+        "postcss": "^8.5.3",
         "tailwind-scrollbar": "^4.0.2",
+        "tailwindcss": "^4.1.8",
         "vite": "^5.0.0"
     },
     "dependencies": {
         "@alpinejs/intersect": "^3.14.9",
         "@tailwindcss/vite": "^4.1.7",
-        "alpinejs": "^3.14.9",
-        "tailwindcss": "^4.1.7"
+        "alpinejs": "^3.14.9"
     }
 }

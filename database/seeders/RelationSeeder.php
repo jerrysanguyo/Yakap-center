@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\ParentType;
+use App\Models\Relation;
 
-class ParentTypeSeeder extends Seeder
+class RelationSeeder extends Seeder
 {
     public function run(): void
     {
@@ -23,7 +23,7 @@ class ParentTypeSeeder extends Seeder
 
         foreach($types as $type)
         {
-            ParentType::firstOrcreate(
+            Relation::firstOrcreate(
             [   
                 'name' => $type 
             ],

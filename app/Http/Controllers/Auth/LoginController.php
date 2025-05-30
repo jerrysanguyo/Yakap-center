@@ -44,7 +44,7 @@ class LoginController extends Controller
                 ->log("Failed login attempt: ({$ip} - {$browser})");
     
             return redirect()
-                ->route('login')
+                ->route('login.index')
                 ->with('failed', 'Invalid login credentials.');
         }
     }

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GuardianRequest;
 use App\Models\Barangay;
 use App\Models\ChildInfo;
 use App\Models\District;
+use App\Models\Education;
 use App\Models\Gender;
+use App\Models\ParentsInfo;
 use App\Models\ParentType;
 use App\Models\Consent;
 use App\Http\requests\ConsentRequest;
 use App\Http\requests\ChildInfoRequest;
+use App\Models\Relation;
 use App\Services\ChildFormService;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,12 +34,22 @@ class EnrollmentController extends Controller
             $genders = Gender::getAllGenders();
             $districts = District::getAllDistricts();
             $barangays = Barangay::getAllBarangays();
+            $educations = Education::getAllEducations();
             $childInfo = ChildInfo::getChildInfo(Auth::user()->id);
+            $fatherInfo = Consent::getFatherChild(Auth::user()->id);
+            $motherInfo = Consent::getMotherChild(Auth::user()->id);
+            $fetchedFather = ParentsInfo::getFatherInfo(Auth::user()->child->first()->id);
+            $fetchedMother = ParentsInfo::getMotherInfo(Auth::user()->child->first()->id);
             return view('enrollment.enrollmentForm', compact(
                 'genders', 
                 'districts',
                 'barangays',
+                'educations',
                 'childInfo',
+                'fatherInfo',
+                'motherInfo',
+                'fetchedFather',
+                'fetchedMother',
             ));
         } else {
             return redirect()
@@ -46,7 +60,7 @@ class EnrollmentController extends Controller
 
     public function consentForm()
     {
-        $parentType = ParentType::getAllParentTypes();
+        $parentType = Relation::getAllRelations();
         return view('enrollment.consentForm', compact(
             'parentType'
         ));
@@ -78,5 +92,19 @@ class EnrollmentController extends Controller
         return redirect()
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
             ->with('success', 'Child information submitted successfully!');
+    }
+
+    public function storeGuardianInfo(GuardianRequest $request)
+    {
+        $guardianInfo = $this->childFormService->guardianInfo($request->validated());
+
+        activity()
+            ->performedOn($guardianInfo)
+            ->causedBy(Auth::user())
+            ->log('Guardian information submitted by ' . Auth::user()->first() . ' ' . Auth::user()->last_name);
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
+            ->with('success', 'Guardian information submitted successfully!');
     }
 }

@@ -26,6 +26,20 @@ class Consent extends Model
         return self::where('child_id', $id)->get();
     }
 
+    public static function getFatherChild($id)
+    {
+        return self::where('user_id', $id)
+            ->where('relation_id', 1)
+            ->first();
+    }
+
+    public static function getMotherChild($id)
+    {
+        return self::where('user_id', $id)
+            ->where('relation_id', 2)
+            ->first();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

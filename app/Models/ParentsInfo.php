@@ -13,6 +13,7 @@ class ParentsInfo extends Model
         'child_id',
         'name',
         'contact_number',
+        'email',
         'fb_account',
         'birth_date',
         'birth_place',
@@ -29,14 +30,14 @@ class ParentsInfo extends Model
 
     public static function getFatherInfo($child)
     {
-        return self::where('child_id', $child->id)
+        return self::where('child_id', $child)
             ->where('type_id', 1) // collumn name father
             ->first();
     }
 
     public static function getMotherInfo($child)
     {
-        return self::where('child_id', $child->id)
+        return self::where('child_id', $child)
             ->where('type_id', 2) // collumn name mother
             ->first();
     }

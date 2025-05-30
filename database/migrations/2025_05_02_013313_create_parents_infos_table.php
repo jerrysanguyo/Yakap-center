@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('contact_number')
                 ->nullable();
+            $table->string('email')
+                ->nullable();
             $table->string('fb_account')
                 ->nullable();
             $table->date('birth_date');
@@ -34,7 +36,7 @@ return new class extends Migration
                 ->nullable();
             $table->foreignId('type_id')
                 ->nullable()
-                ->constrained('parent_types')
+                ->constrained('relations')
                 ->nullOnDelete();
             $table->timestamps();
         });

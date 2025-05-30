@@ -18,7 +18,7 @@ class ConsentRequest extends FormRequest
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
             'birth_date' => 'required|date|before:today',
-            'relation' => 'required|numeric|exists:parent_types,id',
+            'relation' => 'required|numeric|exists:relations,id',
             'consent_answer' => 'required|string|in:Oo,Hindi',
         ];
     }

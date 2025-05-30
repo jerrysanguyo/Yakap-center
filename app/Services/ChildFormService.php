@@ -56,7 +56,7 @@ class ChildFormService
             Consent::create([
                 'user_id' => Auth::user()->id,
                 'answer' => $data['consent_answer'],
-                'relation' => $data['relation'],
+                'relation_id' => $data['relation'],
                 'child_id' => $child->id,
             ]);
 
@@ -106,26 +106,44 @@ class ChildFormService
         return $childInfo;
     }
 
-    public function parentInfo(array $data, $child): ParentsInfo
+    public function guardianInfo(array $data): ParentsInfo
     {  
-        $parent = Auth::user()->child->first()->id;
-        $name = $data['parent_name'];
-        foreach($name as $parent)
-        {
-            $parents = ParentsInfo::create([
-                'child_id' => $this->childId($child),
-                'name' => $parent,
-                'contact_number' => $data['parent_contact_number'],
-                'fb_account' => $data['parent_fb_account'],
-                'birth_date' => $data['parent_birth_date'],
-                'education_id' => $data['parent_education'],
-                'work' => $data['parent_work'],
-                'work_place' => $data['parent_work_place'],
-                'type_id' => $data['parent_type'],
-            ]);
-        }
+        $child = Auth::user()->child->first()->id;
+        $mother = ParentsInfo::updateOrCreate(
+            [
+                'child_id' => $child,
+                'type_id'  => 2,
+            ],
+            [
+                'name'            => $data['mother_name'],
+                'email'            => $data['mother_email'],
+                'birth_date'      => $data['mother_birthdate'],
+                'birth_place'     => $data['mother_birthplace'],
+                'contact_number'  => $data['mother_contact_number'],
+                'fb_account'      => $data['mother_facebook'],
+                'education_id'    => $data['mother_educational_attainment'],
+                'work_place'      => $data['mother_workplace'],
+            ]
+        );
+        
+        $father = ParentsInfo::updateOrCreate(
+            [
+                'child_id' => $child,
+                'type_id'  => 1,
+            ],
+            [
+                'name'            => $data['father_name'],
+                'email'            => $data['father_email'],
+                'birth_date'      => $data['father_birthdate'],
+                'birth_place'     => $data['father_birthplace'],
+                'contact_number'  => $data['father_contact_number'],
+                'fb_account'      => $data['father_facebook'],
+                'education_id'    => $data['father_educational_attainment'],
+                'work_place'      => $data['father_workplace'],
+            ]
+        );
 
-        return $parents;
+        return $father;
     }
 
     public function childDisability(array $data, $child): ChildDisability
