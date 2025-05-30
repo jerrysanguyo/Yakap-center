@@ -1,14 +1,14 @@
 @php
-$oldReceived = old('receivedService');
-if (!$oldReceived) {
-if (!empty($existingYesIds)) {
-$oldReceived = 'Oo';
-} elseif (!empty($existingNoIds)) {
-$oldReceived = 'Hindi';
-}
-}
-$showYesOthers = old('otherYes') !== null || !empty($existingOtherYes);
-$showNoOthers = old('otherNo') !== null || !empty($existingOtherNo);
+    $oldReceived = old('receivedService');
+    if (!$oldReceived) {
+        if (!empty($existingYesIds)) {
+            $oldReceived = 'Oo';
+        } elseif (!empty($existingNoIds)) {
+            $oldReceived = 'Hindi';
+        }
+    }
+    $showYesOthers = old('otherYes') !== null || !empty($existingOtherYes);
+    $showNoOthers = old('otherNo') !== null || !empty($existingOtherNo);
 @endphp
 
 <form action="{{ route(auth()->user()->getRoleNames()->first() . '.serviceInfo.store') }}" method="POST">
