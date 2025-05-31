@@ -62,4 +62,9 @@ class ChildInfo extends Model
     {
         return $this->hasOne(ChildEducation::class, 'child_id');
     }
+
+    public function family()
+    {
+        return $this->hasMany(ChildFamily::class, 'child_id');
+    }
 }

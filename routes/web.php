@@ -50,6 +50,7 @@ Route::middleware(['auth'])
                 Route::post('enrollment/education-info/store', [EnrollmentController::class, 'storeEducationInfo'])->name('educationInfo.store');
                 Route::post('enrollment/service-info/store', [EnrollmentController::class, 'storeServiceInfo'])->name('serviceInfo.store');
                 Route::post('enrollment/medical-info/store', [EnrollmentController::class, 'storeMedicalInfo'])->name('medicalInfo.store');
+                Route::post('enrollment/family-composition/store', [EnrollmentController::class, 'storeFamilyComposition'])->name('familyInfo.store');
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');
                 Route::resource('civil', CivilStatusController::class)->middleware('merge_cms:civil_statuses,civil');

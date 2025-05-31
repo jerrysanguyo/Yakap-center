@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             DisabilitySeeder::class,
             ServiceSeeder::class,
             BloodSeeder::class,
+            CivilStatusSeeder::class,
         ]);
     }
 }

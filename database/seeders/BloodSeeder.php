@@ -22,7 +22,10 @@ class BloodSeeder extends Seeder
         ];
 
         foreach ($bloodTypes as $type) {
-            BloodType::firstOrCreate($type);
+            BloodType::firstOrCreate(
+                ['name' => $type['name']],
+                ['remarks' => $type['remarks']]
+            );
         }
     }
 }

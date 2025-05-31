@@ -18,4 +18,9 @@ class Gender extends Model
     {
         return self::all();
     }
+
+    public function family()
+    {
+        return $this->hasMany(ChildFamily::class, 'gender_id');
+    }
 }

@@ -47,9 +47,9 @@
             </div>
         </div>
         <div x-data="{
-      medications: {{ json_encode(old('medication', $existingMedications ?: [''])) }},
-      addMedication() { this.medications.push('') }
-    }" class="mb-6">
+            medications: {{ json_encode(old('medication', $existingMedications ?: [''])) }},
+            addMedication() { this.medications.push('') }
+            }" class="mb-6">
             <label class="flex items-center font-semibold text-gray-700 mb-2">
                 Ilista ang mga gamot na kasalukuyang iniinom ng inyong anak:
                 <button type="button" @click="addMedication()"
@@ -70,9 +70,9 @@
         </div>
 
         <div x-data="{
-      allergies: {{ json_encode(old('allergy', $existingAllergies ?: [''])) }},
-      addAllergy() { this.allergies.push('') }
-    }" class="mb-6">
+            allergies: {{ json_encode(old('allergy', $existingAllergies ?: [''])) }},
+            addAllergy() { this.allergies.push('') }
+            }" class="mb-6">
             <label class="flex items-center font-semibold text-gray-700 mb-2">
                 Ilista ang mga allergies ng bata:
                 <button type="button" @click="addAllergy()"
@@ -100,4 +100,5 @@
                 Submit
             </button>
         </div>
+    </div>
 </form>

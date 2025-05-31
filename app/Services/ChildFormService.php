@@ -262,24 +262,41 @@ class ChildFormService
         return $emergency;
     }
 
-    public function familyComposition(array $data, $child): ChildFamily
+    public function familyComposition(array $data): Collection
     {
-        $fams = $data['family_full_name'];
-        foreach($fams as $fam)
-        {
-            $family = ChildFamily::create([
-                'child_id' => $this->childId($child),
-                'full_name' => $fam,
-                'birth_date' => $data['family_birth_date'],
-                'gender_id' => $data['family_gender_id'],
-                'relationship_id' => $data['family_relationship_id'],
-                'civil_id' => $data['family_civil_id'],
-                'education_id' => $data['family_education_id'],
-                'work' => $data['family_work'],
+        $childId = Auth::user()->child->first()->id;
+        ChildFamily::where('child_id', $childId)->delete();
+
+        $created = collect();
+
+        foreach ($data['family'] as $row) {
+            if (empty($row['name']) &&
+                empty($row['birthday']) &&
+                empty($row['age']) &&
+                empty($row['relation']) &&
+                empty($row['education']) &&
+                empty($row['work'])
+            ) {
+                continue;
+            }
+            $record = ChildFamily::updateOrCreate(
+            [
+                'child_id'     => $childId,
+                'full_name'         => $row['name']         ?? null,
+            ],
+            [
+                'birth_date'     => $row['birthday']     ?? null,
+                'gender_id'          => $row['sex']          ?? null,
+                'relationship_id'     => $row['relation']     ?? null,
+                'civil_id' => $row['civil_status'] ?? null,
+                'education_id'    => $row['education']    ?? null,
+                'work'         => $row['work']         ?? null,
             ]);
 
-            return $family;
+            $created->push($record);
         }
+
+        return $created;
     }
 
     public function childRequirements(array $data, $child): Files

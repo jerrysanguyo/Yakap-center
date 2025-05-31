@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DisabilityRequest;
 use App\Http\Requests\EducationRequest;
+use App\Http\Requests\FamilyCompositionRequest;
 use App\Http\Requests\GuardianRequest;
 use App\Http\Requests\MedicalRequest;
 use App\Http\Requests\ServiceRequest;
@@ -11,10 +12,12 @@ use App\Models\Barangay;
 use App\Models\BloodType;
 use App\Models\ChildAllergy;
 use App\Models\ChildDisability;
+use App\Models\ChildFamily;
 use App\Models\ChildInfo;
 use App\Models\ChildMedicalHistory;
 use App\Models\ChildMedicine;
 use App\Models\ChildService;
+use App\Models\CivilStatus;
 use App\Models\Disability;
 use App\Models\District;
 use App\Models\Education;
@@ -43,6 +46,7 @@ class EnrollmentController extends Controller
         $consent = Consent::getConsent(Auth::user()->id);
         if ($consent)
         {
+            $relations = Relation::getAllRelations();
             $genders = Gender::getAllGenders();
             $districts = District::getAllDistricts();
             $barangays = Barangay::getAllBarangays();
@@ -52,6 +56,7 @@ class EnrollmentController extends Controller
             $yesServices = Service::getYesServices();
             $noServices = Service::getNoServices();
             $bloodTypes = BloodType::getAllBloodTypes();
+            $civilStatuses = CivilStatus::getAllCivilStatuses();
             $childInfo = ChildInfo::getChildInfo(Auth::user()->id);
             $fatherInfo = Consent::getFatherChild(Auth::user()->id);
             $motherInfo = Consent::getMotherChild(Auth::user()->id);
@@ -64,8 +69,10 @@ class EnrollmentController extends Controller
             $existingMedications = ChildMedicine::getChildMedicines(Auth::user()->child->first()->id);
             $existingAllergies = ChildAllergy::getChildAllergies(Auth::user()->child->first()->id);
             $existingChildMedical = ChildMedicalHistory::getChildMedicalHistory(Auth::user()->child->first()->id);
+            $existingFamily = ChildFamily::getChildFamily(Auth::user()->child->first()->id);
 
             return view('enrollment.enrollmentForm', compact(
+                'relations', 
                 'genders', 
                 'districts',
                 'barangays',
@@ -75,6 +82,7 @@ class EnrollmentController extends Controller
                 'yesServices',
                 'noServices',
                 'bloodTypes',
+                'civilStatuses',
                 'childInfo',
                 'fatherInfo',
                 'motherInfo',
@@ -87,6 +95,7 @@ class EnrollmentController extends Controller
                 'existingMedications',
                 'existingAllergies',
                 'existingChildMedical',
+                'existingFamily',
             ));
         } else {
             return redirect()
@@ -207,5 +216,22 @@ class EnrollmentController extends Controller
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
             ->with('success', 'Medical information submitted successfully!')
             ->with('currentPage', 7);
+    }
+
+    public function storeFamilyComposition(FamilyCompositionRequest $request)
+    {
+        $family = $this->childFormService->familyComposition($request->validated());
+
+        foreach ($family as $member) {
+            activity()
+                ->performedOn($member)
+                ->causedBy(Auth::user())
+                ->log("Family member “{$member->name}” saved for child {$member->child_id}");
+        }
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
+            ->with('success', 'Family composition submitted successfully!')
+            ->with('currentPage', 8);
     }
 }
