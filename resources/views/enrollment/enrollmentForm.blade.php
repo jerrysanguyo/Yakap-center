@@ -30,7 +30,7 @@
             </template>
         </ul>
     </nav>
-    
+
     <div x-show="currentPage === 1" class="bg-white shadow-lg p-6 rounded-lg">
         <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">Disability Details</h2>
         @include('enrollment.partial.ChildInfo')

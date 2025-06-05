@@ -250,18 +250,6 @@ class ChildFormService
         return $medical;
     }
 
-    public function childEmergency(array $data, $child): ChildEmergency
-    {
-        $emergency = ChildEmergency::create([
-            'child_id' => $this->childId($child),
-            'name' => $data['emergency_name'],
-            'contact_number' => $data['emergency_contact_number'],
-            'relationship_id' => $data['emergency_relation']
-        ]);
-
-        return $emergency;
-    }
-
     public function familyComposition(array $data): Collection
     {
         $childId = Auth::user()->child->first()->id;
@@ -297,6 +285,19 @@ class ChildFormService
         }
 
         return $created;
+    }
+
+    public function emergencyInfo(array $data): ChildEmergency
+    {
+        $emergency = ChildEmergency::updateOrCreate(
+        ['child_id' => $this->childId(Auth::user()->child->first()->id),],    
+        [
+            'name' => $data['emergency_name'],
+            'contact_number' => $data['emergency_contact'],
+            'relationship_id' => $data['relation']
+        ]);
+
+        return $emergency;
     }
 
     public function childRequirements(array $data, $child): Files

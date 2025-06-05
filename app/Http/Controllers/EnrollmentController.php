@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DisabilityRequest;
 use App\Http\Requests\EducationRequest;
+use App\Http\Requests\EmergencyRequest;
 use App\Http\Requests\FamilyCompositionRequest;
 use App\Http\Requests\GuardianRequest;
 use App\Http\Requests\MedicalRequest;
@@ -12,6 +13,7 @@ use App\Models\Barangay;
 use App\Models\BloodType;
 use App\Models\ChildAllergy;
 use App\Models\ChildDisability;
+use App\Models\ChildEmergency;
 use App\Models\ChildFamily;
 use App\Models\ChildInfo;
 use App\Models\ChildMedicalHistory;
@@ -23,7 +25,6 @@ use App\Models\District;
 use App\Models\Education;
 use App\Models\Gender;
 use App\Models\ParentsInfo;
-use App\Models\ParentType;
 use App\Models\Consent;
 use App\Http\requests\ConsentRequest;
 use App\Http\requests\ChildInfoRequest;
@@ -31,6 +32,7 @@ use App\Models\Relation;
 use App\Models\Service;
 use App\Services\ChildFormService;
 use Illuminate\Support\Facades\Auth;
+
 
 class EnrollmentController extends Controller
 {
@@ -70,6 +72,7 @@ class EnrollmentController extends Controller
             $existingAllergies = ChildAllergy::getChildAllergies(Auth::user()->child->first()->id);
             $existingChildMedical = ChildMedicalHistory::getChildMedicalHistory(Auth::user()->child->first()->id);
             $existingFamily = ChildFamily::getChildFamily(Auth::user()->child->first()->id);
+            $existingEmergency = ChildEmergency::getChildEmergency(Auth::user()->child->first()->id);
 
             return view('enrollment.enrollmentForm', compact(
                 'relations', 
@@ -96,6 +99,7 @@ class EnrollmentController extends Controller
                 'existingAllergies',
                 'existingChildMedical',
                 'existingFamily',
+                'existingEmergency',
             ));
         } else {
             return redirect()
@@ -233,5 +237,20 @@ class EnrollmentController extends Controller
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
             ->with('success', 'Family composition submitted successfully!')
             ->with('currentPage', 8);
+    }
+
+    public function storeEmergencyInfo(EmergencyRequest $request)
+    {
+        $emergencyInfo = $this->childFormService->emergencyInfo($request->validated());
+
+        activity()
+            ->performedOn($emergencyInfo)
+            ->causedBy(Auth::user())
+            ->log('Emergency information submitted by ' . Auth::user()->first_name . ' ' . Auth::user()->last_name);
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
+            ->with('success', 'Emergency information submitted successfully!')
+            ->with('currentPage', 9);
     }
 }

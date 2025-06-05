@@ -15,10 +15,10 @@ class ChildEmergency extends Model
         'contact_number',
         'relationship_id',
     ];
-
-    public static function getChildEmergency($childId)
+    
+    public static function getChildEmergency(int $childId): ?self
     {
-        return self::where('child_id', $childId)->get();
+        return self::where('child_id', $childId)->first();
     }
 
     public function child()

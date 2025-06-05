@@ -8,13 +8,13 @@
                 </label>
                 <div class="flex items-center space-x-6">
                     <label class="inline-flex items-center">
-                        <input type="radio" name="checkUp" value="Oo" {{ old('checkUp', $existingChildMedical->check_up) == 'Oo' ? 'checked' : '' }}
+                        <input type="radio" name="checkUp" value="Oo" {{ old('checkUp', $existingChildMedical->check_up ?? '') == 'Oo' ? 'checked' : '' }}
                             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                         <span class="ml-2 text-gray-700">Oo</span>
                     </label>
                     <label class="inline-flex items-center">
                         <input type="radio" name="checkUp" value="Hindi"
-                            {{ old('checkUp', $existingChildMedical->check_up) == 'Hindi' ? 'checked' : '' }}
+                            {{ old('checkUp', $existingChildMedical->check_up ?? '') == 'Hindi' ? 'checked' : '' }}
                             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                         <span class="ml-2 text-gray-700">Hindi</span>
                     </label>
@@ -97,7 +97,7 @@
                 Back
             </button>
             <button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                Submit
+                Next
             </button>
         </div>
     </div>

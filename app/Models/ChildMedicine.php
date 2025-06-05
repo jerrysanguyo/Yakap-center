@@ -21,6 +21,12 @@ class ChildMedicine extends Model
             ->toArray();
     }
 
+    public static function getChildMeds(int $childId)
+    {
+        return self::where('child_id', $childId)
+            ->get();
+    }
+
     public function child()
     {
         return $this->belongsTo(ChildInfo::class, 'child_id');

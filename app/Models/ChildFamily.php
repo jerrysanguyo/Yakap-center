@@ -32,7 +32,7 @@ class ChildFamily extends Model
                 'education' => $f->education_id,
                 'work' => $f->work,
             ])
-            ->toArray();;
+            ->toArray();
     }
 
     public function child()

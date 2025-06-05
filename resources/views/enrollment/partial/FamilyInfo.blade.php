@@ -1,6 +1,5 @@
 <form action="{{ route(Auth::user()->getRoleNames()->first() . '.familyInfo.store') }}" method="POST">
     @csrf
-
     <div x-data="{
             family: {{ json_encode(old('family', $existingFamily ?: [[
                 'name'=>'','birthday'=>'','age'=>'','sex'=>'','relation'=>'',
@@ -116,6 +115,6 @@
         <button type="button" @click="currentPage = 6"
             class="px-5 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition">Back</button>
         <button type="submit"
-            class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Submit</button>
+            class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Next</button>
     </div>
 </form>
