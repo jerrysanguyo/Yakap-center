@@ -2,14 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DisabilityRequest;
-use App\Http\Requests\EducationRequest;
-use App\Http\Requests\EmergencyRequest;
 use App\Http\Requests\EnrollmentRequest;
-use App\Http\Requests\FamilyCompositionRequest;
-use App\Http\Requests\GuardianRequest;
-use App\Http\Requests\MedicalRequest;
-use App\Http\Requests\ServiceRequest;
 use App\Models\Barangay;
 use App\Models\BloodType;
 use App\Models\ChildAllergy;
@@ -28,7 +21,6 @@ use App\Models\Gender;
 use App\Models\ParentsInfo;
 use App\Models\Consent;
 use App\Http\requests\ConsentRequest;
-use App\Http\requests\ChildInfoRequest;
 use App\Models\Relation;
 use App\Models\Service;
 use App\Services\ChildFormService;
@@ -139,11 +131,11 @@ class EnrollmentController extends Controller
         activity()
             ->performedOn($enrollment)
             ->causedBy(Auth::user())
-            ->log('User' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' submitted an enrollment form');
+            ->log('User: ' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' submitted an enrollment form');
 
         return redirect()
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Consent form submitted successfully!');
+            ->with('success', 'Enrollment form submitted successfully!');
     }
 
 }
