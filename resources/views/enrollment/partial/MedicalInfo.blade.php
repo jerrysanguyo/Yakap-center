@@ -1,104 +1,143 @@
-<form action="{{ route(Auth::user()->getRoleNames()->first() . '.medicalInfo.store') }}" method="POST">
-    @csrf
-    <div class="p-6 mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div>
-                <label class="block font-semibold text-gray-700 mb-2">
-                    Regular ba ang check-up sa Doktor? <span class="text-red-500">*</span>
-                </label>
-                <div class="flex items-center space-x-6">
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="checkUp" value="Oo" {{ old('checkUp', $existingChildMedical->check_up ?? '') == 'Oo' ? 'checked' : '' }}
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
-                        <span class="ml-2 text-gray-700">Oo</span>
-                    </label>
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="checkUp" value="Hindi"
-                            {{ old('checkUp', $existingChildMedical->check_up ?? '') == 'Hindi' ? 'checked' : '' }}
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
-                        <span class="ml-2 text-gray-700">Hindi</span>
-                    </label>
-                </div>
-            </div>
-            <div>
-                <label for="bloodType" class="block font-semibold text-gray-700 mb-2">
-                    Blood Type <span class="text-red-500">*</span>
-                </label>
-                <div class="relative">
-                    <select name="bloodType" id="bloodType"
-                        class="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-blue-500 appearance-none">
-                        <option value="">Select Blood Type</option>
-                        @foreach($bloodTypes as $blood)
-                        <option value="{{ $blood->id }}"
-                            {{ old('bloodType', $existingChildMedical->blood_type_id ?? '') == $blood->id ? 'selected' : '' }}>
-                            {{ $blood->name }}
-                        </option>
-                        @endforeach
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
-                        <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586
-                   l3.293-3.293a1 1 0 011.414 1.414
-                   l-4 4a1 1 0-1.414 0
-                   l-4-4a1 1 0 010-1.414z" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div x-data="{
-            medications: {{ json_encode(old('medication', $existingMedications ?: [''])) }},
-            addMedication() { this.medications.push('') }
-            }" class="mb-6">
-            <label class="flex items-center font-semibold text-gray-700 mb-2">
-                Ilista ang mga gamot na kasalukuyang iniinom ng inyong anak:
-                <button type="button" @click="addMedication()"
-                    class="ml-2 inline-flex items-center justify-center h-6 w-6 bg-green-100 text-green-600 rounded-full hover:bg-green-200"
-                    title="Add another">+</button>
-            </label>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <template x-for="(med, idx) in medications" :key="idx">
-                    <div class="flex items-center space-x-2">
-                        <input type="text" name="medication[]" x-model="medications[idx]"
-                            class="flex-1 border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-blue-500" />
-                        <button type="button" @click="medications.splice(idx, 1)"
-                            class="inline-flex items-center justify-center h-6 w-6 bg-red-100 text-red-600 rounded-full hover:bg-red-200"
-                            title="Remove">–</button>
-                    </div>
-                </template>
-            </div>
-        </div>
+@php
+$oldCheckUp = old('checkUp', $existingChildMedical->check_up ?? '');
+$oldBlood = old('bloodType', $existingChildMedical->blood_type_id ?? '');
+$oldMeds = old('medication', $existingMedications ?: ['']);
+$oldAllergs = old('allergy', $existingAllergies ?: ['']);
+@endphp
 
-        <div x-data="{
-            allergies: {{ json_encode(old('allergy', $existingAllergies ?: [''])) }},
-            addAllergy() { this.allergies.push('') }
-            }" class="mb-6">
-            <label class="flex items-center font-semibold text-gray-700 mb-2">
-                Ilista ang mga allergies ng bata:
-                <button type="button" @click="addAllergy()"
-                    class="ml-2 inline-flex items-center justify-center h-6 w-6 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200"
-                    title="Add another">+</button>
-            </label>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <template x-for="(alg, idx) in allergies" :key="idx">
-                    <div class="flex items-center space-x-2">
-                        <input type="text" name="allergy[]" x-model="allergies[idx]"
-                            class="flex-1 border border-gray-300 px-4 py-2 rounded-md focus:ring-2 focus:ring-blue-500" />
-                        <button type="button" @click="allergies.splice(idx, 1)"
-                            class="inline-flex items-center justify-center h-6 w-6 bg-red-100 text-red-600 rounded-full hover:bg-red-200"
-                            title="Remove">–</button>
-                    </div>
-                </template>
-            </div>
+<div class="section-body">
+    <div class="card shadow-lg">
+        <div class="card-header">
+            <h3 class="font-weight-bold mb-0">Medical Information</h3>
         </div>
-        <div class="flex justify-between">
-            <button type="button" @click="currentPage = 5"
-                class="px-5 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition">
-                Back
-            </button>
-            <button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                Next
-            </button>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold">Regular ba ang check-up sa Doktor? <span
+                            class="text-danger">*</span></label>
+                    <div class="form-check form-check-inline ml-2">
+                        <input class="form-check-input" type="radio" name="checkUp" id="checkUp_Oo" value="Oo"
+                            {{ $oldCheckUp === 'Oo' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="checkUp_Oo">Oo</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="checkUp" id="checkUp_Hindi" value="Hindi"
+                            {{ $oldCheckUp === 'Hindi' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="checkUp_Hindi">Hindi</label>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="bloodType" class="font-weight-semibold">Blood Type <span
+                            class="text-danger">*</span></label>
+                    <div class="position-relative">
+                        <select id="bloodType" name="bloodType" class="form-control">
+                            <option value="">Select Blood Type</option>
+                            @foreach($bloodTypes as $blood)
+                            <option value="{{ $blood->id }}" {{ $oldBlood == $blood->id ? 'selected' : '' }}>
+                                {{ $blood->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                        <div class="pointer-events-none position-absolute"
+                            style="top:50%; right:1rem; transform:translateY(-50%);">
+                            <i class="fas fa-chevron-down text-gray"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="font-weight-semibold d-flex align-items-center">
+                    Ilista ang mga gamot na kasalukuyang iniinom ng inyong anak:
+                    <button type="button" id="addMedicationBtn" class="btn btn-success btn-sm ml-3"
+                        title="Add another">+</button>
+                </label>
+                <div id="medicationsContainer">
+                    @foreach($oldMeds as $med)
+                    <div class="input-group mb-2 med-row">
+                        <input type="text" name="medication[]" value="{{ $med }}" class="form-control"
+                            placeholder="e.g. Paracetamol">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-danger remove-med">&minus;</button>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="font-weight-semibold d-flex align-items-center">
+                    Ilista ang mga allergies ng bata:
+                    <button type="button" id="addAllergyBtn" class="btn btn-info btn-sm ml-3"
+                        title="Add another">+</button>
+                </label>
+                <div id="allergiesContainer">
+                    @foreach($oldAllergs as $alg)
+                    <div class="input-group mb-2 alg-row">
+                        <input type="text" name="allergy[]" value="{{ $alg }}" class="form-control"
+                            placeholder="e.g. Peanuts">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-danger remove-alg">&minus;</button>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </div>
-</form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const medsContainer = document.getElementById('medicationsContainer');
+    const addMedBtn = document.getElementById('addMedicationBtn');
+
+    addMedBtn.addEventListener('click', function() {
+        const row = document.createElement('div');
+        row.className = 'input-group mb-2 med-row';
+        row.innerHTML = `
+        <input
+          type="text"
+          name="medication[]"
+          class="form-control"
+          placeholder="e.g. Paracetamol"
+        >
+        <div class="input-group-append">
+          <button type="button" class="btn btn-danger remove-med">&minus;</button>
+        </div>
+      `;
+        medsContainer.appendChild(row);
+    });
+
+    medsContainer.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('remove-med')) {
+            const row = e.target.closest('.med-row');
+            if (row) row.remove();
+        }
+    });
+    const algsContainer = document.getElementById('allergiesContainer');
+    const addAlgBtn = document.getElementById('addAllergyBtn');
+
+    addAlgBtn.addEventListener('click', function() {
+        const row = document.createElement('div');
+        row.className = 'input-group mb-2 alg-row';
+        row.innerHTML = `
+        <input
+          type="text"
+          name="allergy[]"
+          class="form-control"
+          placeholder="e.g. Peanuts"
+        >
+        <div class="input-group-append">
+          <button type="button" class="btn btn-danger remove-alg">&minus;</button>
+        </div>
+      `;
+        algsContainer.appendChild(row);
+    });
+
+    algsContainer.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('remove-alg')) {
+            const row = e.target.closest('.alg-row');
+            if (row) row.remove();
+        }
+    });
+});
+</script>

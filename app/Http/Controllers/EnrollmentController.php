@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DisabilityRequest;
 use App\Http\Requests\EducationRequest;
 use App\Http\Requests\EmergencyRequest;
+use App\Http\Requests\EnrollmentRequest;
 use App\Http\Requests\FamilyCompositionRequest;
 use App\Http\Requests\GuardianRequest;
 use App\Http\Requests\MedicalRequest;
@@ -48,6 +49,7 @@ class EnrollmentController extends Controller
         $consent = Consent::getConsent(Auth::user()->id);
         if ($consent)
         {
+            // Fetching all dropdown data
             $relations = Relation::getAllRelations();
             $genders = Gender::getAllGenders();
             $districts = District::getAllDistricts();
@@ -59,6 +61,7 @@ class EnrollmentController extends Controller
             $noServices = Service::getNoServices();
             $bloodTypes = BloodType::getAllBloodTypes();
             $civilStatuses = CivilStatus::getAllCivilStatuses();
+            // Fetching existing data for the child
             $childInfo = ChildInfo::getChildInfo(Auth::user()->id);
             $fatherInfo = Consent::getFatherChild(Auth::user()->id);
             $motherInfo = Consent::getMotherChild(Auth::user()->id);
@@ -107,7 +110,6 @@ class EnrollmentController extends Controller
                 ->with('failed', 'Please fill out the consent form first.');
         }
     }
-
     public function consentForm()
     {
         $parentType = Relation::getAllRelations();
@@ -130,127 +132,18 @@ class EnrollmentController extends Controller
             ->with('success', 'Consent form submitted successfully!');
     }
 
-    public function storeChildInfo(ChildInfoRequest $request)
+    public function enrollmentStore(EnrollmentRequest $request)
     {
-        $childInfo = $this->childFormService->childInfo($request->validated());
+        $enrollment= $this->childFormService->storeAllChildData($request->validated());
 
         activity()
-            ->performedOn($childInfo)
+            ->performedOn($enrollment)
             ->causedBy(Auth::user())
-            ->log('Child information submitted by ' . Auth::user()->first_name . ' ' . Auth::user()->last_name);
+            ->log('User' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' submitted an enrollment form');
 
         return redirect()
             ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Child information submitted successfully!')
-            ->with('currentPage', 2);
+            ->with('success', 'Consent form submitted successfully!');
     }
 
-    public function storeGuardianInfo(GuardianRequest $request)
-    {
-        $guardianInfo = $this->childFormService->guardianInfo($request->validated());
-
-        activity()
-            ->performedOn($guardianInfo)
-            ->causedBy(Auth::user())
-            ->log('Guardian information submitted by ' . Auth::user()->first() . ' ' . Auth::user()->last_name);
-
-        return redirect()
-            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Guardian information submitted successfully!')
-            ->with('currentPage', 3);
-    }
-
-    public function storeDisabilityInfo(DisabilityRequest $request)
-    {
-        $disabilityInfo = $this->childFormService->disabilityInfo($request->validated());
-
-        activity()
-            ->performedOn($disabilityInfo)
-            ->causedBy(Auth::user())
-            ->log('Disability information submitted by ' . Auth::user()->first_name . ' ' . Auth::user()->last_name);
-
-        return redirect()
-            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Disability information submitted successfully!')
-            ->with('currentPage', 4);
-    }
-
-    public function storeEducationInfo(EducationRequest $request)
-    {
-        $educationInfo = $this->childFormService->educationInfo($request->validated());
-
-        activity()
-            ->performedOn($educationInfo)
-            ->causedBy(Auth::user())
-            ->log('Education information submitted by ' . Auth::user()->first_name . ' ' . Auth::user()->last_name);
-
-        return redirect()
-            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Education information submitted successfully!')
-            ->with('currentPage', 5);
-    }
-
-    public function storeServiceInfo(ServiceRequest $request)
-    {
-        $serviceInfo = $this->childFormService->serviceInfo($request->validated());
-
-        foreach ($serviceInfo as $service) {
-            activity()
-                ->performedOn($service)
-                ->causedBy(Auth::user())
-                ->log("Service “{$service->service->name}” saved for child {$service->child_id}");
-        }
-
-        return redirect()
-            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Service information submitted successfully!')
-            ->with('currentPage', 6);
-    }
-
-    public function storeMedicalInfo(MedicalRequest $request)
-    {
-        $medicalInfo = $this->childFormService->medicalInfo($request->validated());
-
-        activity()
-            ->performedOn($medicalInfo)
-            ->causedBy(Auth::user())
-            ->log('Medical information submitted by ' . Auth::user()->first_name . ' ' . Auth::user()->last_name);
-
-        return redirect()
-            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Medical information submitted successfully!')
-            ->with('currentPage', 7);
-    }
-
-    public function storeFamilyComposition(FamilyCompositionRequest $request)
-    {
-        $family = $this->childFormService->familyComposition($request->validated());
-
-        foreach ($family as $member) {
-            activity()
-                ->performedOn($member)
-                ->causedBy(Auth::user())
-                ->log("Family member “{$member->name}” saved for child {$member->child_id}");
-        }
-
-        return redirect()
-            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Family composition submitted successfully!')
-            ->with('currentPage', 8);
-    }
-
-    public function storeEmergencyInfo(EmergencyRequest $request)
-    {
-        $emergencyInfo = $this->childFormService->emergencyInfo($request->validated());
-
-        activity()
-            ->performedOn($emergencyInfo)
-            ->causedBy(Auth::user())
-            ->log('Emergency information submitted by ' . Auth::user()->first_name . ' ' . Auth::user()->last_name);
-
-        return redirect()
-            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
-            ->with('success', 'Emergency information submitted successfully!')
-            ->with('currentPage', 9);
-    }
 }

@@ -1,386 +1,418 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ sidebarOpen: true, sidebarCollapsed: false }">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://kit.fontawesome.com/4f2d7302b1.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>Taguig Yakap Center</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
+    <!-- Font awesome -->
+    <script src="https://kit.fontawesome.com/4f2d7302b1.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js" defer></script>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/modules/fontawesome/css/all.min.css') }}">
+
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="{{ asset('assets/modules/jqvmap/dist/jqvmap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/modules/summernote/summernote-bs4.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/modules/owlcarousel2/dist/assets/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/modules/owlcarousel2/dist/assets/owl.theme.default.min.css') }}">
+
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
+
+    <!-- Start GA -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-94034622-3');
+    </script>
+    <!-- /END GA -->
+
+    <style type="text/css">
+    /* Chart.js */
+    @-webkit-keyframes chartjs-render-animation {
+        from {
+            opacity: 0.99
+        }
+
+        to {
+            opacity: 1
+        }
+    }
+
+    @keyframes chartjs-render-animation {
+        from {
+            opacity: 0.99
+        }
+
+        to {
+            opacity: 1
+        }
+    }
+
+    .chartjs-render-monitor {
+        -webkit-animation: chartjs-render-animation 0.001s;
+        animation: chartjs-render-animation 0.001s;
+    }
+    </style>
+
+    <style type="text/css">
+    .jqstooltip {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        visibility: hidden;
+        background: rgb(0, 0, 0) transparent;
+        background-color: rgba(0, 0, 0, 0.6);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+        color: white;
+        font: 10px arial, san serif;
+        text-align: left;
+        white-space: nowrap;
+        padding: 5px;
+        border: 1px solid white;
+        z-index: 10000;
+    }
+
+    .jqsfield {
+        color: white;
+        font: 10px arial, san serif;
+        text-align: left;
+    }
+    </style>
 </head>
 
-<body class="bg-[#ff5147] text-gray-800">
-    <div class="fixed inset-0 z-20 bg-black/50 bg-opacity-50 transition-opacity lg:hidden"
-        :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false">
-    </div>
-
-    <div class="flex h-screen overflow-hidden">
-        <aside
-            class="fixed inset-y-0 left-0 z-30 transform transition-transform duration-200 ease-in-out flex flex-col bg-[#ff5147]"
-            - :class="{'-translate-x-full': !sidebarOpen, 'w-18': sidebarCollapsed, 'w-64': !sidebarCollapsed}"
-            + :class="{'-translate-x-full': !sidebarOpen, 'w-18': sidebarCollapsed, 'w-64': !sidebarCollapsed}
-            overflow-visible">
-
-            <div
-                class="block m-3 flex items-center justify-center h-16 rounded hover:bg-[#F4C027] hover:text-black text-white">
-                <span x-show="!sidebarCollapsed" x-cloak class="flex items-center">
-                    <img src="{{ asset('images/logoyakap.webp') }}" alt="" class="w-10 mr-2">
-                    Taguig Yakap Center
-                </span>
-                <span x-show="sidebarCollapsed" x-cloak class="font-bold text-xl">
-                    <img src="{{ asset('images/logoyakap.webp') }}" alt="" class="w-10">
-                </span>
-            </div>
-
-            <nav class="p-4 space-y-2 overflow-auto  no-scrollbar">
-                <!-- home -->
-                <div class="flex items-center gap-4">
-                    <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Home</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-minus text-white"></i></span>
-                </div>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.dashboard') }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-table-columns me-2"></i> Dashboard</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-table-columns"></i></span>
-                </a>
-                <!-- student -->
-                <div class="flex items-center gap-4 mt-5">
-                    <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Student</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-minus text-white"></i></span>
-                </div>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-hands-holding-child me-2"></i>
-                        Children profile</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-hands-holding-child"></i></span>
-                </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-list-check me-2"></i>
-                        Progress report</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-list-check"></i>
-                </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-book me-2"></i>
-                        Educational plan</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-book"></i>
-                </a>
-                <!-- enrollment -->
-                <div class="flex items-center gap-4 mt-5">
-                    <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Enrollment</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-minus text-white"></i></span>
-                </div>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.enrollment.index') }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-folder-open me-2"></i>
-                        Enrollment</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-folder-open"></i></span>
-                </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-paperclip me-2"></i>
-                        Requirements</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-paperclip"></i></span>
-                </a>
-                <a href="#" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-clipboard-user me-2"></i>
-                        Therapy</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-clipboard-user"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.consent.index') }}" class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-file-contract me-2"></i>
-                        Consent form</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-file-contract"></i></span>
-                </a>
-                @role('superadmin')
-                <!-- Activity logs -->
-                <div class="flex items-center gap-4 mt-5">
-                    <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Logs</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium">
-                        <i class="fa-solid fa-minus text-white"></i>
-                    </span>
-                </div>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.log.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-history me-2"></i>
-                        Activity logs</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-history"></i></span>
-                </a>
-                @endrole
-                @role('superadmin|admin')
-                <!-- Cms -->
-                <div class="flex items-center gap-4 mt-5">
-                    <span x-show="!sidebarCollapsed" x-cloak class="text-sm font-semibold text-white">Cms</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium">
-                        <i class="fa-solid fa-minus text-white"></i>
-                    </span>
-                </div>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.allergy.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-hand-dots me-2"></i>
-                        Allergy</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-hand-dots"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.blood.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-droplet me-2"></i>
-                        Blood type</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-droplet"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.civil.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-heart me-2"></i>
-                        Civil status</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-heart"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.disability.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-wheelchair me-2"></i>
-                        Disability</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-wheelchair"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.district.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-building-columns me-2"></i>
-                        District</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-building-columns"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.barangay.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-building-user me-2"></i>
-                        Barangay</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-building-user"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.education.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-school me-2"></i>
-                        Education</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-school"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.gender.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-venus-mars me-2"></i>
-                        Gender</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-venus-mars"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.goal.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-flag-checkered me-2"></i>
-                        Goal</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-flag-checkered"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.competency.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-graduation-cap me-2"></i>
-                        Learning Competency</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-graduation-cap"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.domain.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-book-open me-2"></i>
-                        Learning Domain</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-book-open"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.objective.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-bullseye me-2"></i>
-                        Objective</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-bullseye"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.parent.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-user-friends me-2"></i>
-                        Parent type</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-user-friends"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.privacy.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-lock me-2"></i>
-                        Privacy</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-lock"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.program.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-laptop-code me-2"></i>
-                        Program</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-laptop-code"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.rating.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i class="fa-solid fa-star me-2"></i>
-                        Rating</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-star"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.relation.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-sitemap me-2"></i>
-                        Relation</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-sitemap"></i></span>
-                </a>
-                <a href="{{ route(Auth::user()->getRoleNames()->first() . '.service.index')  }}"
-                    class="block py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition">
-                    <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                            class="fa-solid fa-hands-helping me-2"></i>
-                        Service</span>
-                    <span x-show="sidebarCollapsed" x-cloak
-                        class="flex items-center justify-center w-full h-full font-medium"><i
-                            class="fa-solid fa-hands-helping"></i></span>
-                </a>
-                @endrole
-            </nav>
-            <div class="mt-auto p-4 border-gray-200" x-data="{ userDropdownOpen: false }">
-                <div class="relative">
-                    <button @click="userDropdownOpen = !userDropdownOpen"
-                        class="w-full flex items-center justify-between py-2 px-3 rounded hover:bg-[#F4C027] hover:text-black text-white transition focus:outline-none">
-                        <span x-show="!sidebarCollapsed" x-cloak class="text-xs font-medium uppercase">
-                            @auth
-                            {{ Auth::user()->first_name }} {{ Auth::user()->middle_name }}
-                            {{ Auth::user()->last_name }}
-                            @endauth
-                        </span>
-                        <span x-show="sidebarCollapsed" x-cloak class="font-medium">
-                            @auth
-                            {{ strtoupper(substr(Auth::user()->first_name, 0, 1)) }}{{  strtoupper(substr(Auth::user()->last_name, 0, 1)) }}
-                            @endauth
-                        </span>
-                        <svg x-show="!sidebarCollapsed" x-cloak class="w-4 h-4 ml-2" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 15l-7-7-7 7" />
-                        </svg>
-                    </button>
-                    <div x-show="userDropdownOpen" x-cloak x-transition
-                        class="absolute left-0 bottom-full mb-2 w-full bg-white shadow-md rounded z-10">
-                        <a href="#" class="block py-2 px-3 hover:bg-[#F4C027] hover:text-black text-black transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-user-tie me-2"></i> Role</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-user-tie"></i></span>
-                        </a>
-                        <a href="#" class="block py-2 px-3 hover:bg-[#F4C027] hover:text-black text-black transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-lock me-2"></i> Permission</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-lock"></i></span>
-                        </a>
-                        <a href="#" class="block py-2 px-3 hover:bg-[#F4C027] hover:text-black text-black transition">
-                            <span x-show="!sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-user me-2"></i> Profile</span>
-                            <span x-show="sidebarCollapsed" x-cloak class="font-medium"><i
-                                    class="fa-solid fa-user"></i></span>
-                        </a>
-                        <form action="{{ route('logout') }}" method="POST" class="block">
-                            @csrf
-                            <button type="submit"
-                                class="block w-full text-left py-2 px-3 hover:bg-[#F4C027] hover:text-black text-black transition focus:outline-none">
-                                <span x-show="!sidebarCollapsed" x-cloak class="font-medium">
-                                    <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
-                                </span>
-                                <span x-show="sidebarCollapsed" x-cloak class="font-medium">
-                                    <i class="fa-solid fa-right-from-bracket"></i>
-                                </span>
-                            </button>
-                        </form>
+<body class="sidebar-show">
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg" style="background-color: rgb(131, 17, 21);"></div>
+            <nav class="navbar navbar-expand-lg main-navbar">
+                <form class="form-inline mr-auto">
+                    <ul class="navbar-nav mr-3">
+                        <li>
+                            <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg">
+                                <i class="fas fa-bars"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none">
+                                <i class="fas fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="search-element">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                            data-width="250" style="width: 250px;">
+                        <button class="btn" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <div class="search-backdrop"></div>
+                        <div class="search-result">
+                            <div class="search-header">
+                                Histories
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </form>
+                <ul class="navbar-nav navbar-right">
+                    <li class="dropdown dropdown-list-toggle">
+                        <a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep">
+                            <i class="far fa-envelope"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">
+                                Messages
+                                <div class="float-right">
+                                    <a href="#">Mark All As Read</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-footer text-center">
+                                <a href="#">View All <i class="fas fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="dropdown dropdown-list-toggle">
+                        <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep">
+                            <i class="far fa-bell"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">
+                                Notifications
+                                <div class="float-right">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                            <div class="d-sm-none d-lg-inline-block">Hi, 
+                                @auth
+                                {{ Auth::user()->first_name }} {{ Auth::user()->middle_name }} {{ Auth::user()->last_name }}
+                                @endauth
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="dropdown-title">Logged in 5 min ago</div>
+                            <a href="features-profile.html" class="dropdown-item has-icon">
+                                <i class="far fa-user"></i> Profile
+                            </a>
+                            <a href="features-activities.html" class="dropdown-item has-icon">
+                                <i class="fas fa-bolt"></i> Activities
+                            </a>
+                            <a href="features-settings.html" class="dropdown-item has-icon">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item has-icon text-danger">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="main-sidebar sidebar-style-2" tabindex="1" style="overflow: hidden; outline: none;">
+                <aside id="sidebar-wrapper">
+                    <div class="sidebar-brand">
+                        <a href="index.html">Taguig Yakap Center</a>
+                    </div>
+                    <div class="sidebar-brand sidebar-brand-sm">
+                        <a href="index.html">St</a>
+                    </div>
+                    <ul class="sidebar-menu">
+                        <li class="menu-header">Dashboard</li>
+                        <li class="dropdown active">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.dashboard') }}" class="nav-link">
+                                <i class="fas fa-home"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="menu-header">Student</li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-hands-holding-child"></i>
+                                <span>Children Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="">
+                                <i class="fas fa-list-check"></i>
+                                <span>Progress Report</span>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>Educational Plan</span>
+                            </a>
+                        </li>
+                        <li class="menu-header">Enrollment</li>
+                        <li class="dropdown">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.enrollment.index') }}"
+                                class="nav-link">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Enrollment</span>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-paperclip"></i>
+                                <span>Requirements</span>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-stethoscope"></i>
+                                <span>Therapy</span>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-file-signature"></i>
+                                <span>Consent Forms</span>
+                            </a>
+                        </li>
+                        <li class="menu-header">CMS</li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link has-dropdown">
+                                <i class="fas fa-th"></i>
+                                <span>Dropdown options</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.blood.index') }}">
+                                        <i class="fas fa-droplet"></i>
+                                        Blood type
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.civil.index') }}">
+                                        <i class="fas fa-id-card"></i>
+                                        Civil status
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.disability.index') }}">
+                                        <i class="fas fa-wheelchair"></i>
+                                        Disability
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.district.index') }}">
+                                        <i class="fas fa-map-marked-alt"></i>
+                                        District
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.barangay.index') }}">
+                                        <i class="fas fa-city"></i>
+                                        Barangay
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.education.index') }}">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        Education
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.gender.index') }}">
+                                        <i class="fas fa-venus-mars"></i>
+                                        Gender
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.goal.index') }}">
+                                        <i class="fas fa-bullseye"></i>
+                                        Goal
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.competency.index') }}">
+                                        <i class="fas fa-chalkboard-teacher"></i>
+                                        Learning Competency
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.domain.index') }}">
+                                        <i class="fas fa-book-open"></i>
+                                        Learning Domain
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.objective.index') }}">
+                                        <i class="fas fa-check-circle"></i>
+                                        Objective
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.privacy.index') }}">
+                                        <i class="fas fa-user-secret"></i>
+                                        Privacy
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.program.index') }}">
+                                        <i class="fas fa-code"></i>
+                                        Program
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.rating.index') }}">
+                                        <i class="fas fa-star"></i>
+                                        Rating
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.relation.index') }}">
+                                        <i class="fas fa-handshake"></i>
+                                        Relation
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link"
+                                        href="{{ route(Auth::user()->getRoleNames()->first() . '.service.index') }}">
+                                        <i class="fas fa-concierge-bell"></i>
+                                        Service
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
+                        <a href="" class="btn btn-primary btn-lg btn-block btn-icon-split">
+                            <i class="fas fa-comment"></i> Contact support
+                        </a>
+                    </div>
+                </aside>
             </div>
-        </aside>
 
-        <div class="flex-1 flex flex-col transition-all duration-200"
-            :class="sidebarCollapsed ? 'lg:ml-18' : 'lg:ml-64'">
-            <div class="bg-white flex-1 shadow-lg rounded-lg p-6 m-3">
-                <nav class="mb-3">
-                    @hasSection('breadcrumb')
-                    @yield('breadcrumb')
-                    @endif
-                </nav>
-                <main class="p-5 no-scrollbar overflow-auto max-h-[85vh] min-h-[85vh]">
+            <!-- Main Content -->
+            <div class="main-content" style="min-height: 635px;">
+                <section class="section">
                     @yield('content')
-                </main>
+                </section>
             </div>
+
+            <footer class="main-footer">
+                <div class="footer-left">
+                    Copyright © 2018 <div class="bullet"></div> Information Technology
+                </div>
+                <div class="footer-right">
+                </div>
+            </footer>
         </div>
     </div>
+
+    <!-- General JS Scripts -->
+    <script src="{{ asset('assets/modules/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/modules/popper.js') }}"></script>
+    <script src="{{ asset('assets/modules/tooltip.js') }}"></script>
+    <script src="{{ asset('assets/modules/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/modules/nicescroll/jquery.nicescroll.min.js') }}"></script>
+    <script src="{{ asset('assets/modules/moment.min.js') }}"></script>
+    <script src="{{ asset('assets/js/stisla.js') }}"></script>
+
+    <!-- JS Libraries -->
+    <script src="{{ asset('assets/modules/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ asset('assets/modules/chart.min.js') }}"></script>
+    <script src="{{ asset('assets/modules/owlcarousel2/dist/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('assets/modules/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('assets/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+
+    <!-- Page Specific JS File -->
+    <script src="{{ asset('assets/js/page/index.js') }}"></script>
+
+    <!-- Template JS File -->
+    <script src="{{ asset('assets/js/scripts.js') }}"></script>
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
     @stack('scripts')
 </body>
 

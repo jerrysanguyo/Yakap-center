@@ -1,94 +1,175 @@
 @php
-    $oldReceived = old('receivedService');
-    if (!$oldReceived) {
-        if (!empty($existingYesIds)) {
-            $oldReceived = 'Oo';
-        } elseif (!empty($existingNoIds)) {
-            $oldReceived = 'Hindi';
-        }
-    }
-    $showYesOthers = old('otherYes') !== null || !empty($existingOtherYes);
-    $showNoOthers = old('otherNo') !== null || !empty($existingOtherNo);
+$oldReceived = old('receivedService');
+if (!$oldReceived) {
+if (!empty($existingYesIds)) {
+$oldReceived = 'Oo';
+} elseif (!empty($existingNoIds)) {
+$oldReceived = 'Hindi';
+}
+}
+$showYesOthers = old('otherYes') !== null || !empty($existingOtherYes);
+$showNoOthers = old('otherNo') !== null || !empty($existingOtherNo);
 @endphp
 
-<form action="{{ route(auth()->user()->getRoleNames()->first() . '.serviceInfo.store') }}" method="POST">
-    @csrf
-
-    <div x-data="{
-        receivedService: '{{ $oldReceived }}',
-        showYesOthers : {{ $showYesOthers ? 'true' : 'false' }},
-        showNoOthers  : {{ $showNoOthers  ? 'true' : 'false' }}
-    }" class="p-6 mb-6">
-        <h3 class="text-lg font-semibold mb-4 text-gray-700">
-            Nakatanggap na ba ng serbisyo upang matulungan ang batang may kapansanan?
-            <span class="text-red-500">*</span>
-        </h3>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            @foreach(['Oo','Hindi'] as $choice)
-            <label class="inline-flex items-center">
-                <input type="radio" name="receivedService" value="{{ $choice }}" x-model="receivedService"
-                    {{ $oldReceived === $choice ? 'checked' : '' }}
-                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                <span class="ml-2 text-gray-700">{{ $choice }}</span>
-            </label>
-            @endforeach
+<div class="section-body">
+    <div class="card shadow-lg">
+        <div class="card-header">
+            <h3 class="font-weight-bold mb-0">Service Information</h3>
         </div>
+        <div class="card-body">
+            <div class="mb-4">
+                <h5 class="font-weight-medium mb-3">
+                    Nakatanggap na ba ng serbisyo upang matulungan ang batang may kapansanan?
+                    <span class="text-danger">*</span>
+                </h5>
 
-        <template x-if="receivedService === 'Oo'">
-            <div class="border border-gray-200 rounded-md p-4 mb-6">
-                <p class="mb-3 text-gray-600">Kung Oo, saan? Pakilagyan ng tsek.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    @foreach($yesServices as $yes)
-                    <label class="inline-flex items-center">
-                        <input type="checkbox" name="yesService[]" value="{{ $yes->id }}"
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                            @if(strtolower($yes->name) === 'others') x-model="showYesOthers" @endif
-                        {{ in_array($yes->id, old('yesService', $existingYesIds)) ? 'checked' : '' }}
-                        >
-                        <span class="ml-2 text-gray-700">{{ $yes->name }}</span>
-                    </label>
+                <div class="row mb-4">
+                    @foreach(['Oo', 'Hindi'] as $choice)
+                    <div class="form-check col-md-2">
+                        <input class="form-check-input" type="radio" name="receivedService"
+                            id="receivedService_{{ $choice }}" value="{{ $choice }}"
+                            {{ $oldReceived === $choice ? 'checked' : '' }}>
+                        <label class="form-check-label" for="receivedService_{{ $choice }}">
+                            {{ $choice }}
+                        </label>
+                    </div>
                     @endforeach
+                </div>
 
-                    <div class="col-span-full" x-show="showYesOthers">
-                        <input type="text" name="otherYes" value="{{ old('otherYes', $existingOtherYes) }}"
-                            placeholder="Iba pa"
-                            class="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div id="yesBlock" class="border border-gray-200 rounded p-4 mb-4" style="display: none;">
+                    <p class="mb-3 text-gray-600">Kung Oo, saan? Pakilagyan ng tsek.</p>
+                    <div class="row">
+                        @foreach($yesServices as $yes)
+                        @php $isYesOther = strtolower($yes->name) === 'others'; @endphp
+                        <div class="form-check col-md-4 mb-2">
+                            <input class="form-check-input {{ $isYesOther ? 'yes-other-checkbox' : '' }}"
+                                type="checkbox" name="yesService[]" id="yesService_{{ $yes->id }}"
+                                value="{{ $yes->id }}" @if(in_array($yes->id, old('yesService', $existingYesIds)))
+                            checked @endif
+                            >
+                            <label class="form-check-label" for="yesService_{{ $yes->id }}">
+                                {{ $yes->name }}
+                            </label>
+                        </div>
+                        @endforeach
+
+                        <div id="yes_other_input" class="col-md-12 mt-2" style="display: none;">
+                            <input type="text" name="otherYes" value="{{ old('otherYes', $existingOtherYes) }}"
+                                placeholder="e.g. Private company" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="noBlock" class="border border-gray-200 rounded p-4 mb-4" style="display: none;">
+                    <p class="mb-3 text-gray-600">Kung Hindi, anong dahilan? Pakilagyan ng tsek.</p>
+                    <div class="row">
+                        @foreach($noServices as $no)
+                        @php $isNoOther = strtolower($no->name) === 'other'; @endphp
+                        <div class="form-check col-md-4 mb-2">
+                            <input class="form-check-input {{ $isNoOther ? 'no-other-checkbox' : '' }}" type="checkbox"
+                                name="noService[]" id="noService_{{ $no->id }}" value="{{ $no->id }}"
+                                @if(in_array($no->id, old('noService', $existingNoIds)))
+                            checked @endif
+                            >
+                            <label class="form-check-label" for="noService_{{ $no->id }}">
+                                {{ $no->name }}
+                            </label>
+                        </div>
+                        @endforeach
+
+                        <div id="no_other_input" class="col-md-12 mt-2" style="display: none;">
+                            <input type="text" name="otherNo" value="{{ old('otherNo', $existingOtherNo) }}"
+                                placeholder="e.g. Private company" class="form-control">
+                        </div>
                     </div>
                 </div>
             </div>
-        </template>
-
-        <template x-if="receivedService === 'Hindi'">
-            <div class="border border-gray-200 rounded-md p-4">
-                <p class="mb-3 text-gray-600">Kung Hindi, anong dahilan? Pakilagyan ng tsek.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    @foreach($noServices as $no)
-                    <label class="inline-flex items-center">
-                        <input type="checkbox" name="noService[]" value="{{ $no->id }}"
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                            @if(strtolower($no->name) === 'other') x-model="showNoOthers" @endif
-                        {{ in_array($no->id, old('noService', $existingNoIds)) ? 'checked' : '' }}
-                        >
-                        <span class="ml-2 text-gray-700">{{ $no->name }}</span>
-                    </label>
-                    @endforeach
-
-                    <div class="col-span-full" x-show="showNoOthers">
-                        <input type="text" name="otherNo" value="{{ old('otherNo', $existingOtherNo) }}"
-                            placeholder="Iba pa"
-                            class="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-            </div>
-        </template>
+        </div>
     </div>
+</div>
 
-    <div class="flex justify-between mt-6">
-        <button type="button" @click="currentPage = 1"
-            class="px-5 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition">Back</button>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const oldReceived = "{{ $oldReceived }}";
+    const showYesOthers = {{ $showYesOthers ? 'true' : 'false' }};
+    const showNoOthers = {{ $showNoOthers ? 'true' : 'false' }};
+    const yesBlock = document.getElementById('yesBlock');
+    const noBlock = document.getElementById('noBlock');
+    const yesOtherChkboxes = document.querySelectorAll('.yes-other-checkbox');
+    const yesOtherInput = document.getElementById('yes_other_input');
+    const noOtherChkboxes = document.querySelectorAll('.no-other-checkbox');
+    const noOtherInput = document.getElementById('no_other_input');
+    const radioOo = document.getElementById('receivedService_Oo');
+    const radioHindi = document.getElementById('receivedService_Hindi');
 
-        <button type="submit"
-            class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Next</button>
-    </div>
-</form>
+    function updateBlocks() {
+        if (radioOo.checked) {
+            yesBlock.style.display = '';
+            noBlock.style.display = 'none';
+        } else if (radioHindi.checked) {
+            yesBlock.style.display = 'none';
+            noBlock.style.display = '';
+        } else {
+            yesBlock.style.display = 'none';
+            noBlock.style.display = 'none';
+        }
+    }
+
+    function updateYesOther() {
+        let anyChecked = false;
+        yesOtherChkboxes.forEach(cb => {
+            if (cb.checked) anyChecked = true;
+        });
+        yesOtherInput.style.display = anyChecked ? '' : 'none';
+    }
+
+    function updateNoOther() {
+        let anyChecked = false;
+        noOtherChkboxes.forEach(cb => {
+            if (cb.checked) anyChecked = true;
+        });
+        noOtherInput.style.display = anyChecked ? '' : 'none';
+    }
+
+    if (oldReceived === 'Oo') {
+        radioOo.checked = true;
+    } else if (oldReceived === 'Hindi') {
+        radioHindi.checked = true;
+    }
+    updateBlocks();
+
+    if (showYesOthers) {
+        yesOtherInput.style.display = '';
+    }
+    if (showNoOthers) {
+        noOtherInput.style.display = '';
+    }
+
+    if (radioOo) {
+        radioOo.addEventListener('change', function() {
+            updateBlocks();
+            noOtherInput.style.display = 'none';
+            noOtherChkboxes.forEach(cb => {
+                cb.checked = false;
+            });
+        });
+    }
+    if (radioHindi) {
+        radioHindi.addEventListener('change', function() {
+            updateBlocks();
+            yesOtherInput.style.display = 'none';
+            yesOtherChkboxes.forEach(cb => {
+                cb.checked = false;
+            });
+        });
+    }
+
+    yesOtherChkboxes.forEach(cb => {
+        cb.addEventListener('change', updateYesOther);
+    });
+
+    noOtherChkboxes.forEach(cb => {
+        cb.addEventListener('change', updateNoOther);
+    });
+});
+</script>
