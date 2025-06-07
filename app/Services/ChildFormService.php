@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Service;
+use File;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\ChildInfo;
@@ -260,18 +262,52 @@ class ChildFormService
         });
     }
 
-    public function childRequirements(array $data, $child): Files
+    public function storeRequirementChild(array $filesData): void
     {
-        if(isset($data['requirements']))
-        {
-            $requirements = $data['requirements'];
-            foreach($requirements as $requirement)
-            {
-                Files::create([
-                    'imageable_id' => $child,
-                    'imageable_type' => 'App\Models\ChildInfo',
-                ]);
+        $childId = Auth::user()->child()->first()->id;
+        $folderName = sprintf(
+            '%d-%s%s-%s',
+            $childId,
+            str_replace(' ', '', Auth::user()->child()->first()->first_name),
+            str_replace(' ', '', Auth::user()->child()->first()->last_name),
+            Auth::user()->child()->first()->birth_date
+        );
+        
+        $destinationDir = public_path("requirements/{$folderName}");
+        if (! File::exists($destinationDir)) {
+            File::makeDirectory($destinationDir, 0755, true);
+        }
+
+        foreach ($filesData as $requirementId => $file) {
+            if (! $file instanceof UploadedFile) {
+                continue;
             }
+            
+            $existing = Files::where([
+                ['imageable_type', ChildInfo::class],
+                ['imageable_id',   $childId],
+                ['remarks',        $requirementId],
+            ])->first();
+            
+            if ($existing && File::exists(public_path($existing->file_path))) {
+                File::delete(public_path($existing->file_path));
+            }
+            
+            $filename = $requirementId . '-' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move($destinationDir, $filename);
+            
+            Files::updateOrCreate(
+                [
+                    'imageable_type' => ChildInfo::class,
+                    'imageable_id'   => $childId,
+                    'remarks'        => $requirementId,
+                ],
+                [
+                    'file_path' => "requirements/{$folderName}/{$filename}",
+                    'file_name' => $filename,
+                    'file_type' => $file->getClientMimeType(),
+                ]
+            );
         }
     }
 }

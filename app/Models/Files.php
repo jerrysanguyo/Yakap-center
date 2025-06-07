@@ -10,10 +10,12 @@ class Files extends Model
     use HasFactory;
     protected $table = 'files';
     protected $fillable = [
+        'imageable_type',
+        'imageable_id',
         'file_path',
         'file_name',
         'file_type',
-        'remarks'
+        'remarks',
     ];
 
     public static function childPicture($childId)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EnrollmentRequest;
+use App\Http\Requests\RequirementRequest;
 use App\Models\Barangay;
 use App\Models\BloodType;
 use App\Models\ChildAllergy;
@@ -17,11 +18,13 @@ use App\Models\CivilStatus;
 use App\Models\Disability;
 use App\Models\District;
 use App\Models\Education;
+use App\Models\Files;
 use App\Models\Gender;
 use App\Models\ParentsInfo;
 use App\Models\Consent;
 use App\Http\requests\ConsentRequest;
 use App\Models\Relation;
+use App\Models\Requirement;
 use App\Models\Service;
 use App\Services\ChildFormService;
 use Illuminate\Support\Facades\Auth;
@@ -134,8 +137,37 @@ class EnrollmentController extends Controller
             ->log('User: ' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' submitted an enrollment form');
 
         return redirect()
-            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
+            ->route(Auth::user()->getRoleNames()->first() . '.requirement.index')
             ->with('success', 'Enrollment form submitted successfully!');
     }
 
+    public function requirementsForm()
+    {
+        $requirements = Requirement::getAllRequirements();
+        $childInfo = ChildInfo::getChildInfo(Auth::user()->id);
+        $existingFiles = Files::where([
+            ['imageable_type', ChildInfo::class],
+            ['imageable_id',   $childInfo->id],
+            ])->get()->keyBy('remarks');
+
+        return view('enrollment.requirementForm', compact(
+            'childInfo',
+            'requirements',
+            'existingFiles',
+        ));
+    }
+
+    public function requirementStore(RequirementRequest $request)
+    {
+        $uploaded = $request->file('requirements', []);
+        $this->childFormService->storeRequirementChild($uploaded);
+
+        activity()
+            ->causedBy(Auth::user())
+            ->log("User: {Auth::user()->first_name} submitted requirements");
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.requirement.index')
+            ->with('success', 'Requirements uploaded successfully!');
+    }
 }

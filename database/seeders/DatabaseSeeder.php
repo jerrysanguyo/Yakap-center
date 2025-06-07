@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             BloodSeeder::class,
             CivilStatusSeeder::class,
+            RequirementSeeder::class,
         ]);
     }
 }

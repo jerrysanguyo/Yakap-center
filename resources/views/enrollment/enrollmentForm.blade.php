@@ -9,24 +9,36 @@ $selectedBarangay = old('barangay_id', $childInfo->barangay_id ?? '');
 <section class="section">
     <div class="section-body">
         <div class="card shadow-lg">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h2 class="mb-0 text-primary">Enrollment form</h2>
-                    <div class="section-body-breadcrumb d-flex">
-                        <div class="breadcrumb-item active">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0 text-primary">
+                    Enrollment Form
+                </h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 bg-transparent p-0">
+                        <li class="breadcrumb-item">
                             <a href="{{ route(Auth::user()->getRoleNames()->first() . '.dashboard') }}">
-                                Dashboard
+                                <i class="fas fa-home"></i> Dashboard
                             </a>
-                        </div>
-                        <div class="breadcrumb-item">
+                        </li>
+                        <li class="breadcrumb-item">
                             <a href="{{ route(Auth::user()->getRoleNames()->first() . '.consent.index') }}">
-                                Consent form
+                                <i class="fas fa-file-signature"></i> Consent Form
                             </a>
-                        </div>
-                        <div class="breadcrumb-item">
-                            Enrollment form
-                        </div>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <i class="fas fa-file-alt"></i> Enrollment Form
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="card-body">
+                <div class="callout callout-info">
+                    <div class="callout-header">
+                        <i class="fas fa-info-circle text-danger"></i> Please Note
                     </div>
+                    <p class="mb-0">
+                        For any field that does not apply, simply input <strong>N/A</strong>.
+                    </p>
                 </div>
             </div>
         </div>

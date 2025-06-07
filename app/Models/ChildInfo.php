@@ -67,4 +67,14 @@ class ChildInfo extends Model
     {
         return $this->hasMany(ChildFamily::class, 'child_id');
     }
+
+    public function service()
+    {
+        return $this->hasMany(ChildService::class, 'child_id');
+    }
+
+    public function medicine()
+    {
+        return $this->hasMany(ChildMedicine::class, 'child_id');
+    }
 }

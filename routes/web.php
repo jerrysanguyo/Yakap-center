@@ -41,10 +41,12 @@ Route::middleware(['auth'])
             ->group(function () {
                 Route::get('/activity-logs', [ActivityLog::class, 'index'])->name('log.index');
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-                Route::get('/enrollment', [EnrollmentController::class, 'index'])->name('enrollment.index');
-                Route::get('consent-form', [EnrollmentController::class, 'consentForm'])->name('consent.index');
-                Route::post('enrollment/store', [EnrollmentCOntroller::class, 'enrollmentStore'])->name('enrollment.store');
-                Route::post('consent-form/store', [EnrollmentController::class, 'consentStore'])->name('consent.store');
+                Route::get('/consent-form', [EnrollmentController::class, 'consentForm'])->name('consent.index');
+                Route::post('/consent-form/store', [EnrollmentController::class, 'consentStore'])->name('consent.store');
+                Route::get('/enrollment-form', [EnrollmentController::class, 'index'])->name('enrollment.index');
+                Route::post('/enrollment/store', [EnrollmentController::class, 'enrollmentStore'])->name('enrollment.store');
+                Route::get('/requirements-form', [EnrollmentController::class, 'requirementsForm'])->name('requirement.index');
+                Route::post('/requirement/store', [EnrollmentCOntroller::class, 'requirementStore'])->name('requirement.store');
                 // Route::post('enrollment/child-info/store', [EnrollmentController::class, 'storeChildInfo'])->name('childInfo.store');
                 // Route::post('enrollment/guardia-info/store', [EnrollmentController::class, 'storeGuardianInfo'])->name('guardianInfo.store');
                 // Route::post('enrollment/disability-info/store', [EnrollmentController::class, 'storeDisabilityInfo'])->name('disabilityInfo.store');
