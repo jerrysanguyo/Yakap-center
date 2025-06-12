@@ -15,6 +15,8 @@
     <!-- bootstrap -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/modules/fontawesome/css/all.min.css') }}">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
 
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('assets/modules/jqvmap/dist/jqvmap.min.css') }}">
@@ -158,9 +160,10 @@
                     </li>
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                            <div class="d-sm-none d-lg-inline-block">Hi, 
+                            <div class="d-sm-none d-lg-inline-block">Hi,
                                 @auth
-                                {{ Auth::user()->first_name }} {{ Auth::user()->middle_name }} {{ Auth::user()->last_name }}
+                                {{ Auth::user()->first_name }} {{ Auth::user()->middle_name }}
+                                {{ Auth::user()->last_name }}
                                 @endauth
                             </div>
                         </a>
@@ -193,8 +196,10 @@
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">Dashboard</li>
-                        <li class="dropdown active">
-                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.dashboard') }}" class="nav-link">
+                        <li
+                            class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.dashboard') ? 'active' : '' }}">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.dashboard') }}"
+                                class="nav-link">
                                 <i class="fas fa-home"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -219,15 +224,18 @@
                             </a>
                         </li>
                         <li class="menu-header">Enrollment</li>
-                        <li class="dropdown">
+                        <li
+                            class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.enrollment.index') ? 'active' : '' }}">
                             <a href="{{ route(Auth::user()->getRoleNames()->first() . '.enrollment.index') }}"
                                 class="nav-link">
                                 <i class="fas fa-file-alt"></i>
                                 <span>Enrollment</span>
                             </a>
                         </li>
-                        <li class="dropdown">
-                            <a href="#" class="nav-link">
+                        <li
+                            class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.requirement.index') ? 'active' : '' }}">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.requirement.index') }}"
+                                class="nav-link">
                                 <i class="fas fa-paperclip"></i>
                                 <span>Requirements</span>
                             </a>
@@ -238,8 +246,10 @@
                                 <span>Therapy</span>
                             </a>
                         </li>
-                        <li class="dropdown">
-                            <a href="#" class="nav-link">
+                        <li
+                            class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.consent.index') ? 'active' : '' }}">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first().'.consent.index') }}"
+                                class="nav-link">
                                 <i class="fas fa-file-signature"></i>
                                 <span>Consent Forms</span>
                             </a>
@@ -413,6 +423,11 @@
     <!-- Template JS File -->
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
+    @stack('modals')
     @stack('scripts')
 </body>
 

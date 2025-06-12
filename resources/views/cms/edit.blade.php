@@ -1,78 +1,61 @@
-<div x-show="showEditModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center">
-    <div class="fixed inset-0 bg-black opacity-50" @click="showEditModal = false"></div>
-    <div x-show="showEditModal" x-cloak x-transition:enter="transition ease-out duration-500"
-        x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100"
-        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100"
-        x-transition:leave-end="opacity-0 transform scale-90"
-        class="bg-white rounded-lg shadow-lg z-10 p-6 w-full max-w-lg">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Edit {{ $resource }}</h2>
-            <button @click="showEditModal = false"
-                class="text-gray-600 hover:text-gray-800 text-2xl leading-none">&times;</button>
-        </div>
-        <form action="{{ route(Auth::user()->getRoleNames()->first() . '.' . $resource . '.update', $record->id) }}"
-            method="POST">
-            @csrf
-            @method('put')
-            <div class="mt-5 mb-4">
-                <label for="name-{{ $record->id }}"
-                    class="block text-gray-700 text-left text-md">{{ $page_title }}:</label>
-                <input type="text" id="name-{{ $record->id }}" name="name" placeholder="Enter name"
-                    value="{{ $record->name }}"
-                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required>
+<div class="modal fade" id="editModal-{{ $record->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="editModalLabel-{{ $record->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel-{{ $record->id }}">Edit {{ $page_title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="mb-4">
-                <label for="remarks-{{ $record->id }}" class="block text-gray-700 text-left text-md">Remarks:</label>
-                <input type="text" id="remarks-{{ $record->id }}" name="remarks" placeholder="Enter remarks"
-                    value="{{ $record->remarks }}"
-                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required>
-            </div>
-            @php
-            $foreignKeyMap = [
-                'barangay' => 'district_id',
-                'goal' => 'domain_id',
-                'competency' => 'domain_id',
-                'objective' => 'goal_id',
-                ];
-            $field = $foreignKeyMap[$resource] ?? null;
-            @endphp
-
-            @if($field)
-            <div class="mb-4">
-                <label for="{{ $field }}" class="block text-gray-700 text-left text-md">
-                    {{ Str::title(str_replace('_', ' ', $field)) }}:
-                </label>
-                <div class="relative">
-                    <select id="{{ $field }}" name="{{ $field }}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-blue-500
-                       appearance-none">
-                        @foreach($subRecords as $item)
-                        <option value="{{ $item->id }}"
-                            {{ old($field, $model?->$field ?? '') == $item->id ? 'selected' : '' }}>
-                            {{ $item->name }}
-                        </option>
-                        @endforeach
-                    </select>
-
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586 
-                             l3.293-3.293a1 1 0 011.414 1.414 
-                             l-4 4a1 1 0 01-1.414 0 
-                             l-4-4a1 1 0 010-1.414z" />
-                        </svg>
+            <form action="{{ route(Auth::user()->getRoleNames()->first().'.'.$resource.'.update', $record->id) }}"
+                method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name-{{ $record->id }}">{{ $page_title }} Name</label>
+                        <input type="text" id="name-{{ $record->id }}" name="name" class="form-control"
+                            value="{{ old('name', $record->name) }}" required>
                     </div>
+
+                    <div class="form-group">
+                        <label for="remarks-{{ $record->id }}">Remarks</label>
+                        <input type="text" id="remarks-{{ $record->id }}" name="remarks" class="form-control"
+                            value="{{ old('remarks', $record->remarks) }}" required>
+                    </div>
+
+                    @php
+                    $foreignKeyMap = [
+                    'barangay' => 'district_id',
+                    'goal' => 'domain_id',
+                    'competency' => 'domain_id',
+                    'objective' => 'goal_id',
+                    ];
+                    $field = $foreignKeyMap[$resource] ?? null;
+                    @endphp
+
+                    @if($field)
+                    <div class="form-group">
+                        <label for="{{ $field }}-{{ $record->id }}">
+                            {{ Str::title(str_replace('_',' ',$field)) }}
+                        </label>
+                        <select id="{{ $field }}-{{ $record->id }}" name="{{ $field }}" class="form-control" required>
+                            @foreach($subRecords as $item)
+                            <option value="{{ $item->id }}"
+                                {{ old($field, $record->$field) == $item->id ? 'selected' : '' }}>
+                                {{ $item->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
                 </div>
-            </div>
-            @endif
-            <div class="flex justify-end">
-                <button type="button" @click="showEditModal = false"
-                    class="px-4 py-2 mr-2 text-black rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
-                <button type="submit"
-                    class="px-4 py-2 text-white bg-gray-700 rounded-lg hover:bg-gray-300 hover:text-black transition-colors">Submit</button>
-            </div>
-        </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

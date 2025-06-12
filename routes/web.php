@@ -47,14 +47,6 @@ Route::middleware(['auth'])
                 Route::post('/enrollment/store', [EnrollmentController::class, 'enrollmentStore'])->name('enrollment.store');
                 Route::get('/requirements-form', [EnrollmentController::class, 'requirementsForm'])->name('requirement.index');
                 Route::post('/requirement/store', [EnrollmentCOntroller::class, 'requirementStore'])->name('requirement.store');
-                // Route::post('enrollment/child-info/store', [EnrollmentController::class, 'storeChildInfo'])->name('childInfo.store');
-                // Route::post('enrollment/guardia-info/store', [EnrollmentController::class, 'storeGuardianInfo'])->name('guardianInfo.store');
-                // Route::post('enrollment/disability-info/store', [EnrollmentController::class, 'storeDisabilityInfo'])->name('disabilityInfo.store');
-                // Route::post('enrollment/education-info/store', [EnrollmentController::class, 'storeEducationInfo'])->name('educationInfo.store');
-                // Route::post('enrollment/service-info/store', [EnrollmentController::class, 'storeServiceInfo'])->name('serviceInfo.store');
-                // Route::post('enrollment/medical-info/store', [EnrollmentController::class, 'storeMedicalInfo'])->name('medicalInfo.store');
-                // Route::post('enrollment/family-composition/store', [EnrollmentController::class, 'storeFamilyComposition'])->name('familyInfo.store');
-                // Route::post('enrollment/emergency-info/store', [EnrollmentController::class, 'storeEmergencyInfo'])->name('emergencyInfo.store');
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');
                 Route::resource('civil', CivilStatusController::class)->middleware('merge_cms:civil_statuses,civil');
@@ -80,7 +72,13 @@ Route::middleware(['auth'])
             ->name('admin.')
             ->group(function () {
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-                Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types');
+                Route::get('/consent-form', [EnrollmentController::class, 'consentForm'])->name('consent.index');
+                Route::post('/consent-form/store', [EnrollmentController::class, 'consentStore'])->name('consent.store');
+                Route::get('/enrollment-form', [EnrollmentController::class, 'index'])->name('enrollment.index');
+                Route::post('/enrollment/store', [EnrollmentController::class, 'enrollmentStore'])->name('enrollment.store');
+                Route::get('/requirements-form', [EnrollmentController::class, 'requirementsForm'])->name('requirement.index');
+                Route::post('/requirement/store', [EnrollmentCOntroller::class, 'requirementStore'])->name('requirement.store');
+                Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');
                 Route::resource('civil', CivilStatusController::class)->middleware('merge_cms:civil_statuses,civil');
                 Route::resource('disability', DisabilityController::class)->middleware('merge_cms:disabilities,disability');
@@ -105,5 +103,11 @@ Route::middleware(['auth'])
             ->name('user.')
             ->group(function () {
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+                Route::get('/consent-form', [EnrollmentController::class, 'consentForm'])->name('consent.index');
+                Route::post('/consent-form/store', [EnrollmentController::class, 'consentStore'])->name('consent.store');
+                Route::get('/enrollment-form', [EnrollmentController::class, 'index'])->name('enrollment.index');
+                Route::post('/enrollment/store', [EnrollmentController::class, 'enrollmentStore'])->name('enrollment.store');
+                Route::get('/requirements-form', [EnrollmentController::class, 'requirementsForm'])->name('requirement.index');
+                Route::post('/requirement/store', [EnrollmentCOntroller::class, 'requirementStore'])->name('requirement.store');
             });
     });

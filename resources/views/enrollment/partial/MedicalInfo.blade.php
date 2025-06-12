@@ -29,20 +29,14 @@ $oldAllergs = old('allergy', $existingAllergies ?: ['']);
                 <div class="form-group col-md-6">
                     <label for="bloodType" class="font-weight-semibold">Blood Type <span
                             class="text-danger">*</span></label>
-                    <div class="position-relative">
-                        <select id="bloodType" name="bloodType" class="form-control">
-                            <option value="">Select Blood Type</option>
-                            @foreach($bloodTypes as $blood)
-                            <option value="{{ $blood->id }}" {{ $oldBlood == $blood->id ? 'selected' : '' }}>
-                                {{ $blood->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        <div class="pointer-events-none position-absolute"
-                            style="top:50%; right:1rem; transform:translateY(-50%);">
-                            <i class="fas fa-chevron-down text-gray"></i>
-                        </div>
-                    </div>
+                    <select id="bloodType" name="bloodType" class="form-control">
+                        <option value="">Select Blood Type</option>
+                        @foreach($bloodTypes as $blood)
+                        <option value="{{ $blood->id }}" {{ $oldBlood == $blood->id ? 'selected' : '' }}>
+                            {{ $blood->name }}
+                        </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="mb-4">

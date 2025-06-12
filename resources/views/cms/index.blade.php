@@ -1,81 +1,108 @@
 @extends('layouts.dashboard')
+
 @section('content')
-
-@section('breadcrumb')
-<x-breadcrumb :items="[
-        ['label' => $page_title, 'url' => route(Auth::user()->getRoleNames()->first() . '.' . $resource . '.index')],
-    ]" />
-@endsection
-
-<div class="flex justify-between mb-5 overflow-auto">
-    <h1 class="text-3xl font-bold mb-2 text-center text-gray-800">{{ $page_title }} records</h1>
-    <div x-data="{ showModal: false }">
-        <button @click="showModal = true"
-            class="px-5 py-2 text-white bg-[#1A4798] rounded-lg hover:bg-[#F4C027] hover:text-black hover:border border-[#F4C027] transition-colors">
-            <i class="fa-solid fa-plus"></i> Add {{ $resource }}
-        </button>
-        @include('cms.create')
-    </div>
-</div>
 @include('components.alert')
-<div class="w-full bg-white p-8 rounded-lg shadow-lg border border-gray-200 overflow-auto max-h-[75vh]">
-    <table class="min-w-full border border-gray-200 shadow-lg" id="{{ $resource }}-table">
-        <thead class="bg-[#1A4798]">
-            <tr class="text-white uppercase text-md leading-normal">
-                @foreach ($columns as $column)
-                <th class="py-3 px-4 cursor-pointer">
-                    {{ $column }}
-                </th>
-                @endforeach
-            </tr>
-        </thead>
-        <tbody class="text-gray-600 text-sm font-normal text-center">
-            @foreach ($data as $record)
-            @php
-                $fieldMap = [
-                'role' => 'guard_name',
-                'permission' => 'guard_name',
-                'barangay' => 'district.name',
-                'goal' => 'domain.name',
-                'competency' => 'domain.name',
-                'objective' => 'goal.name',
-                ];
-                $firstCol = isset($fieldMap[$resource]) ? data_get($record, $fieldMap[$resource]) : $record->remarks;
-                $secondCol = in_array($resource, ['barangay','goal','competency','objective']) ? $record->remarks : null;
-            @endphp
-            <tr class="border border-gray-200 hover:bg-gray-100 transition-colors">
-                <td class="py-1 px-4">{{ $record->id }}</td>
-                <td class="py-1 px-4">{{ $record->name }}</td>
-                <td class="py-1 px-4">{{ $firstCol }}</td>
-                @if($secondCol)
-                <td class="py-1 px-4">{{ $secondCol }}</td>
-                @endif
-                <td class="py-1 px-4">
-                    <div class="inline-flex items-center space-x-2">
-                        <div x-data="{ showEditModal: false }">
-                            <button @click="showEditModal = true"
-                                class="inline-block p-2 bg-blue-100 text-blue-500 hover:bg-blue-200 hover:text-blue-700 rounded transition-colors"
-                                title="Edit">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            @include('cms.edit')
-                        </div>
-                        <div x-data="{ showDeleteModal: false }">
-                            <button @click="showDeleteModal = true"
-                                class="inline-block p-2 bg-red-100 text-red-500 hover:bg-red-200 hover:text-red-700 rounded transition-colors"
-                                title="Delete">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                            @include('cms.delete')
-                        </div>
+<section class="section">
+    <div class="section-body">
+        <div class="card shadow-lg">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0 text-primary">
+                    {{ $page_title }} CMS
+                </h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 bg-transparent p-0">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.dashboard') }}">
+                                <i class="fas fa-home"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <i class="fas fa-file-alt"></i> {{ $page_title }}
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="card-body">
+                <div class="callout callout-info">
+                    <div class="callout-header">
+                        <i class="fas fa-info-circle text-danger"></i> Please Note
                     </div>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+                    <p class="mb-0">
+                        For any field that does not apply, simply input <strong>N/A</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="section-body">
+        <div class="card shadow-lg">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="font-weight-bold mb-0">
+                    List of {{ $page_title }}
+                </h3>
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#add{{ $resource }}Modal">
+                    <i class="fa fa-plus"></i> Add {{ $page_title }}
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="{{ $resource }}-table" class="table table-striped table-md">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>{{ isset($fieldMap[$resource]) ? ucfirst($fieldMap[$resource]) : 'Remarks' }}</th>
+                                @if(in_array($resource, ['barangay','goal','competency','objective']))
+                                <th>Remarks</th>
+                                @endif
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data as $record)
+                            @php
+                            $firstCol = isset($fieldMap[$resource]) ? data_get($record, $fieldMap[$resource]) :
+                            $record->remarks;
+                            $secondCol = in_array($resource, ['barangay','goal','competency','objective']) ?
+                            $record->remarks : null;
+                            @endphp
+                            <tr>
+                                <td>{{ $record->id }}</td>
+                                <td>{{ $record->name }}</td>
+                                <td>{{ $firstCol }}</td>
+                                @if($secondCol)
+                                <td>{{ $secondCol }}</td>
+                                @endif
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                                            data-target="#editModal-{{ $record->id }}" title="Edit {{ $page_title }}">
+                                            <i class="fas fa-pen"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
+                                            data-target="#deleteModal-{{ $record->id }}"
+                                            title="Delete {{ $page_title }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@push('modals')
+@include('cms.create')
+@include('cms.edit')
+@include('cms.delete')
+@endpush
+@push('scripts')
 <script>
 $(document).ready(function() {
     $('#{{ $resource }}-table').DataTable({
@@ -86,39 +113,23 @@ $(document).ready(function() {
             [0, 'desc']
         ],
 
-        dom: '<"flex justify-between items-center mb-4"lf>rt<"flex justify-between items-center mt-4"ip>',
-
-        initComplete: function() {
-            const table = this.api();
-
-            const $searchInput = $('div.dataTables_filter input');
-            $searchInput.addClass(
-                'ml-2 px-4 py-1 border border-gray-300 rounded focus:outline-none ' +
-                'focus:ring focus:ring-[#1A4798] focus:ring-opacity-50'
-            );
-
-            const $lengthSelect = $('div.dataTables_length select');
-            $lengthSelect.addClass(
-                'px-4 py-1 my-2 border border-gray-300 rounded focus:outline-none ' +
-                'focus:ring focus:ring-[#1A4798] focus:ring-opacity-50'
-            );
+        dom: '<"d-flex justify-content-between align-items-center mb-3"' +
+            '<"dataTables_length"l><"dataTables_filter"f>' +
+            '>rt' +
+            '<"d-flex justify-content-between align-items-center mt-3"' +
+            '<"dataTables_info"i><"dataTables_paginate"p>' +
+            '>',
+        initComplete() {
+            $('div.dataTables_length select')
+                .removeClass()
+                .addClass('form-select form-select-sm');
+            $('div.dataTables_filter input')
+                .removeClass()
+                .addClass('form-control form-control-sm')
+                .attr('placeholder', 'Search...');
         },
-
-        drawCallback: function(settings) {
-            const $paginateButtons = $('div.dataTables_paginate .paginate_button');
-            $paginateButtons.addClass(
-                'px-4 py-2 text-black rounded-lg hover:bg-[#1A4798]/20 disabled:opacity-50 ' +
-                'disabled:cursor-not-allowed transition-colors'
-            );
-
-            const $currentPage = $('div.dataTables_paginate .paginate_button.current');
-            $currentPage.removeClass('bg-gray-700 text-white');
-            $currentPage.addClass(
-                'bg-[#1A4798] text-white px-4 m-2 py-2 rounded-lg transition-colors hover:bg-[#1A4798]/90'
-            );
-        }
     });
 });
 </script>
-
+@endpush
 @endsection

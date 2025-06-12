@@ -31,25 +31,6 @@ $selectedBarangay = old('barangay_id', $childInfo->barangay_id ?? '');
                     </ol>
                 </nav>
             </div>
-            @if (!$hasAllData)
-            <div class="card-body">
-                <div class="callout callout-info">
-                    <div class="callout-header mb-0">
-                        <i class="fas fa-info-circle text-primary"></i> Review Your Entries
-                    </div>
-                    <p class="mb-0">
-                        Please take a moment to review the information below. If you notice any errors or omissions,
-                        feel free to edit the form!
-                    </p>
-                    <p class="mb-0">
-                        Once everything is correct, you may proceed to submit your requirements by
-                        <a href="{{ route(Auth::user()->getRoleNames()->first() . '.requirement.index') }}">
-                            clicking here
-                        </a>.
-                    </p>
-                </div>
-            </div>
-            @else
             <div class="card-body">
                 <div class="callout callout-info">
                     <div class="callout-header">
@@ -60,7 +41,6 @@ $selectedBarangay = old('barangay_id', $childInfo->barangay_id ?? '');
                     </p>
                 </div>
             </div>
-            @endif
         </div>
     </div>
     <form action="{{ route(Auth::user()->getRoleNames()->first() . '.enrollment.store') }}" method="POST">

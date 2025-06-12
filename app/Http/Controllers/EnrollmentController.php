@@ -72,6 +72,20 @@ class EnrollmentController extends Controller
             $existingFamily = ChildFamily::getChildFamily(Auth::user()->child->first()->id);
             $existingEmergency = ChildEmergency::getChildEmergency(Auth::user()->child->first()->id);
 
+            $hasAllData = 
+                $childInfo &&
+                $fatherInfo &&
+                $motherInfo &&
+                $fetchedFather &&
+                $fetchedMother &&
+                $existingYesIds->isNotEmpty() &&
+                $existingNoIds->isNotEmpty() &&
+                $existingOtherYes &&
+                $existingOtherNo &&
+                $existingMedications &&
+                $existingFamily &&
+                $existingEmergency;
+
             return view('enrollment.enrollmentForm', compact(
                 'relations', 
                 'genders', 
@@ -98,6 +112,7 @@ class EnrollmentController extends Controller
                 'existingChildMedical',
                 'existingFamily',
                 'existingEmergency',
+                'hasAllData'
             ));
         } else {
             return redirect()
@@ -105,6 +120,7 @@ class EnrollmentController extends Controller
                 ->with('failed', 'Please fill out the consent form first.');
         }
     }
+
     public function consentForm()
     {
         $parentType = Relation::getAllRelations();
@@ -137,7 +153,7 @@ class EnrollmentController extends Controller
             ->log('User: ' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' submitted an enrollment form');
 
         return redirect()
-            ->route(Auth::user()->getRoleNames()->first() . '.requirement.index')
+            ->route(Auth::user()->getRoleNames()->first() . '.enrollment.index')
             ->with('success', 'Enrollment form submitted successfully!');
     }
 
@@ -147,7 +163,7 @@ class EnrollmentController extends Controller
         $childInfo = ChildInfo::getChildInfo(Auth::user()->id);
         $existingFiles = Files::where([
             ['imageable_type', ChildInfo::class],
-            ['imageable_id',   $childInfo->id],
+            ['imageable_id',   $childInfo->id ?? ''],
             ])->get()->keyBy('remarks');
 
         return view('enrollment.requirementForm', compact(
