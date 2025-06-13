@@ -50,14 +50,18 @@
                         <a href="#" class="btn btn-outline-secondary btn-block">View Educational Plan</a>
                     </div>
                 </div>
-                
                 <div class="card">
                     <div class="card-header">
-                        <h4>Student Identification Number</h4>
+                        <h4>Student Identification Card</h4>
                     </div>
-                    <div class="card-body">
-                        <p class="mb-0 font-weight-bold text-center">
-                            {{ Auth::user()->child->first()->id_number }}
+                    <div class="card-body text-center">
+                        <!-- Generated ID‐card image -->
+                        <img src="{{ asset('images/generated/'.$generatedFilename) }}" alt="Child Front ID"
+                            class="img-fluid mb-2" style="max-width: 300px;">
+
+                        <!-- If you still want the plain ID number below: -->
+                        <p class="mb-0 font-weight-bold">
+                            {{ $child->id_number }}
                         </p>
                     </div>
                 </div>
