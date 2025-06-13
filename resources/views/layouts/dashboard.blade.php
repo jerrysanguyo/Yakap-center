@@ -205,8 +205,9 @@
                             </a>
                         </li>
                         <li class="menu-header">Student</li>
-                        <li class="dropdown">
-                            <a href="#" class="nav-link">
+                        <li
+                            class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.children.profile') ? 'active' : '' }}">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile') }}" class="nav-link">
                                 <i class="fas fa-hands-holding-child"></i>
                                 <span>Children Profile</span>
                             </a>
@@ -254,119 +255,149 @@
                                 <span>Consent Forms</span>
                             </a>
                         </li>
-                        <li class="menu-header">CMS</li>
-                        <li class="dropdown">
+                        <li class="menu-header">CMS</li>@php
+                        $role = Auth::user()->getRoleNames()->first();
+                        $children = [
+                        'blood.index','civil.index','disability.index',
+                        'district.index','barangay.index','education.index',
+                        'gender.index','goal.index','competency.index',
+                        'domain.index','objective.index','privacy.index',
+                        'program.index','rating.index','relation.index',
+                        'service.index'
+                        ];
+                        $open = collect($children)
+                        ->map(fn($r) => "$role.$r")
+                        ->contains(fn($route) => request()->routeIs($route));
+                        @endphp
+
+                        <li class="dropdown {{ $open ? 'active' : '' }}">
                             <a href="#" class="nav-link has-dropdown">
                                 <i class="fas fa-th"></i>
                                 <span>Dropdown options</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.blood.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.blood.index') }}">
                                         <i class="fas fa-droplet"></i>
                                         Blood type
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.civil.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.civil.index') }}">
                                         <i class="fas fa-id-card"></i>
                                         Civil status
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.disability.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.disability.index') }}">
                                         <i class="fas fa-wheelchair"></i>
                                         Disability
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.district.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.district.index') }}">
                                         <i class="fas fa-map-marked-alt"></i>
                                         District
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.barangay.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.barangay.index') }}">
                                         <i class="fas fa-city"></i>
                                         Barangay
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.education.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.education.index') }}">
                                         <i class="fas fa-graduation-cap"></i>
                                         Education
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.gender.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.gender.index') }}">
                                         <i class="fas fa-venus-mars"></i>
                                         Gender
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.goal.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.goal.index') }}">
                                         <i class="fas fa-bullseye"></i>
                                         Goal
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.competency.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.competency.index') }}">
                                         <i class="fas fa-chalkboard-teacher"></i>
                                         Learning Competency
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.domain.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.domain.index') }}">
                                         <i class="fas fa-book-open"></i>
                                         Learning Domain
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.objective.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.objective.index') }}">
                                         <i class="fas fa-check-circle"></i>
                                         Objective
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.privacy.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.privacy.index') }}">
                                         <i class="fas fa-user-secret"></i>
                                         Privacy
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.program.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.program.index') }}">
                                         <i class="fas fa-code"></i>
                                         Program
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.rating.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.rating.index') }}">
                                         <i class="fas fa-star"></i>
                                         Rating
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.relation.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.relation.index') }}">
                                         <i class="fas fa-handshake"></i>
                                         Relation
                                     </a>
                                 </li>
-                                <li>
+                                <li
+                                    class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.service.index') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route(Auth::user()->getRoleNames()->first() . '.service.index') }}">
                                         <i class="fas fa-concierge-bell"></i>

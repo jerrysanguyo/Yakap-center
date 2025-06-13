@@ -1,36 +1,37 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cms;
 
-use App\Models\Education;
+use App\Models\BloodType;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
+use App\Http\Controllers\Controller;
 
-class EducationController extends Controller
+class BloodTypeController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'education';
+    protected string $resource = 'blood';
 
     public function __construct()
     {
-        $this->cmsService = new CmsService(Education::class);
+        $this->cmsService = new CmsService(BloodType::class);
     }
 
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Educations';
+        $page_title = 'Blood type';
         $resource = $this->resource;
-        $columns = ['id', 'name', 'remarks', 'actions'];
-        $data = Education::getAllEducations();
+        $columns = ['id', 'name', 'remarks', 'Action'];
+        $data = BloodType::getAllBloodTypes();
 
         return $dataTable
             ->render('cms.index', compact(
                 'page_title',
-                'resource',
                 'columns',
                 'data',
-                'dataTable',
+                'resource',
+                'dataTable'
             ));
     }
     
@@ -41,16 +42,16 @@ class EducationController extends Controller
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, Education $education)
+    public function update(CmsRequest $request, BloodType $blood)
     {
-        $update = $this->cmsService->cmsUpdate($request->validated(), $education->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $blood->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
     }
     
-    public function destroy(Education $education)
+    public function destroy(BloodType $blood)
     {
-        $destroy = $this->cmsService->cmsDestroy($education->id);
+        $destroy = $this->cmsService->cmsDestroy($blood->id);
 
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }

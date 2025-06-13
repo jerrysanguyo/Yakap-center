@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cms;
 
 use App\Models\LearningDomain;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
+use App\Http\Controllers\Controller;
 
 class LearningDomainController extends Controller
 {

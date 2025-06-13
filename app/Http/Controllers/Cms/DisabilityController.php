@@ -1,39 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cms;
 
-use App\Models\Program;
+use App\Models\Disability;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
+use App\Http\Controllers\Controller;
 
-class ProgramController extends Controller
+class DisabilityController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'program';
+    protected string $resource = 'disability';
 
     public function __construct()
     {
-        $this->cmsService = new CmsService(Program::class);
+        $this->cmsService = new CmsService(Disability::class);
     }
-
+    
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Program';
-        $resource = 'program';
+        $page_title = 'Disability';
+        $resource = $this->resource;
         $columns = ['id', 'name', 'remarks', 'action'];
-        $data = Program::getAllPrograms();
+        $data = Disability::getAllDisabilities();
 
         return $dataTable
             ->render('cms.index', compact(
                 'page_title',
-                'resource',
+                'resource', 
                 'columns',
                 'data',
                 'dataTable'
             ));
     }
-
+    
     public function store(CmsRequest $request)
     {
         $store = $this->cmsService->cmsStore($request->validated());
@@ -41,17 +42,17 @@ class ProgramController extends Controller
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, Program $program)
+    public function update(CmsRequest $request, Disability $disability)
     {
-        $update = $this->cmsService->cmsUpdate($request->validated(), $program->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $disability->id);
 
-        return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
+        return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
     }
     
-    public function destroy(Program $program)
+    public function destroy(Disability $disability)
     {
-        $destroy = $this->cmsService->cmsDestroy($program->id);
-        
+        $destroy = $this->cmsService->cmsDestroy($disability->id);
+
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
 }

@@ -24,15 +24,18 @@
     </div>
 
     <div class="section-body">
-        <div class="card shadow-lg">
+        <div class="card shadow-lg card-primary">
+            <div class="card-header mt-3 d-flex justify-content-center align-items-center">
+                <div class="text-center">
+                    <h2 class="font-weight-bold">
+                        Pahintulot sa Paggamit ng Larawan at Bidyo ng Mag-aaral
+                    </h2>
+                    <p class="text-muted">
+                        (Consent to use learner photos and videos)
+                    </p>
+                </div>
+            </div>
             <div class="card-body">
-                <h2 class="text-center font-weight-bold mb-2">
-                    Pahintulot sa Paggamit ng Larawan at Bidyo ng Mag-aaral
-                </h2>
-                <p class="text-center text-muted mb-4">
-                    (Consent to use learner photos and videos)
-                </p>
-
                 <form action="{{ route(Auth::user()->getRoleNames()->first() . '.consent.store') }}" method="POST">
                     @csrf
                     <div class="mb-4">

@@ -36,7 +36,7 @@
     </div>
 
     <div class="section-body">
-        <div class="card shadow-lg">
+        <div class="card shadow-lg card-primary">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="font-weight-bold mb-0">
                     List of {{ $page_title }}
@@ -47,22 +47,28 @@
                 </button>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table id="{{ $resource }}-table" class="table table-striped table-md">
+                <div class="table-responsive table-invoice">
+                    <table id="{{ $resource }}-table" class="table table-hover table-md table-md">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>{{ isset($fieldMap[$resource]) ? ucfirst($fieldMap[$resource]) : 'Remarks' }}</th>
-                                @if(in_array($resource, ['barangay','goal','competency','objective']))
-                                <th>Remarks</th>
-                                @endif
-                                <th>Actions</th>
+                                @foreach ($columns as $column)
+                                <th class="text-uppercase">
+                                    {{ $column }}
+                                </th>
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $record)
                             @php
+                            $fieldMap = [
+                            'role' => 'guard_name',
+                            'permission' => 'guard_name',
+                            'barangay' => 'district.name',
+                            'goal' => 'domain.name',
+                            'competency' => 'domain.name',
+                            'objective' => 'goal.name',
+                            ];
                             $firstCol = isset($fieldMap[$resource]) ? data_get($record, $fieldMap[$resource]) :
                             $record->remarks;
                             $secondCol = in_array($resource, ['barangay','goal','competency','objective']) ?
@@ -81,11 +87,17 @@
                                             data-target="#editModal-{{ $record->id }}" title="Edit {{ $page_title }}">
                                             <i class="fas fa-pen"></i>
                                         </button>
+                                        @push('modals')
+                                        @include('cms.edit')
+                                        @endpush
                                         <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
                                             data-target="#deleteModal-{{ $record->id }}"
                                             title="Delete {{ $page_title }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
+                                        @push('modals')
+                                        @include('cms.delete')
+                                        @endpush
                                     </div>
                                 </td>
                             </tr>
@@ -122,7 +134,7 @@ $(document).ready(function() {
         initComplete() {
             $('div.dataTables_length select')
                 .removeClass()
-                .addClass('form-select form-select-sm');
+                .addClass('form-select form-select-sm border-bottom');
             $('div.dataTables_filter input')
                 .removeClass()
                 .addClass('form-control form-control-sm')

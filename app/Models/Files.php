@@ -21,7 +21,7 @@ class Files extends Model
     public static function childPicture($childId)
     {
         return self::where('imageable_id', $childId)
-                    ->where('remarks', 'picture')
+                    ->where('remarks', '8')
                     ->first();
     }
 

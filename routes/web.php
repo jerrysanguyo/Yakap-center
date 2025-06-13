@@ -1,26 +1,30 @@
 <?php
 
-use App\Http\Controllers\BloodTypeController;
-use App\Http\Controllers\AllergyController;
-use App\Http\Controllers\CivilStatusController;
-use App\Http\Controllers\DisabilityController;
+use App\Http\Controllers\Cms\{
+    BloodTypeController,
+    AllergyController,
+    CivilStatusController,
+    DisabilityController,
+    DistrictController,
+    BarangayController,
+    EducationController,
+    GenderController,
+    GoalController,
+    LearningCompetencyController,
+    LearningDomainController,
+    ObjectiveController,
+    ParentTypeController,
+    PrivacyController,
+    ProgramController,
+    RatingController,
+    RelationController,
+    ServiceController,
+};
+
+use App\Http\Controllers\ChildController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DistrictController;
-use App\Http\Controllers\BarangayController;
-use App\Http\Controllers\EducationController;
 use App\Http\Controllers\EnrollmentController;
-use App\Http\Controllers\GenderController;
-use App\Http\Controllers\GoalController;
-use App\Http\Controllers\LearningCompetencyController;
-use App\Http\Controllers\LearningDomainController;
-use App\Http\Controllers\ObjectiveController;
-use App\Http\Controllers\ParentTypeController;
-use App\Http\Controllers\PrivacyController;
-use App\Http\Controllers\ProgramController;
-use App\Http\Controllers\RatingController;
-use App\Http\Controllers\RelationController;
-use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ActivityLog;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +43,7 @@ Route::middleware(['auth'])
             ->prefix('sa')
             ->name('superadmin.')
             ->group(function () {
+                Route::get('/children-profile', [ChildController::class, 'index'])->name('children.profile');
                 Route::get('/activity-logs', [ActivityLog::class, 'index'])->name('log.index');
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
                 Route::get('/consent-form', [EnrollmentController::class, 'consentForm'])->name('consent.index');

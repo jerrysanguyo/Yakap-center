@@ -1,30 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cms;
 
-use App\Models\Gender;
+use App\Models\District;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
+use App\Http\Controllers\Controller;
 
-
-class GenderController extends Controller
+class DistrictController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'gender';
-    protected string $table = 'genders';
+    protected string $resource = 'district';
 
     public function __construct()
     {
-        $this->cmsService = new CmsService(Gender::class);
+        $this->cmsService = new CmsService(District::class);
     }
 
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Genders';
+        $page_title = 'Districts';
         $resource = $this->resource;
         $columns = ['id', 'name', 'remarks', 'actions'];
-        $data = Gender::getAllGenders();
+        $data = District::getAllDistricts();
 
         return $dataTable
             ->render('cms.index', compact(
@@ -38,23 +37,21 @@ class GenderController extends Controller
     
     public function store(CmsRequest $request)
     {
-        $request->merge(['cms_table' => $this->table]);
         $store = $this->cmsService->cmsStore($request->validated());
 
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, Gender $gender)
+    public function update(CmsRequest $request, District $district)
     {
-        $request->merge(['cms_table' => $this->table, 'id' => $gender->id]);
-        $update = $this->cmsService->cmsUpdate($request->validated(), $gender->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $district->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
     }
     
-    public function destroy(Gender $gender)
+    public function destroy(District $district)
     {
-        $destroy = $this->cmsService->cmsDestroy($gender->id);
+        $destroy = $this->cmsService->cmsDestroy($district->id);
 
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }

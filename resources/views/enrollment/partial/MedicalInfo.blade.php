@@ -6,7 +6,7 @@ $oldAllergs = old('allergy', $existingAllergies ?: ['']);
 @endphp
 
 <div class="section-body">
-    <div class="card shadow-lg">
+    <div class="card shadow-lg card-primary">
         <div class="card-header">
             <h3 class="font-weight-bold mb-0">Medical Information</h3>
         </div>

@@ -1,35 +1,36 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cms;
 
-use App\Models\Disability;
+use App\Models\Allergy;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
+use App\Http\Controllers\Controller;
 
-class DisabilityController extends Controller
+class AllergyController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'disability';
+    protected string $resource = 'allergy';
 
     public function __construct()
     {
-        $this->cmsService = new CmsService(Disability::class);
+        $this->cmsService = new CmsService(Allergy::class);
     }
-    
+
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Disability';
+        $page_title = 'Allergy';
         $resource = $this->resource;
-        $columns = ['id', 'name', 'remarks', 'action'];
-        $data = Disability::getAllDisabilities();
+        $columns = ['id', 'name', 'remarks', 'Action'];
+        $data = Allergy::getAllAllergies();
 
         return $dataTable
             ->render('cms.index', compact(
                 'page_title',
-                'resource', 
                 'columns',
                 'data',
+                'resource',
                 'dataTable'
             ));
     }
@@ -41,16 +42,16 @@ class DisabilityController extends Controller
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, Disability $disability)
+    public function update(CmsRequest $request, Allergy $allergy)
     {
-        $update = $this->cmsService->cmsUpdate($request->validated(), $disability->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $allergy->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
     }
     
-    public function destroy(Disability $disability)
+    public function destroy(Allergy $allergy)
     {
-        $destroy = $this->cmsService->cmsDestroy($disability->id);
+        $destroy = $this->cmsService->cmsDestroy($allergy->id);
 
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }

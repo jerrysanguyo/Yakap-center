@@ -23,11 +23,18 @@ class ChildInfo extends Model
         'city',
     ];
 
+    public static function getAllChildNames()
+    {
+        return self::select('id_number', 'first_name', 'middle_name', 'last_name', 'created_at')
+            ->orderBy('created_at', 'asc')
+            ->get();
+    }
+
     public static function getChildInfo($parents_id)
     {
         return self::where('parents_id', $parents_id)->first();
     }
-
+    
     public function parents()
     {
         return $this->belongsTo(User::class, 'parents_id');
@@ -76,5 +83,25 @@ class ChildInfo extends Model
     public function medicine()
     {
         return $this->hasMany(ChildMedicine::class, 'child_id');
+    }
+
+    public function allergy()
+    {
+        return $this->hasMany(ChildAllergy::class, 'child_id');
+    }
+
+    public function medicalHistory()
+    {
+        return $this->hasOne(ChildMedicalHistory::class, 'child_id');
+    }
+
+    public function parentInfo()
+    {
+        return $this->hasMany(ParentsInfo::class, 'child_id');
+    }
+
+    public function emergency()
+    {
+        return $this->hasOne(ChildEmergency::class, 'child_id');
     }
 }

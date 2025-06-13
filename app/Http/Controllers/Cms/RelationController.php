@@ -1,28 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cms;
 
-use App\Models\Privacy;
+use App\Models\Relation;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
+use App\Http\Controllers\Controller;
 
-class PrivacyController extends Controller
+
+class RelationController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'privacy';
+    protected string $resource = 'relation';
 
     public function __construct()
     {
-        $this->cmsService = new CmsService(Privacy::class);
+        $this->cmsService = new CmsService(Relation::class);
     }
 
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Privacy Policy';
-        $resource = 'privacy';
+        $page_title = 'Relation';
+        $resource = 'relation';
         $columns = ['id', 'name', 'remarks', 'action'];
-        $data = Privacy::getAllPrivacy();
+        $data = Relation::getAllRelations();
 
         return $dataTable
             ->render('cms.index', compact(
@@ -41,16 +43,16 @@ class PrivacyController extends Controller
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, Privacy $privacy)
+    public function update(CmsRequest $request, Relation $relation)
     {
-        $update = $this->cmsService->cmsUpdate($request->validated(), $privacy->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $relation->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
     
-    public function destroy(Privacy $privacy)
+    public function destroy(Relation $relation)
     {
-        $destroy = $this->cmsService->cmsDestroy($privacy->id);
+        $destroy = $this->cmsService->cmsDestroy($relation->id);
         
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }

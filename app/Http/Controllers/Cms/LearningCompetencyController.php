@@ -1,30 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cms;
 
-use App\Models\Goal;
-use App\Models\Objective;
+use App\Models\learningCompetency;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
+use App\Models\LearningDomain;
 use App\Services\CmsService;
+use App\Http\Controllers\Controller;
 
-class ObjectiveController extends Controller
+class LearningCompetencyController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'objective';
+    protected string $resource = 'competency';
 
     public function __construct()
     {
-        $this->cmsService = new CmsService(Objective::class);
+        $this->cmsService = new CmsService(learningCompetency::class);
     }
 
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Objective';
+        $page_title = 'Learning competency';
         $resource = $this->resource;
-        $columns = ['id', 'name', 'goal', 'remarks', 'Action'];
-        $data = Objective::getAllObjectives();
-        $subRecords = Goal::getAllGoals();
+        $columns = ['id', 'name', 'domain', 'remarks', 'Action'];
+        $data = learningCompetency::getAllLearningCompetencies();
+        $subRecords = LearningDomain::getAllLearningDomains();
 
         return $dataTable->render('cms.index', compact(
             'page_title',
@@ -43,16 +44,16 @@ class ObjectiveController extends Controller
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, Objective $objective)
+    public function update(CmsRequest $request, learningCompetency $competency)
     {
-        $update = $this->cmsService->cmsUpdate($request->validated(), $objective->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $competency->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
     
-    public function destroy(Objective $objective)
+    public function destroy(learningCompetency $competency)
     {
-        $destroy = $this->cmsService->cmsDestroy($objective->id);
+        $destroy = $this->cmsService->cmsDestroy($competency->id);
         
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }

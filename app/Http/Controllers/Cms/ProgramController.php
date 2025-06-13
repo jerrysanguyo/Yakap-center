@@ -1,28 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cms;
 
-use App\Models\Service;
+use App\Models\Program;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
+use App\Http\Controllers\Controller;
 
-class ServiceController extends Controller
+class ProgramController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'service';
+    protected string $resource = 'program';
 
     public function __construct()
     {
-        $this->cmsService = new CmsService(Service::class);
+        $this->cmsService = new CmsService(Program::class);
     }
 
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Service';
-        $resource = 'service';
+        $page_title = 'Program';
+        $resource = 'program';
         $columns = ['id', 'name', 'remarks', 'action'];
-        $data = Service::getAllServices();
+        $data = Program::getAllPrograms();
 
         return $dataTable
             ->render('cms.index', compact(
@@ -41,16 +42,16 @@ class ServiceController extends Controller
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, Service $service)
+    public function update(CmsRequest $request, Program $program)
     {
-        $update = $this->cmsService->cmsUpdate($request->validated(), $service->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $program->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
     
-    public function destroy(Service $service)
+    public function destroy(Program $program)
     {
-        $destroy = $this->cmsService->cmsDestroy($service->id);
+        $destroy = $this->cmsService->cmsDestroy($program->id);
         
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }

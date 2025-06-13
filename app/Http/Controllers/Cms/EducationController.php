@@ -1,28 +1,29 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cms;
 
-use App\Models\District;
+use App\Models\Education;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
 use App\Services\CmsService;
+use App\Http\Controllers\Controller;
 
-class DistrictController extends Controller
+class EducationController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'district';
+    protected string $resource = 'education';
 
     public function __construct()
     {
-        $this->cmsService = new CmsService(District::class);
+        $this->cmsService = new CmsService(Education::class);
     }
 
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Districts';
+        $page_title = 'Educations';
         $resource = $this->resource;
         $columns = ['id', 'name', 'remarks', 'actions'];
-        $data = District::getAllDistricts();
+        $data = Education::getAllEducations();
 
         return $dataTable
             ->render('cms.index', compact(
@@ -41,16 +42,16 @@ class DistrictController extends Controller
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, District $district)
+    public function update(CmsRequest $request, Education $education)
     {
-        $update = $this->cmsService->cmsUpdate($request->validated(), $district->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $education->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource, 'updated');
     }
     
-    public function destroy(District $district)
+    public function destroy(Education $education)
     {
-        $destroy = $this->cmsService->cmsDestroy($district->id);
+        $destroy = $this->cmsService->cmsDestroy($education->id);
 
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }

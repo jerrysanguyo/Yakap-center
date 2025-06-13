@@ -7,7 +7,7 @@ $f_initialAge = $f_birth ? Carbon::parse($f_birth)->age : '';
 @endphp
 
 <div class="section-body">
-    <div class="card shadow-lg">
+    <div class="card shadow-lg card-primary">
         <div class="card-header">
             <h3 class="font-weight-bold mb-0">Mother’s Information</h3>
         </div>
@@ -88,7 +88,7 @@ $f_initialAge = $f_birth ? Carbon::parse($f_birth)->age : '';
     </div>
 </div>
 <div class="section-body">
-    <div class="card shadow-lg">
+    <div class="card shadow-lg card-primary">
         <div class="card-header">
             <h3 class="font-weight-bold mb-0">Father's Information</h3>
         </div>

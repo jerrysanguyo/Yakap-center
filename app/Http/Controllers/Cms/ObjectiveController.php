@@ -1,30 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cms;
 
 use App\Models\Goal;
+use App\Models\Objective;
 use App\Http\Requests\CmsRequest;
 use App\DataTables\CmsDataTable;
-use App\Models\LearningDomain;
 use App\Services\CmsService;
+use App\Http\Controllers\Controller;
 
-class GoalController extends Controller
+class ObjectiveController extends Controller
 {
     protected CmsService $cmsService;
-    protected string $resource = 'goal';
+    protected string $resource = 'objective';
 
     public function __construct()
     {
-        $this->cmsService = new CmsService(Goal::class);
+        $this->cmsService = new CmsService(Objective::class);
     }
 
     public function index(CmsDataTable $dataTable)
     {
-        $page_title = 'Goal';
+        $page_title = 'Objective';
         $resource = $this->resource;
-        $columns = ['id', 'name', 'domain', 'remarks', 'Action'];
-        $data = Goal::getAllGoals();
-        $subRecords = LearningDomain::getAllLearningDomains();
+        $columns = ['id', 'name', 'goal', 'remarks', 'Action'];
+        $data = Objective::getAllObjectives();
+        $subRecords = Goal::getAllGoals();
 
         return $dataTable->render('cms.index', compact(
             'page_title',
@@ -35,7 +36,7 @@ class GoalController extends Controller
             'dataTable'
         ));
     }
-    
+
     public function store(CmsRequest $request)
     {
         $store = $this->cmsService->cmsStore($request->validated());
@@ -43,16 +44,16 @@ class GoalController extends Controller
         return $this->cmsService->handleRedirect($store, $this->resource, 'created');
     }
     
-    public function update(CmsRequest $request, Goal $goal)
+    public function update(CmsRequest $request, Objective $objective)
     {
-        $update = $this->cmsService->cmsUpdate($request->validated(), $goal->id);
+        $update = $this->cmsService->cmsUpdate($request->validated(), $objective->id);
 
         return $this->cmsService->handleRedirect($update, $this->resource,  'updated');
     }
     
-    public function destroy(Goal $goal)
+    public function destroy(Objective $objective)
     {
-        $destroy = $this->cmsService->cmsDestroy($goal->id);
+        $destroy = $this->cmsService->cmsDestroy($objective->id);
         
         return $this->cmsService->handleRedirect($destroy, $this->resource, 'deleted');
     }
