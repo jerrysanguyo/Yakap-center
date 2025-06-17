@@ -7,7 +7,7 @@
         <div class="card shadow-lg">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h2 class="mb-0 text-primary">
-                    {{ $page_title }} CMS
+                    List of Applicant
                 </h2>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 bg-transparent p-0">
@@ -17,7 +17,7 @@
                             </a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            <i class="fas fa-file-alt"></i> {{ $page_title }}
+                            <i class="fas fa-folder-open"></i> List of Applicants
                         </li>
                     </ol>
                 </nav>
@@ -39,17 +39,13 @@
         <div class="card shadow-lg card-primary">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="font-weight-bold mb-0">
-                    List of {{ $page_title }}
+                    List of applicants
                 </h3>
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#add{{ $resource }}Modal">
-                    <i class="fa fa-plus"></i> Add {{ $page_title }}
-                </button>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table id="{{ $resource }}-table" class="table table-hover text-center">
-                        <thead class="border-black table-primary border">
+                <div class="table-responsive table-invoice">
+                    <table id="children-table" class="table table-hover text-center">
+                        <thead class="table-primary border border-black">
                             <tr>
                                 @foreach ($columns as $column)
                                 <th class="text-uppercase">
@@ -59,45 +55,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $record)
-                            @php
-                            $fieldMap = [
-                            'role' => 'guard_name',
-                            'permission' => 'guard_name',
-                            'barangay' => 'district.name',
-                            'goal' => 'domain.name',
-                            'competency' => 'domain.name',
-                            'objective' => 'goal.name',
-                            ];
-                            $firstCol = isset($fieldMap[$resource]) ? data_get($record, $fieldMap[$resource]) :
-                            $record->remarks;
-                            $secondCol = in_array($resource, ['barangay','goal','competency','objective']) ?
-                            $record->remarks : null;
-                            @endphp
+                            @foreach ($childrens as $record)
                             <tr>
                                 <td class="border border-black">{{ $record->id }}</td>
-                                <td class="border border-black">{{ $record->name }}</td>
-                                <td class="border border-black">{{ $firstCol }}</td>
-                                @if($secondCol)
-                                <td class="border border-black">{{ $secondCol }}</td>
-                                @endif
+                                <td class="border border-black">{{ trim($record->first_name . ' ' . $record->middle_name . ' ' . $record->last_name) }}
+                                </td>
+                                <td class="border border-black">{{ $record->created_at }}</td>
                                 <td class="border border-black">
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                                            data-target="#editModal-{{ $record->id }}" title="Edit {{ $page_title }}">
-                                            <i class="fas fa-pen"></i>
-                                        </button>
-                                        @push('modals')
-                                        @include('cms.edit')
-                                        @endpush
-                                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
-                                            data-target="#deleteModal-{{ $record->id }}"
-                                            title="Delete {{ $page_title }}">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        @push('modals')
-                                        @include('cms.delete')
-                                        @endpush
+                                        <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', Auth::user()->id) }}">
+                                            <button type="button" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-expand"></i>
+                                            </button>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -109,15 +79,10 @@
         </div>
     </div>
 </section>
-@push('modals')
-@include('cms.create')
-@include('cms.edit')
-@include('cms.delete')
-@endpush
 @push('scripts')
 <script>
 $(document).ready(function() {
-    $('#{{ $resource }}-table').DataTable({
+    $('#children-table').DataTable({
         processing: true,
         serverSide: false,
         pageLength: 10,

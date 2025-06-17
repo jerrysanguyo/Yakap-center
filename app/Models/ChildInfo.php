@@ -25,7 +25,7 @@ class ChildInfo extends Model
 
     public static function getAllChildNames()
     {
-        return self::select('id_number', 'first_name', 'middle_name', 'last_name', 'created_at')
+        return self::select('id', 'id_number', 'first_name', 'middle_name', 'last_name', 'created_at')
             ->orderBy('created_at', 'asc')
             ->get();
     }

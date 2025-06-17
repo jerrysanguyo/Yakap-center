@@ -71,7 +71,7 @@
                     <div class="card-header">
                         <h4>Patients</h4>
                         <div class="card-header-action">
-                            <a href="#" class="btn btn-danger">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.list.index') }}" class="btn btn-danger">
                                 View More <i class="fas fa-chevron-right"></i>
                             </a>
                         </div>

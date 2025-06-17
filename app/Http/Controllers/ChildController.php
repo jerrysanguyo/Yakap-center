@@ -3,21 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChildFamily;
+use App\Models\ChildInfo;
+use App\Models\Files;
 use App\Models\ParentsInfo;
+use App\Models\Requirement;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Laravel\Facades\Image;
+use App\DataTables\CmsDataTable;
 
 class ChildController extends Controller
 {
-    public function index()
+    public function index(User $parent)
     {
         $child   = Auth::user()->child->first();
         $childId = $child->id;
 
+        
+        $existingFiles = Files::where([
+            ['imageable_type', ChildInfo::class],
+            ['imageable_id',   $childId ?? ''],
+            ])->get()->keyBy('remarks');
+
         $motherInfo = ParentsInfo::getMotherInfo($childId);
         $fatherInfo = ParentsInfo::getFatherInfo($childId);
         $family     = ChildFamily::getFamilyPerChild($childId);
+        $requirements = Requirement::getAllRequirements();
 
         $templatePath = public_path('images/front_id.webp');
         $img = Image::read($templatePath);
@@ -43,7 +55,25 @@ class ChildController extends Controller
         $img->save(public_path("images/generated/{$generatedFilename}"));
 
         return view('children.profile', compact(
-            'motherInfo', 'fatherInfo', 'family', 'child', 'generatedFilename'
+            'motherInfo', 
+            'fatherInfo', 
+            'family', 
+            'child', 
+            'generatedFilename', 
+            'parent', 
+            'requirements', 
+            'existingFiles',
+        ));
+    }
+
+    public function childrenList(CmsDataTable $dataTable)
+    {
+        $childrens = ChildInfo::getAllChildNames();
+        $columns = ['Id', 'Full name', 'Date applied','Action'];
+        return $dataTable->render('children.list', compact(
+            'dataTable',
+            'childrens',
+            'columns',
         ));
     }
 }

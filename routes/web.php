@@ -69,15 +69,21 @@ Route::middleware(['auth'])
             ->prefix('sa')
             ->name('superadmin.')
             ->group(function () {
-                Route::get('/children-profile', [ChildController::class, 'index'])->name('children.profile');
+                // children list and profile
+                Route::get('/children-profile/{child}', [ChildController::class, 'index'])->name('children.profile');
+                Route::get('/children-list', [ChildController::class, 'childrenList'])->name('list.index');
+                // activity logs
                 Route::get('/activity-logs', [ActivityLog::class, 'index'])->name('log.index');
+                // dashboard
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+                // enrollment forms
                 Route::get('/consent-form', [EnrollmentController::class, 'consentForm'])->name('consent.index');
                 Route::post('/consent-form/store', [EnrollmentController::class, 'consentStore'])->name('consent.store');
                 Route::get('/enrollment-form', [EnrollmentController::class, 'index'])->name('enrollment.index');
                 Route::post('/enrollment/store', [EnrollmentController::class, 'enrollmentStore'])->name('enrollment.store');
                 Route::get('/requirements-form', [EnrollmentController::class, 'requirementsForm'])->name('requirement.index');
                 Route::post('/requirement/store', [EnrollmentCOntroller::class, 'requirementStore'])->name('requirement.store');
+                // cms
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');
                 Route::resource('civil', CivilStatusController::class)->middleware('merge_cms:civil_statuses,civil');
@@ -90,7 +96,6 @@ Route::middleware(['auth'])
                 Route::resource('domain', LearningDomainController::class)->middleware('merge_cms:learning_domains,domain');
                 Route::resource('competency', LearningCompetencyController::class)->middleware('merge_cms:learning_competencies,competency');
                 Route::resource('objective', ObjectiveController::class)->middleware('merge_cms:objectives,objective');
-                Route::resource('parent', ParentTypeController::class)->middleware('merge_cms:parent_types,parent');
                 Route::resource('privacy', PrivacyController::class)->middleware('merge_cms:privacies,privacy');
                 Route::resource('program', ProgramController::class)->middleware('merge_cms:programs,program');
                 Route::resource('rating', RatingController::class)->middleware('merge_cms:ratings,rating');
@@ -121,7 +126,6 @@ Route::middleware(['auth'])
                 Route::resource('domain', LearningDomainController::class)->middleware('merge_cms:learning_domains,domain');
                 Route::resource('competency', LearningCompetencyController::class)->middleware('merge_cms:learning_competencies,competency');
                 Route::resource('objective', ObjectiveController::class)->middleware('merge_cms:objectives,objective');
-                Route::resource('parent', ParentTypeController::class)->middleware('merge_cms:parent_types,parent');
                 Route::resource('privacy', PrivacyController::class)->middleware('merge_cms:privacies,privacy');
                 Route::resource('program', ProgramController::class)->middleware('merge_cms:programs,program');
                 Route::resource('rating', RatingController::class)->middleware('merge_cms:ratings,rating');

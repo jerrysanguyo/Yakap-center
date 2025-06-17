@@ -204,10 +204,18 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li
+                            class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.list.index') ? 'active' : '' }}">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.list.index') }}" class="nav-link">
+                                <i class="fas fa-folder-open"></i>
+                                <span>List of Applicants</span>
+                            </a>
+                        </li>
                         <li class="menu-header">Student</li>
                         <li
                             class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.children.profile') ? 'active' : '' }}">
-                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile') }}" class="nav-link">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', Auth::user()->id) }}"
+                                class="nav-link">
                                 <i class="fas fa-hands-holding-child"></i>
                                 <span>Children Profile</span>
                             </a>

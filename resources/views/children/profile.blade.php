@@ -48,6 +48,10 @@
                         </div>
                         <a href="#" class="btn btn-outline-primary btn-block mb-2">View Progress Report</a>
                         <a href="#" class="btn btn-outline-secondary btn-block">View Educational Plan</a>
+                        @role('superadmin|admin')
+                        <a href="#" class="btn btn-outline-warning btn-block">Schedule for interview</a>
+                        <a href="#" class="btn btn-outline-danger btn-block">Message</a>
+                        @endrole
                     </div>
                 </div>
                 <div class="card">
@@ -55,14 +59,14 @@
                         <h4>Student Identification Card</h4>
                     </div>
                     <div class="card-body text-center">
-                        <!-- Generated ID‐card image -->
                         <img src="{{ asset('images/generated/'.$generatedFilename) }}" alt="Child Front ID"
-                            class="img-fluid mb-2" style="max-width: 300px;">
-
-                        <!-- If you still want the plain ID number below: -->
+                            class="img-fluid mb-2">
                         <p class="mb-0 font-weight-bold">
                             {{ $child->id_number }}
                         </p>
+                        @role('superadmin|admin')
+                        <a href="#" class="btn btn-outline-primary btn-block">Generate ID</a>
+                        @endrole
                     </div>
                 </div>
             </div>
@@ -166,7 +170,7 @@
                             <div class="col-12">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-md text-center">
-                                        <thead>
+                                        <thead class="table-primary">
                                             <tr>
                                                 <th>Relation</th>
                                                 <th>Full Name</th>
@@ -220,6 +224,45 @@
                                                 <td>{{ Str::title($f->education->name ?? 'N/A') }}</td>
                                                 <td>{{ Str::title($f->work_place ?? 'N/A') }}</td>
                                                 <td>{{ $f->contact_number ?? 'N/A' }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-md text-center">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th>Requirements</th>
+                                                <th>Image</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($requirements as $req)
+                                            @php
+                                            $existing = $existingFiles->get($req->id);
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $req->name }}</td>
+                                                <td>
+                                                    @if ($existing)
+                                                    <div class="d-flex justify-content-center align-items-center"
+                                                        style="height: 100px;">
+                                                        <a href="{{ asset($existing->file_path ?? '') }}"
+                                                            target="_blank">
+                                                            <img src="{{ asset($existing->file_path ?? '') }}" alt=""
+                                                                class="img-fluid" style="max-height: 80px;">
+                                                        </a>
+                                                    </div>
+                                                    @else
+                                                    N/A
+                                                    @endif
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
