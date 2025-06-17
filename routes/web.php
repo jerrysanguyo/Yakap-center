@@ -13,7 +13,6 @@ use App\Http\Controllers\Cms\{
     LearningCompetencyController,
     LearningDomainController,
     ObjectiveController,
-    ParentTypeController,
     PrivacyController,
     ProgramController,
     RatingController,
@@ -21,11 +20,12 @@ use App\Http\Controllers\Cms\{
     ServiceController,
 };
 
-use App\Http\Controllers\ChildController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ChildController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\ActivityLog;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 use Intervention\Image\Laravel\Facades\Image;
 
@@ -83,6 +83,8 @@ Route::middleware(['auth'])
                 Route::post('/enrollment/store', [EnrollmentController::class, 'enrollmentStore'])->name('enrollment.store');
                 Route::get('/requirements-form', [EnrollmentController::class, 'requirementsForm'])->name('requirement.index');
                 Route::post('/requirement/store', [EnrollmentCOntroller::class, 'requirementStore'])->name('requirement.store');
+                // scheduling
+                Route::get('/schedule/initial-interview/{parent}', [ScheduleController::class, 'index'])->name('schedule.index');
                 // cms
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');
