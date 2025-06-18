@@ -25,13 +25,12 @@ class ScheduleController extends Controller
     
     public function store(ScheduleRequest $request, $parent)
     {
-        $parentId = $parent->id;
-        $storeSched = $this->scheduleService->storeSched($request->validated());
+        $storeSched = $this->scheduleService->storeSched($request->validated(), $parent);
         
         activity()
             ->performedOn($storeSched)
             ->causedBy(Auth::user()->id)
-            ->log('User: ' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' set a schedule for parent: ' . $parentId . ' successfully!' );
+            ->log('User: ' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' set a schedule for parent: ' . $parent . ' successfully!' );
 
         return redirect()
             ->route(Auth::user()->getRoleNames()->first() . '.shedule.index')

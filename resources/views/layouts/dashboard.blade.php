@@ -189,10 +189,11 @@
             <div class="main-sidebar sidebar-style-2" tabindex="1" style="overflow: hidden; outline: none;">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="index.html">Taguig Yakap Center</a>
+                        <a href="{{ route(Auth::user()->getRoleNames()->first() . '.dashboard') }}">Taguig Yakap
+                            Center</a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="index.html">St</a>
+                        <a href="{{ route(Auth::user()->getRoleNames()->first() . '.dashboard') }}">TYC</a>
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">Dashboard</li>
@@ -206,7 +207,8 @@
                         </li>
                         <li
                             class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.list.index') ? 'active' : '' }}">
-                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.list.index') }}" class="nav-link">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.list.index') }}"
+                                class="nav-link">
                                 <i class="fas fa-folder-open"></i>
                                 <span>List of Applicants</span>
                             </a>
@@ -214,11 +216,13 @@
                         <li class="menu-header">Student</li>
                         <li
                             class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.children.profile') ? 'active' : '' }}">
-                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', Auth::user()->id) }}"
+                            @if (Auth::user()->child->first())
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', Auth::user()->child->first()->id) }}"
                                 class="nav-link">
                                 <i class="fas fa-hands-holding-child"></i>
                                 <span>Children Profile</span>
                             </a>
+                            @endif
                         </li>
                         <li>
                             <a class="nav-link" href="">

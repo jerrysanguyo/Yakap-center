@@ -63,7 +63,7 @@
                                 <td class="border border-black">{{ $record->created_at }}</td>
                                 <td class="border border-black">
                                     <div class="btn-group" role="group">
-                                        <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', Auth::user()->id) }}">
+                                        <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', $record->id) }}">
                                             <button type="button" class="btn btn-sm btn-primary">
                                                 <i class="fas fa-expand"></i>
                                             </button>

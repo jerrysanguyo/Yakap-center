@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('parent_id')->constrained('users')->cascadeOnDelete();
             $table->date('date');
-            $table->string('time');
             $table->enum('status',['done', 'not_done']);
             $table->string('remarks');
             $table->timestamps();

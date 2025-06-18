@@ -100,7 +100,7 @@
                                         </td>
                                         <td>{{ $child->created_at }}</td>
                                         <td>
-                                            <a href="#" class="btn btn-primary">Detail</a>
+                                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', $child->id) }}" class="btn btn-primary">Detail</a>
                                         </td>
                                     </tr>
                                     @endforeach

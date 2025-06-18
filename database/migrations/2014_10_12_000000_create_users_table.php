@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('contact_number')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignId('type_id')->nullable()->constrained('parent_types')->nullOnDelete();
+            $table->foreignId('type_id')->nullable()->constrained('relations')->nullOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

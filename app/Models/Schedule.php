@@ -13,7 +13,6 @@ class Schedule extends Model
     protected $fillable = [
         'parent_id',
         'date',
-        'time',
         'status',
         'remarks'
     ];

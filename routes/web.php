@@ -70,8 +70,10 @@ Route::middleware(['auth'])
             ->name('superadmin.')
             ->group(function () {
                 // children list and profile
-                Route::get('/children-profile/{child}', [ChildController::class, 'index'])->name('children.profile');
+                Route::get('/children-profile/{child}', [ChildController::class, 'childProfile'])->name('children.profile');
                 Route::get('/children-list', [ChildController::class, 'childrenList'])->name('list.index');
+                // Id generation
+                Route::post('/children/generate-id/{child}', [ChildController::class, 'generateId'])->name('id.generate');
                 // activity logs
                 Route::get('/activity-logs', [ActivityLog::class, 'index'])->name('log.index');
                 // dashboard
@@ -85,6 +87,8 @@ Route::middleware(['auth'])
                 Route::post('/requirement/store', [EnrollmentCOntroller::class, 'requirementStore'])->name('requirement.store');
                 // scheduling
                 Route::get('/schedule/initial-interview/{parent}', [ScheduleController::class, 'index'])->name('schedule.index');
+                Route::get('/schedule/store/{parent}', [ScheduleController::class, 'store'])->name('schedule.store');
+                Route::get('/schedule/destroy/{schedule}', [ScheduleController::class, 'destroy'])->name('schedule.destroy');
                 // cms
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');
                 Route::resource('allergy', AllergyController::class)->middleware('merge_cms:allergies,allergy');

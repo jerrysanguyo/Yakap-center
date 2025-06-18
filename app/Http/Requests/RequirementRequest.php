@@ -16,7 +16,7 @@ class RequirementRequest extends FormRequest
     {
         return [
             'requirements'   => 'array',
-            'requirements.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'requirements.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:5120',
         ];
     }
 
