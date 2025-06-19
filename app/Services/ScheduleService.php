@@ -7,15 +7,15 @@ use Illuminate\Support\Facades\Auth;
 
 class ScheduleService
 {
-    public function storeSched(array $data, $parent): Schedule
+    public function storeSched(array $data, $child): Schedule
     {
         $schedule = Schedule::updateOrCreate(
             [
-                'parent_id' => $parent,
+                'child_id' => $child,
             ],
             [ 
                 'date' => $data['scheduled_date'],
-                'status' => 'Scheduled',
+                'status' => 'not_done',
                 'remarks' => 'For interview',
             ]
         );

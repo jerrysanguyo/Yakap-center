@@ -10,11 +10,11 @@
             </div>
             <div class="modal-body">
                 <!-- You can place your form or any content here -->
-                <form method="POST" action="{{ route(Auth::user()->getRoleNames()->first() . '.schedule.store', $child->parents_id) }}">
+                <form method="POST" action="{{ route(Auth::user()->getRoleNames()->first() . '.schedule.store', $child->id) }}">
                     @csrf
                     <div class="form-group">
-                        <label for="interview_date">Interview Date</label> {{ $child->parents_id }}
-                        <input type="date" class="form-control" name="interview_date" required>
+                        <label for="scheduled_date">Interview Date</label>
+                        <input type="date" class="form-control" name="scheduled_date" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Save Schedule</button>
                 </form>

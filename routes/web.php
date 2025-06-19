@@ -87,7 +87,7 @@ Route::middleware(['auth'])
                 Route::post('/requirement/store', [EnrollmentCOntroller::class, 'requirementStore'])->name('requirement.store');
                 // scheduling
                 Route::get('/schedule/initial-interview/{parent}', [ScheduleController::class, 'index'])->name('schedule.index');
-                Route::get('/schedule/store/{parent}', [ScheduleController::class, 'store'])->name('schedule.store');
+                Route::post('/schedule/store/{child}', [ScheduleController::class, 'store'])->name('schedule.store');
                 Route::get('/schedule/destroy/{schedule}', [ScheduleController::class, 'destroy'])->name('schedule.destroy');
                 // cms
                 Route::resource('blood', BloodTypeController::class)->middleware('merge_cms:blood_types,blood');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ScheduleRequest;
+use App\Models\ChildInfo;
 use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,14 +24,16 @@ class ScheduleController extends Controller
         return view('schedule.index');
     }
     
-    public function store(ScheduleRequest $request, $parent)
+    public function store(ScheduleRequest $request, $child)
     {
-        $storeSched = $this->scheduleService->storeSched($request->validated(), $parent);
+        $childInfo = ChildInfo::getChildInfo($child);
+        $childName = trim($childInfo->first_name . ' ' . $childInfo->middle_name .' '. $childInfo->last_name);
+        $storeSched = $this->scheduleService->storeSched($request->validated(), $child);
         
         activity()
             ->performedOn($storeSched)
             ->causedBy(Auth::user()->id)
-            ->log('User: ' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' set a schedule for parent: ' . $parent . ' successfully!' );
+            ->log('User: ' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' set a schedule for: ' . $childName . ' successfully!' );
 
         return redirect()
             ->route(Auth::user()->getRoleNames()->first() . '.shedule.index')

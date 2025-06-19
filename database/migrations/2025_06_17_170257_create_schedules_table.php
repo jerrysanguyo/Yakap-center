@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('parent_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('child_id')->constrained('child_infos')->cascadeOnDelete();
             $table->date('date');
             $table->enum('status',['done', 'not_done']);
             $table->string('remarks');
