@@ -5,21 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Schedule extends Model
+class ApplicationStatus extends Model
 {
     use HasFactory;
-
-    protected $table = 'schedules';
+    protected $table = 'application_statuses';
     protected $fillable = [
         'child_id',
-        'date',
-        'status',
-        'remarks'
+        'status'
     ];
 
-    public static function getSchedulePerDay()
+    public static function getChildStatus($child)
     {
-        return self::where('date', now())->get();
+        return self::where('child_id', $child)->first();
     }
 
     public function child()

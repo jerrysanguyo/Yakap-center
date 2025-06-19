@@ -104,4 +104,14 @@ class ChildInfo extends Model
     {
         return $this->hasOne(ChildEmergency::class, 'child_id');
     }
+
+    public function status()
+    {
+        return $this->hasOne(ApplicationStatus::class, 'child_id');
+    }
+
+    public function schedule()
+    {
+        return $this->hasOne(Schedule::class, 'child_id');
+    }
 }

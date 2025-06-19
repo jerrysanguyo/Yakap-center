@@ -96,7 +96,11 @@
                                             {{ trim($child->first_name.' '.$child->middle_name.' '.$child->last_name) }}
                                         </td>
                                         <td>
-                                            <div class="badge badge-warning">Sample</div>
+                                            @if ($child->status->status === 'submitted enrollment form')
+                                            <div class="badge badge-warning">{{ $child->status->status }}</div>
+                                            @else
+                                            <div class="badge badge-success">{{ $child->status->status }}</div>
+                                            @endif
                                         </td>
                                         <td>{{ $child->created_at }}</td>
                                         <td>

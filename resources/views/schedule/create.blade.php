@@ -14,7 +14,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="scheduled_date">Interview Date</label>
-                        <input type="date" class="form-control" name="scheduled_date" required>
+                        <input type="date" class="form-control" name="scheduled_date" value="{{ $child->schedule->date ?? '' }}" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Save Schedule</button>
                 </form>

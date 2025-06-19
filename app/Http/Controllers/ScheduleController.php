@@ -36,7 +36,7 @@ class ScheduleController extends Controller
             ->log('User: ' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' set a schedule for: ' . $childName . ' successfully!' );
 
         return redirect()
-            ->route(Auth::user()->getRoleNames()->first() . '.shedule.index')
+            ->route(Auth::user()->getRoleNames()->first() . '.children.profile', $child)
             ->with('success', 'You have successfully added a schedule successfully!');
     }
     

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ApplicationStatus;
 use App\Models\Service;
 use File;
 use Illuminate\Http\UploadedFile;
@@ -257,6 +258,15 @@ class ChildFormService
                     'relationship_id'  => $data['relation'],
                 ]
             );
+
+            ApplicationStatus::updateOrCreate(
+                [
+                    'child_id' => $childId,
+                ],
+                [
+                    'status' => 'submitted enrollment form',
+                ]
+            );
             
             return $childInfo; 
         });
@@ -306,6 +316,15 @@ class ChildFormService
                     'file_path' => "requirements/{$folderName}/{$filename}",
                     'file_name' => $filename,
                     'file_type' => $file->getClientMimeType(),
+                ]
+            );
+
+            ApplicationStatus::updateOrCreate(
+                [
+                    'child_id' => $childId,
+                ],
+                [
+                    'status' => 'submitted requirements',
                 ]
             );
         }

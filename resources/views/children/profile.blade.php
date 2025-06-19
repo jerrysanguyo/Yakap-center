@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('content')
+@include('components.alert')
 <section class="section">
     <div class="section-body">
         <div class="card shadow-lg">
@@ -67,7 +68,7 @@
                         @php
                             $existing = $existingFiles->get('front_id')
                         @endphp
-                        <img src="{{ asset($existing->file_path ?: 'images/front_id.webp') }}"
+                        <img src="{{ asset($existing ? $existing->file_path : 'images/front_id.webp') }}"
                             alt="Child Front ID" class="img-fluid mb-2">
                         <p class="mb-0 font-weight-bold">
                             {{ $child->id_number }}

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ApplicationStatus;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,6 +20,18 @@ class ScheduleService
                 'remarks' => 'For interview',
             ]
         );
+
+        if($schedule)
+        {
+            ApplicationStatus::updateOrCreate(
+                [
+                    'child_id' => $child,
+                ],
+                [
+                    'status' => 'interview',
+                ]
+            );
+        }
         
         return $schedule;
     }
