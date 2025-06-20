@@ -58,14 +58,17 @@
                             @foreach ($childrens as $record)
                             <tr>
                                 <td class="border border-black">{{ $record->id }}</td>
-                                <td class="border border-black">{{ trim($record->first_name . ' ' . $record->middle_name . ' ' . $record->last_name) }}
+                                <td class="border border-black">
+                                    {{ trim($record->first_name . ' ' . $record->middle_name . ' ' . $record->last_name) }}
                                 </td>
+                                <td class="border border-black">{{ $record->status->status }}</td>
                                 <td class="border border-black">{{ $record->created_at }}</td>
                                 <td class="border border-black">
                                     <div class="btn-group" role="group">
-                                        <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', $record->id) }}">
+                                        <a
+                                            href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', $record->id) }}">
                                             <button type="button" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-expand"></i>
+                                                <i class="fas fa-expand"></i> View details
                                             </button>
                                         </a>
                                     </div>

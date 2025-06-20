@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ChildFamily;
 use App\Models\ChildInfo;
 use App\Models\Files;
+use App\Models\Goal;
+use App\Models\LearningDomain;
 use App\Models\ParentsInfo;
 use App\Models\Requirement;
 use App\Models\User;
@@ -40,10 +42,19 @@ class ChildController extends Controller
         ));
     }
 
+    public function childEducationalPlan(ChildInfo $child)
+    {
+        $domains = LearningDomain::with('goal')->get();
+        return view('children.educationalPlan', compact(
+            'child',
+            'domains',
+        ));
+    }
+
     public function childrenList(CmsDataTable $dataTable)
     {
         $childrens = ChildInfo::getAllChildNames();
-        $columns = ['Id', 'Full name', 'Date applied','Action'];
+        $columns = ['Id', 'Full name', 'Status', 'Date applied','Action'];
         return $dataTable->render('children.list', compact(
             'dataTable',
             'childrens',

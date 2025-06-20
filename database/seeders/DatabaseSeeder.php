@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             BloodSeeder::class,
             CivilStatusSeeder::class,
             RequirementSeeder::class,
+            DomainSeeder::class,
+            GoalSeeder::class,
+            ObjectiveSeeder::class,
+            AccommodationSeeder::class,
         ]);
     }
 }

@@ -9,7 +9,6 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- You can place your form or any content here -->
                 <form method="POST" action="{{ route(Auth::user()->getRoleNames()->first() . '.schedule.store', $child->id) }}">
                     @csrf
                     <div class="form-group">

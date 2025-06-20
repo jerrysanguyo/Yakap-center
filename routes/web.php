@@ -69,9 +69,10 @@ Route::middleware(['auth'])
             ->prefix('sa')
             ->name('superadmin.')
             ->group(function () {
-                // children list and profile
+                // children list, profile, plan, and progress
                 Route::get('/children-profile/{child}', [ChildController::class, 'childProfile'])->name('children.profile');
                 Route::get('/children-list', [ChildController::class, 'childrenList'])->name('list.index');
+                Route::get('/children/educational-plan/{child}', [ChildController::class, 'childEducationalPlan'])->name('educational.index');
                 // Id generation
                 Route::post('/children/generate-id/{child}', [ChildController::class, 'generateId'])->name('id.generate');
                 // activity logs

@@ -1,4 +1,3 @@
-
 <div class="modal fade" id="add{{ $resource }}Modal" tabindex="-1" role="dialog"
     aria-labelledby="add{{ $resource }}ModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">

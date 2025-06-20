@@ -47,7 +47,9 @@
                             <p class="mb-0">{{ $child->emergency->relationship->name ?? '' }}</p>
                         </div>
                         <a href="#" class="btn btn-outline-primary btn-block mb-2">View Progress Report</a>
-                        <a href="#" class="btn btn-outline-secondary btn-block">View Educational Plan</a>
+                        @if ($child->status->status === 'interview' || $child->status->status === 'enrolled' || $child->status->status === 'graduate')
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.educational.index', $child->id) }}" class="btn btn-outline-secondary btn-block">View Educational Plan</a>
+                        @endif
                         @role('superadmin|admin')
                         <button type="button" class="btn btn-outline-warning btn-block" data-toggle="modal"
                             data-target="#scheduleModal{{ $child->id }}" title="Schedule Modal">
@@ -66,7 +68,7 @@
                     </div>
                     <div class="card-body text-center">
                         @php
-                            $existing = $existingFiles->get('front_id')
+                        $existing = $existingFiles->get('front_id')
                         @endphp
                         <img src="{{ asset($existing ? $existing->file_path : 'images/front_id.webp') }}"
                             alt="Child Front ID" class="img-fluid mb-2">

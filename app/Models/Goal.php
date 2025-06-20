@@ -25,6 +25,11 @@ class Goal extends Model
         return self::where('domain_id', $domain)->get();
     }
 
+    public function objectives()
+    {
+        return $this->hasMany(Objective::class, 'goal_id');
+    }
+
     public function domain()
     {
         return $this->belongsTo(LearningDomain::class, 'domain_id');

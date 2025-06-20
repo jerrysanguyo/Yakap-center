@@ -26,7 +26,7 @@ class CmsRequest extends FormRequest
                 'max:255',
                 Rule::unique($table, 'name')->ignore($id),
             ],
-            'remarks' => ['nullable', 'string', 'max:255'],
+            'remarks' => ['nullable', 'string',  'max:' . ($table === 'learning_domains' ? 5000 : 255)],
         ];
         
         return array_merge($rules, $this->getAdditionalRulesForTable($table));
