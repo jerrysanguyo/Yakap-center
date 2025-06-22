@@ -6,7 +6,7 @@
     <div class="section-body">
         <div class="card shadow-lg">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h2 class="mb-0 text-primary">
+                <h2 class="mb-0">
                     Child Profile
                 </h2>
                 <nav aria-label="breadcrumb">
@@ -76,13 +76,17 @@
                             {{ $child->id_number }}
                         </p>
                         @role('superadmin|admin')
-                        <form action="{{ route(Auth::user()->getRoleNames()->first() . '.id.generate', $child->id) }}"
-                            method="post">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-primary btn-block">
-                                Generate ID
-                            </button>
-                        </form>
+                        @if (!$existingFiles->get('8'))
+                            This profile haven't submitted any 1x1
+                            @else
+                            <form action="{{ route(Auth::user()->getRoleNames()->first() . '.id.generate', $child->id) }}"
+                                method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-primary btn-block">
+                                    Generate ID
+                                </button>
+                            </form>
+                        @endif
                         @endrole
                     </div>
                 </div>

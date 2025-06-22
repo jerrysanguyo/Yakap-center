@@ -7,7 +7,7 @@
         <div class="card shadow-lg">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h3 class="mb-0 text-primary">Consent form</h3>
+                    <h3 class="mb-0">Consent form</h3>
                     <div class="section-body-breadcrumb d-flex">
                         <div class="breadcrumb-item active">
                             <a href="{{ route(Auth::user()->getRoleNames()->first() . '.dashboard') }}">

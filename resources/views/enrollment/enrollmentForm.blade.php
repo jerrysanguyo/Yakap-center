@@ -10,7 +10,7 @@ $selectedBarangay = old('barangay_id', $childInfo->barangay_id ?? '');
     <div class="section-body">
         <div class="card shadow-lg">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h2 class="mb-0 text-primary">
+                <h2 class="mb-0">
                     Enrollment Form
                 </h2>
                 <nav aria-label="breadcrumb">
