@@ -17,7 +17,7 @@
 <body class="bg-gray-50 text-gray-700 font-body" x-data="scrollHandler()" x-init="init()" @scroll.window="onScroll">
     <nav class="flex items-center justify-between p-6 bg-white shadow-lg sticky top-0 z-50">
         <div class="flex items-center space-x-3">
-            <img src="images/logoyakap.jpg" alt="Taguig Yakap Center Logo" class="h-10 w-10 rounded-full shadow-sm" />
+            <img src="{{ asset('images/logoyakap.webp') }}" alt="Taguig Yakap Center Logo" class="h-10 w-10 rounded-full shadow-sm" />
             <span class="text-3xl font-extrabold text-blue-700 font-display tracking-wide">
                 Taguig Yakap Center
             </span>

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('application_statuses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('child_id')->constrained('child_infos')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->enum('status',['submitted enrollment form', 'submitted requirements', 'interview', 'non-appearance', 'enrolled', 'rejected', 'graduate']);
+            $table->enum('status',['answered consent form', 'submitted enrollment form', 'submitted requirements', 'interview', 'non-appearance', 'enrolled', 'rejected', 'graduate']);
             $table->timestamps();
         });
     }

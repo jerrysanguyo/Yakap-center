@@ -71,7 +71,8 @@
                     <div class="card-header">
                         <h4>Patients</h4>
                         <div class="card-header-action">
-                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.list.index') }}" class="btn btn-danger">
+                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.list.index') }}"
+                                class="btn btn-danger">
                                 View More <i class="fas fa-chevron-right"></i>
                             </a>
                         </div>
@@ -97,14 +98,15 @@
                                         </td>
                                         <td>
                                             @if ($child->status->status === 'submitted enrollment form')
-                                            <div class="badge badge-warning">{{ $child->status->status }}</div>
+                                            <div class="badge badge-warning">{{ $child->status->status ?? '' }}</div>
                                             @else
-                                            <div class="badge badge-success">{{ $child->status->status }}</div>
+                                            <div class="badge badge-success">{{ $child->status->status ?? '' }}</div>
                                             @endif
                                         </td>
                                         <td>{{ $child->created_at }}</td>
                                         <td>
-                                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', $child->id) }}" class="btn btn-primary">Detail</a>
+                                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.children.profile', $child->id) }}"
+                                                class="btn btn-primary">Detail</a>
                                         </td>
                                     </tr>
                                     @endforeach

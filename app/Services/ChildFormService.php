@@ -67,6 +67,15 @@ class ChildFormService
                 'child_id' => $child->id,
             ]);
 
+            ApplicationStatus::updateOrCreate(
+                [
+                    'child_id' => $child->id,
+                ],
+                [
+                    'status' => 'answered consent form',
+                ]
+            );
+
             return $child;
         }
 
