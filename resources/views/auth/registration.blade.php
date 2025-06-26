@@ -1,6 +1,6 @@
 @extends('layouts.auth.login')
 @section('content')
-
+@include('components.alert')
 <div id="app">
     <section class="section">
         <div class="container mt-5">
@@ -17,12 +17,12 @@
                             <h4>Register</h4>
                         </div>
                         <div class="card-body">
-                            <form action="" method="POST">
+                            <form action="{{ route('registration.store') }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="form-group col-4">
-                                        <label for="frist_name">First Name</label>
-                                        <input id="frist_name" type="text" class="form-control" name="frist_name"
+                                        <label for="first_name">First Name</label>
+                                        <input id="first_name" type="text" class="form-control" name="first_name"
                                             autofocus>
                                     </div>
                                     <div class="form-group col-4">
@@ -43,8 +43,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-6">
-                                        <label for="contact_no">Contact number</label>
-                                        <input id="contact_no" type="text" class="form-control" name="contact_no">
+                                        <label for="contact_number">Contact number</label>
+                                        <input id="contact_number" type="text" class="form-control" name="contact_number">
                                         <div class="invalid-feedback">
                                         </div>
                                     </div>
@@ -53,7 +53,7 @@
                                 <div class="row">
                                     <div class="form-group col-6">
                                         <label for="password" class="d-block">Password</label>
-                                        <input id="password" type="password" class="form-control pwstrength"
+                                        <input id="password" type="text" class="form-control pwstrength"
                                             data-indicator="pwindicator" name="password">
                                         <div id="pwindicator" class="pwindicator">
                                             <div class="bar"></div>
@@ -61,17 +61,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-6">
-                                        <label for="password2" class="d-block">Password Confirmation</label>
-                                        <input id="password2" type="password" class="form-control"
-                                            name="password-confirm">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" name="agree" class="custom-control-input" id="agree">
-                                        <label class="custom-control-label" for="agree">I agree with the <a
-                                                href="http://">terms and
-                                                conditions</a></label>
+                                        <label for="password_confirmation" class="d-block">Password Confirmation</label>
+                                        <input id="password_confirmation" type="text" class="form-control"
+                                            name="password_confirmation">
                                     </div>
                                 </div>
 
@@ -84,7 +76,7 @@
                         </div>
                     </div>
                     <div class="mt-5 text-muted text-center">
-                        Already have an account? <a href="#">Log in</a>
+                        Already have an account? <a href="{{ route('login.index') }}">Log in</a>
                     </div>
                     <div class="mt-5 text-muted text-center">
                         Copyright © 2025 <div class="bullet"></div> Information Technology

@@ -28,7 +28,18 @@ class LoginService
 
     public function register(array $data)
     {
-        $register = User::create($data);
+        $register = User::updateOrCreate(
+            [
+                'email' => $data['email'],
+                'contact_number' => $data['contact_number']
+            ],
+            [
+                'first_name' => $data['first_name'],
+                'middle_name' => $data['middle_name'],
+                'last_name' => $data['last_name'],
+                'password' => bcrypt($data['password']),
+            ]
+        );
 
         return $register;
     }

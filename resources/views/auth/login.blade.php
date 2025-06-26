@@ -1,7 +1,6 @@
 @extends('layouts.auth.login')
 @section('content')
-
-
+@include('components.alert')
 <div id="app">
     <section class="section">
         <div class="container mt-5">
@@ -64,7 +63,7 @@
                         </div>
                     </div>
                     <div class="mt-5 text-muted text-center">
-                        Don't have an account? <a href="#">Create One</a>
+                        Don't have an account? <a href="{{ route('registration.index') }}">Create One</a>
                     </div>
                     <div class="mt-5 text-muted text-center">
                         Copyright © 2025 <div class="bullet"></div> Information Technology
