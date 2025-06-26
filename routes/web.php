@@ -60,6 +60,8 @@ Route::get('/', function () {
 
 Route::get('/login', [LoginController::class, 'index'])->name('login.index');
 Route::post('/login/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
+Route::get('/registration', [LoginController::class, 'registration'])->name('registration.index');
+Route::post('/registration/store', [LoginController::class, 'registrationStore'])->name('registration.store');
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])

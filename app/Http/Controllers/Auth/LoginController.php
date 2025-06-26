@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\RegistrationRequest;
 use App\Models\User;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Services\Auth\LoginService;
@@ -66,5 +67,27 @@ class LoginController extends Controller
         return redirect()
             ->route('login.index')
             ->with('success', 'You have successfully logged out!');
+    }
+
+    public function registration()
+    {
+        return view('auth.registration');
+    }
+
+    public function registrationStore(RegistrationRequest $request)
+    {
+        $ip = request()->ip();
+        $browser = request()->header('User-Agent');
+
+        $registration = $this->loginService->register($request->validated());
+
+        activity()
+            ->performedOn($registration)
+            ->causedBy($registration)
+            ->log('User '. $registration->first_name .' '. $registration->last_name . " registered successfully. ({$ip} - {$browser})");
+
+        return redirect()
+            ->route('login.index')
+            ->with('success', 'Registration successful! You can now log in.');
     }
 }

@@ -166,9 +166,10 @@
                                 <i class="fas fa-cog"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item has-icon text-danger">
-                                <i class="fas fa-sign-out-alt"></i> Logout
-                            </a>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <input type="submit" value="Logout" class="dropdown-item has-icon text-danger">
+                            </form>
                         </div>
                     </li>
                 </ul>
@@ -423,7 +424,7 @@
 
             <footer class="main-footer">
                 <div class="footer-left">
-                    Copyright © 2018 <div class="bullet"></div> Information Technology
+                    Copyright © 2025 <div class="bullet"></div> Information Technology
                 </div>
                 <div class="footer-right">
                 </div>

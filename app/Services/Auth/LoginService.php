@@ -25,4 +25,11 @@ class LoginService
         Auth::logout();
         return $user;
     }
+
+    public function register(array $data)
+    {
+        $register = User::create($data);
+
+        return $register;
+    }
 }
