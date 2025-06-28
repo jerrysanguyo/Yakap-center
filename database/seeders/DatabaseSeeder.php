@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             GoalSeeder::class,
             ObjectiveSeeder::class,
             AccommodationSeeder::class,
+            RatingSeeder::class,
         ]);
     }
 }

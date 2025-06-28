@@ -8,6 +8,7 @@ use App\Models\Files;
 use App\Models\Goal;
 use App\Models\LearningDomain;
 use App\Models\ParentsInfo;
+use App\Models\Rating;
 use App\Models\Requirement;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -45,9 +46,11 @@ class ChildController extends Controller
     public function childEducationalPlan(ChildInfo $child)
     {
         $domains = LearningDomain::with('goal')->get();
+        $ratings = Rating::select('id', 'name', 'remarks')->get();
         return view('children.educationalPlan', compact(
             'child',
             'domains',
+            'ratings'
         ));
     }
 

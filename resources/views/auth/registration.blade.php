@@ -14,7 +14,11 @@
 
                     <div class="card card-danger">
                         <div class="card-header">
-                            <h4>Register</h4>
+                            <div class="text-center w-100">
+                                <h4 class="mb-1">Register</h4>
+                                <span class="text-muted small">Create your account to get started with Yakap
+                                    Center.</span>
+                            </div>
                         </div>
                         <div class="card-body">
                             <form action="{{ route('registration.store') }}" method="POST">
@@ -44,7 +48,8 @@
                                     </div>
                                     <div class="form-group col-6">
                                         <label for="contact_number">Contact number</label>
-                                        <input id="contact_number" type="text" class="form-control" name="contact_number">
+                                        <input id="contact_number" type="text" class="form-control"
+                                            name="contact_number">
                                         <div class="invalid-feedback">
                                         </div>
                                     </div>

@@ -14,7 +14,11 @@
 
                     <div class="card card-danger">
                         <div class="card-header">
-                            <h4>Login</h4>
+                            <div class="text-center w-100">
+                                <h4 class="mb-1">Login</h4>
+                                <span class="text-muted small">Please enter your credentials to access your
+                                    account.</span>
+                            </div>
                         </div>
 
                         <div class="card-body">
