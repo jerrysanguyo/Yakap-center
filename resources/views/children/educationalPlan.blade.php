@@ -57,7 +57,7 @@
             </div>
         </div>
     </div>
-    <form action="" method="POST">
+    <form action="{{ route(Auth::user()->getRoleNames()->first() . '.educational.store', $child->id) }}" method="POST">
         @csrf
         <div class="section-body">
             @foreach ($domains as $d)
@@ -104,8 +104,6 @@
                                             <td class="border border-dark" rowspan="{{ $rowCount }}">{{ $goal->name }}
                                             </td>
                                             @endif
-
-                                            {{-- Objective Name --}}
                                             <td class="border border-dark">{{ $obj->name }}</td>
                                             <td class="border border-dark">{{ $obj->name }}</td>
                                             <td class="border border-dark">
@@ -113,11 +111,12 @@
                                                     <div class="custom-control custom-radio custom-control-inline">
                                                         @foreach ($ratings as $r)
                                                         <div class="custom-control custom-radio mr-3">
-                                                            <input type="radio" id="rating_{{ $r->id }}"
-                                                                name="rating_option" value="{{ $r->id }}"
-                                                                class="custom-control-input">
+                                                            <input type="radio" id="rating_{{ $obj->id }}_{{ $r->id }}"
+                                                                name="ratings[{{ $obj->id }}]" value="{{ $r->id }}"
+                                                                class="custom-control-input"
+                                                                {{ isset($educPlan[$obj->id]) && $educPlan[$obj->id] == $r->id ? 'checked' : '' }}>
                                                             <label class="custom-control-label"
-                                                                for="rating_{{ $r->id }}">
+                                                                for="rating_{{ $obj->id }}_{{ $r->id }}">
                                                                 {{ $r->name }}
                                                             </label>
                                                         </div>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChildEducPlanRequest;
+use App\Models\ChildEducationalPlan;
 use App\Models\ChildFamily;
 use App\Models\ChildInfo;
 use App\Models\Files;
@@ -11,6 +13,7 @@ use App\Models\ParentsInfo;
 use App\Models\Rating;
 use App\Models\Requirement;
 use App\Models\User;
+use App\Services\ChildRatingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Laravel\Facades\Image;
@@ -18,6 +21,13 @@ use App\DataTables\CmsDataTable;
 
 class ChildController extends Controller
 {
+    protected $childRatingService;
+
+    public function __construct(ChildRatingService $childRatingService)
+    {
+        $this->childRatingService = $childRatingService;
+    }
+    
     public function childProfile(ChildInfo $child)
     {
         $childId = $child->id;
@@ -47,11 +57,30 @@ class ChildController extends Controller
     {
         $domains = LearningDomain::with('goal')->get();
         $ratings = Rating::select('id', 'name', 'remarks')->get();
+        $educPlan = ChildEducationalPlan::getChildEducationalPlan($child->id)
+                    ->pluck('rating_id', 'objective_id');
         return view('children.educationalPlan', compact(
             'child',
             'domains',
-            'ratings'
+            'ratings',
+            'educPlan'
         ));
+    }
+
+    public function storeChildEducationalPlan(ChildInfo $child, ChildEducPlanRequest $request)
+    {
+        $records = $this->childRatingService->storeChildEducPlan($request->validated(), $child);
+
+        foreach ($records as $record) {
+            activity()
+                ->performedOn($record)
+                ->causedBy(Auth::user())
+                ->log('User ' . Auth::user()->name . ' rated objective ' . $record->objective_id . ' for ' . $child->full_name);
+        }
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.educational.index', $child->id)
+            ->with('success', 'You have successfully created an educational plan!');
     }
 
     public function childrenList(CmsDataTable $dataTable)

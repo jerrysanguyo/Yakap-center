@@ -18,4 +18,9 @@ class Rating extends Model
     {
         return self::all(); 
     }
+
+    public function childEducationalPlans()
+    {
+        return $this->hasMany(ChildEducationalPlan::class, 'rating_id');
+    }
 }

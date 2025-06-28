@@ -114,4 +114,9 @@ class ChildInfo extends Model
     {
         return $this->hasOne(Schedule::class, 'child_id');
     }
+
+    public function educationalPlan()
+    {
+        return $this->hasMany(ChildEducationalPlan::class, 'child_id');
+    }
 }

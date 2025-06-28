@@ -75,6 +75,7 @@ Route::middleware(['auth'])
                 Route::get('/children-profile/{child}', [ChildController::class, 'childProfile'])->name('children.profile');
                 Route::get('/children-list', [ChildController::class, 'childrenList'])->name('list.index');
                 Route::get('/children/educational-plan/{child}', [ChildController::class, 'childEducationalPlan'])->name('educational.index');
+                Route::post('/children/educational-plan/{child}/store', [ChildController::class, 'storeChildEducationalPlan'])->name('educational.store');
                 // Id generation
                 Route::post('/children/generate-id/{child}', [ChildController::class, 'generateId'])->name('id.generate');
                 // activity logs

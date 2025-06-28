@@ -34,4 +34,9 @@ class Objective extends Model
     {
         return $this->hasMany(Accommodation::class);
     }
+
+    public function childEducationalPlan()
+    {
+        return $this->hasMany(ChildEducationalPlan::class, 'objective_id');
+    }
 }
