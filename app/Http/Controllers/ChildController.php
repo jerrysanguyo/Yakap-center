@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChildEducPlanRequest;
+use App\Http\Requests\ProgressReportRequest;
 use App\Models\ChildEducationalPlan;
 use App\Models\ChildFamily;
 use App\Models\ChildInfo;
@@ -10,6 +11,7 @@ use App\Models\Files;
 use App\Models\Goal;
 use App\Models\LearningDomain;
 use App\Models\ParentsInfo;
+use App\Models\ProgressReport;
 use App\Models\Rating;
 use App\Models\Requirement;
 use App\Models\User;
@@ -55,7 +57,9 @@ class ChildController extends Controller
 
     public function childEducationalPlan(ChildInfo $child)
     {
-        $domains = LearningDomain::with('goal')->get();
+        $domains = LearningDomain::with('goal')
+                ->where('name', '!=', 'Gross motor')
+                ->get();
         $ratings = Rating::select('id', 'name', 'remarks')->get();
         $educPlan = ChildEducationalPlan::getChildEducationalPlan($child->id)
                     ->pluck('rating_id', 'objective_id');
@@ -75,12 +79,43 @@ class ChildController extends Controller
             activity()
                 ->performedOn($record)
                 ->causedBy(Auth::user())
-                ->log('User ' . Auth::user()->name . ' rated objective ' . $record->objective_id . ' for ' . $child->full_name);
+                ->log('User ' . Auth::user()->name . ' rated objective ' . $record->objective_id . ' for ' . $child->first_name . ' ' . $child->last_name);
         }
 
         return redirect()
             ->route(Auth::user()->getRoleNames()->first() . '.educational.index', $child->id)
             ->with('success', 'You have successfully created an educational plan!');
+    }
+
+    public function childProgressReport(ChildInfo $child)
+    {
+        $domains = LearningDomain::with('learningCompetency')->get();
+        $ratings = Rating::all();
+        $progress = ProgressReport::getChildProgressReport($child->id)
+                    ->pluck('rate_id', 'competency_id');
+
+        return view('children.progressReport', compact(
+            'child',
+            'domains',
+            'ratings',
+            'progress',
+        ));
+    }
+
+    public function storeProgressReport(ChildInfo $child, ProgressReportRequest $request)
+    {
+        $records = $this->childRatingService->storeChildProgressReport($request->validated(), $child);
+
+        foreach ($records as $record) {
+        activity()
+            ->performedOn($record)
+            ->causedBy(Auth::user())
+                ->log('User ' . Auth::user()->first_name . ' ' . Auth::user()->last_name . ' rated a learning competency ' . $record->competency_id . ' for ' . $child->first_name . ' ' . $child->last_name);
+        }       
+
+        return redirect()
+            ->route(Auth::user()->getRoleNames()->first() . '.children.profile', $child->id)
+            ->with('success', 'You have successfully submitted a progress report!');
     }
 
     public function childrenList(CmsDataTable $dataTable)

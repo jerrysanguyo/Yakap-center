@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ChildEducationalPlan;
+use App\Models\ProgressReport;
 
 class ChildRatingService
 {
@@ -18,6 +19,27 @@ class ChildRatingService
                 ],
                 [
                     'rating_id' => $ratingId,
+                ]
+            );
+
+            $updated[] = $record;
+        }
+
+        return $updated;
+    }
+
+    public function storeChildProgressReport(array $data, $childId)
+    {
+        $updated = [];
+
+        foreach ($data['ratings'] as $competencyId => $ratingId) {
+            $record = ProgressReport::updateOrCreate(
+                [
+                    'child_id' => $childId->id,
+                    'competency_id' => $competencyId,
+                ],
+                [
+                    'rate_id' => $ratingId,
                 ]
             );
 

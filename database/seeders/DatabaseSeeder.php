@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ObjectiveSeeder::class,
             AccommodationSeeder::class,
             RatingSeeder::class,
+            LearningCompetencySeeder::class,
         ]);
     }
 }

@@ -46,9 +46,12 @@
                             </p>
                             <p class="mb-0">{{ $child->emergency->relationship->name ?? '' }}</p>
                         </div>
-                        <a href="#" class="btn btn-outline-primary btn-block mb-2">View Progress Report</a>
-                        @if ($child->status->status === 'interview' || $child->status->status === 'enrolled' || $child->status->status === 'graduate')
-                            <a href="{{ route(Auth::user()->getRoleNames()->first() . '.educational.index', $child->id) }}" class="btn btn-outline-secondary btn-block">View Educational Plan</a>
+                        <a href="{{ route(Auth::user()->getRoleNames()->first() . '.progress.index', $child->id) }}"
+                            class="btn btn-outline-primary btn-block mb-2">View Progress Report</a>
+                        @if ($child->status->status === 'interview' || $child->status->status === 'enrolled' ||
+                        $child->status->status === 'graduate')
+                        <a href="{{ route(Auth::user()->getRoleNames()->first() . '.educational.index', $child->id) }}"
+                            class="btn btn-outline-secondary btn-block">View Educational Plan</a>
                         @endif
                         @role('superadmin|admin')
                         <button type="button" class="btn btn-outline-warning btn-block" data-toggle="modal"
@@ -77,15 +80,15 @@
                         </p>
                         @role('superadmin|admin')
                         @if (!$existingFiles->get('8'))
-                            This profile haven't submitted any 1x1
-                            @else
-                            <form action="{{ route(Auth::user()->getRoleNames()->first() . '.id.generate', $child->id) }}"
-                                method="post">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-primary btn-block">
-                                    Generate ID
-                                </button>
-                            </form>
+                        This profile haven't submitted any 1x1
+                        @else
+                        <form action="{{ route(Auth::user()->getRoleNames()->first() . '.id.generate', $child->id) }}"
+                            method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-primary btn-block">
+                                Generate ID
+                            </button>
+                        </form>
                         @endif
                         @endrole
                     </div>
@@ -119,7 +122,7 @@
                                     <li class="mb-3">
                                         <i class="fas fa-hourglass-half mr-2 text-primary"></i>
                                         <strong>Current Age:</strong>
-                                        {{ \Carbon\Carbon::parse($child->birth_date)->age }} years
+                                        {{ \Carbon\Carbon::parse($child->birth_date)->diff(\Carbon\Carbon::now())->format('%y years and %m months') }}
                                     </li>
                                     <li class="mb-3">
                                         <i class="fas fa-school mr-2 text-primary"></i>

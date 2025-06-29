@@ -26,6 +26,6 @@ class LearningDomain extends Model
 
     public function learningCompetency()
     {
-        return $this->hasMany(learningCompetency::class);
+        return $this->hasMany(learningCompetency::class, 'domain_id');
     }
 }

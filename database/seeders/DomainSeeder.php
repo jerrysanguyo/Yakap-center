@@ -15,6 +15,7 @@ class DomainSeeder extends Seeder
             'Numeracy',
             'Fine motor',
             'Social skills',
+            'Gross motor',
         ];
 
         foreach($domains as $d)

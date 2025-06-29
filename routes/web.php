@@ -29,31 +29,6 @@ use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 use Intervention\Image\Laravel\Facades\Image;
 
-
-Route::get('test-image', function () {
-    $templatePath = public_path('images/front_id.webp');
-    $img = Image::read($templatePath);
-
-    $overlayPath = Auth::user()->child->first()->files->where('remarks', 8)->first()->file_path; 
-    $overlay = Image::read($overlayPath);
-    
-    $overlay->resize(340,340);
-    
-    $img->place($overlay, 'center', 0, 0);
-
-    $name = trim(Auth::user()->first_name . ' ' . Auth::user()->middle_name . ' ' . Auth::user()->last_name);
-
-    $img->text($name, $img->width() / 2, 800, function($font) {
-        $font->file(public_path('fonts/Roboto-Italic-VariableFont_wdth,wght.ttf'));
-        $font->size(40);
-        $font->color('#000000');
-        $font->align('center');
-        $font->valign('top');
-    });
-
-    return response($img->encodeByMediaType('image/jpeg'))->header('Content-Type', 'image/jpeg');
-});
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -76,6 +51,8 @@ Route::middleware(['auth'])
                 Route::get('/children-list', [ChildController::class, 'childrenList'])->name('list.index');
                 Route::get('/children/educational-plan/{child}', [ChildController::class, 'childEducationalPlan'])->name('educational.index');
                 Route::post('/children/educational-plan/{child}/store', [ChildController::class, 'storeChildEducationalPlan'])->name('educational.store');
+                Route::get('/children/progress-report/{child}/', [ChildController::class, 'childProgressReport'])->name('progress.index');
+                Route::post('/children/progress-report/{child}', [ChildController::class, 'storeProgressReport'])->name('progress.store');
                 // Id generation
                 Route::post('/children/generate-id/{child}', [ChildController::class, 'generateId'])->name('id.generate');
                 // activity logs

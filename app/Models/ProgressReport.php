@@ -11,7 +11,7 @@ class ProgressReport extends Model
     protected $fillable = [
         'child_id',
         'competency_id',
-        'rating_id',
+        'rate_id',
     ];
 
     public static function getChildProgressReport($childId)
@@ -21,16 +21,16 @@ class ProgressReport extends Model
 
     public function child()
     {
-        return $this->belongsTo(ChildInfo::class);
+        return $this->belongsTo(ChildInfo::class, 'child_id');
     }
 
     public function competency()
     {
-        return $this->belongsTo(LearningCompetency::class);
+        return $this->belongsTo(LearningCompetency::class, 'domain_id');
     }
 
     public function rating()
     {
-        return $this->belongsTo(Rating::class);
+        return $this->belongsTo(Rating::class, 'rate_id');
     }
 }

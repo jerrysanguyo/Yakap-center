@@ -23,4 +23,9 @@ class Rating extends Model
     {
         return $this->hasMany(ChildEducationalPlan::class, 'rating_id');
     }
+
+    public function progressReports()
+    {
+        return $this->hasMany(ProgressReport::class, 'rate_id');
+    }
 }
