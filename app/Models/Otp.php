@@ -10,9 +10,12 @@ class Otp extends Model
     use HasFactory;
     protected $fillable = [
         'otp',
-        'email',
-        'contact_number',
-        'expires_at',
+        'user_id',
         'remarks',
     ];
+
+    public function user()
+    {
+        return $this->belognsTo(User::class, 'user_id');
+    }
 }

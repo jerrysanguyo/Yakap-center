@@ -7,27 +7,31 @@
             <div class="row">
                 <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
                     <div class="login-brand">
-                        <img src="assets/img/stisla-fill.svg" alt="logo" width="100"
+                        <img src="{{ asset('images/logoyakap.webp') }}" alt="logo" width="100"
                             class="shadow-light rounded-circle">
                     </div>
 
-                    <div class="card card-primary">
+                    <div class="card card-danger">
                         <div class="card-header">
-                            <h4>Forgot Password</h4>
+                            <div class="text-center w-100">
+                                <h4 class="mb-1">OTP Verification</h4>
+                                <span class="text-muted small">Please enter the otp that was sent to your contact number
+                                    and email address</span>
+                            </div>
                         </div>
 
                         <div class="card-body">
-                            <p class="text-muted">We will send a link to reset your password</p>
-                            <form method="POST">
+                            <form action="{{ route('otp.confirm', $user->id) }}" method="POST">
+                                @csrf
                                 <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input id="email" type="email" class="form-control" name="email" tabindex="1"
-                                        required autofocus>
+                                    <label for="otp">OTP</label>
+                                    <input id="otp" type="text" class="form-control" name="otp" tabindex="1" required
+                                        autofocus>
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                                        Forgot Password
+                                    <button type="submit" class="btn btn-danger btn-lg btn-block" tabindex="4">
+                                        Verify OTP
                                     </button>
                                 </div>
                             </form>

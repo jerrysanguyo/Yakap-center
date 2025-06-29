@@ -20,6 +20,7 @@ class User extends Authenticatable
         'email',
         'contact_number',
         'password',
+        'email_verified_at',
     ];
     
     protected $hidden = [
@@ -45,5 +46,10 @@ class User extends Authenticatable
     public function type()
     {
         return $this->belongsTo(ParentType::class, 'type_id');
+    }
+
+    public function otp()
+    {
+        return $this->hasOne(Otp::class, 'user_id');
     }
 }

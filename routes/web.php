@@ -37,6 +37,8 @@ Route::get('/login', [LoginController::class, 'index'])->name('login.index');
 Route::post('/login/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 Route::get('/registration', [LoginController::class, 'registration'])->name('registration.index');
 Route::post('/registration/store', [LoginController::class, 'registrationStore'])->name('registration.store');
+Route::get('/registration/verify-otp/{user}', [LoginController::class, 'verifyOtp'])->name('otp.index');
+Route::post('/registration/verify-otp/{user}/confirm', [LoginController::class, 'OtpVerification'])->name('otp.confirm');
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])

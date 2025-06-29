@@ -3,51 +3,35 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class OtpRegistration extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public $otp;
+
+    protected $cityLogoCid;
+    protected $yakapLogoCid;
+
+    public function __construct($otp)
     {
-        //
+        $this->otp = $otp;
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Otp Registration',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'otp.registration',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->subject('Your Registration OTP')
+                    ->withSwiftMessage(function ($message) {
+                        $this->cityLogoCid = $message->embed(public_path('images/city_logo.webp'));
+                        $this->yakapLogoCid = $message->embed(public_path('images/logoyakap.webp'));
+                    })
+                    ->markdown('emails.otp')
+                    ->with([
+                        'otp' => $this->otp,
+                        'cityLogoCid' => $this->cityLogoCid,
+                        'yakapLogoCid' => $this->yakapLogoCid,
+                    ]);
     }
 }
