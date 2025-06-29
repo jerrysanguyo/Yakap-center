@@ -15,13 +15,13 @@ class AdminSeeder extends Seeder
         $superAdminRole = Role::firstOrCreate(['name' => 'superadmin']);
         
         $admin = User::firstOrCreate(
-            ['email' => 'jsanguyo1624@gmail.com'],
+            ['email' => 'superadmin@gmail.com'],
             [
-                'first_name' => 'jerry',
-                'middle_name' => 'Gonzaga',
-                'last_name' => 'Sanguyo',
-                'email' => 'jsanguyo1624@gmail.com',
-                'contact_number' => '09271852710',
+                'first_name' => 'Super',
+                'middle_name' => '',
+                'last_name' => 'Admin',
+                'email' => 'superadmin@gmail.com',
+                'contact_number' => '09271852711',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'remember_token' => \Str::random(10),

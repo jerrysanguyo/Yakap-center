@@ -136,13 +136,13 @@
                                         {{ $child->service->pluck('answer')->contains('Oo') ? 'Yes' : 'No' }}
 
                                         @if($provided =
-                                        Auth::user()->child()->first()->service->where('answer','Oo')->pluck('service.name')->implode(',
+                                        $child->service->where('answer','Oo')->pluck('service.name')->implode(',
                                         '))
                                         <div class="mt-1">
                                             <strong>Service Provider(s):</strong> {{ $provided }}
                                         </div>
                                         @elseif($reasons =
-                                        Auth::user()->child()->first()->service->where('answer',
+                                        $child->service->where('answer',
                                         'Hindi')->pluck('service.name')->implode(', '))
                                         <div class="mt-1">
                                             <strong>Reason(s) for Non-Provision:</strong> {{ $reasons }}

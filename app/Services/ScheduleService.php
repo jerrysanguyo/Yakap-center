@@ -7,6 +7,7 @@ use App\Models\ApplicationStatus;
 use App\Models\ParentsInfo;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class ScheduleService
@@ -15,7 +16,7 @@ class ScheduleService
     {
         $schedule = Schedule::updateOrCreate(
             ['child_id' => $child],
-            [ 
+            [
                 'date' => $data['scheduled_date'],
                 'status' => 'not_done',
                 'remarks' => 'For interview',
@@ -28,20 +29,34 @@ class ScheduleService
                 ['status' => 'interview']
             );
 
-            $fatherEmail = ParentsInfo::where('child_id', $child)
-                                    ->where('type_id', 1)
-                                    ->pluck('email')
-                                    ->first();
+            $father = ParentsInfo::where('child_id', $child)->where('type_id', 1)->first();
+            $mother = ParentsInfo::where('child_id', $child)->where('type_id', 2)->first();
 
-            $motherEmail = ParentsInfo::where('child_id', $child)
-                                    ->where('type_id', 2)
-                                    ->pluck('email')
-                                    ->first();
-
-            $emails = array_filter([$fatherEmail, $motherEmail]);
+            $emails = array_filter([
+                optional($father)->email,
+                optional($mother)->email,
+            ]);
 
             if (!empty($emails)) {
                 Mail::to($emails)->send(new InterviewScheduledMail($schedule));
+            }
+
+            $textMessage = "This is to inform you that your child is scheduled for an interview at the Taguig Yakap Center on {$data['scheduled_date']}. Kindly ensure their attendance. Thank you.";
+
+            $mobiles = array_filter([
+                optional($father)->contact_number,
+                optional($mother)->contact_number,
+            ]);
+
+            foreach ($mobiles as $mobile) {
+                $message = urlencode($textMessage);
+                $url = "https://tagatext.taguig.gov.ph/api/sms/c18b09e4-29e8-4b2d-b034-61c9830cc403/{$mobile}/{$message}";
+                
+                $response = Http::get($url);
+
+                if (!$response->successful()) {
+                    \Log::error("Failed to send SMS to {$mobile}: " . $response->body());
+                }
             }
         }
 

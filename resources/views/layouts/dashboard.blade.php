@@ -193,6 +193,7 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        @role('superadmin|admin')
                         <li
                             class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.list.index') ? 'active' : '' }}">
                             <a href="{{ route(Auth::user()->getRoleNames()->first() . '.list.index') }}"
@@ -201,6 +202,7 @@
                                 <span>List of Applicants</span>
                             </a>
                         </li>
+                        @endrole
                         <li class="menu-header">Student</li>
                         <li
                             class="dropdown {{ request()->routeIs(Auth::user()->getRoleNames()->first().'.children.profile') ? 'active' : '' }}">
@@ -255,6 +257,8 @@
                                 <span>Consent Forms</span>
                             </a>
                         </li>
+                        
+                        @role('superadmin|admin')
                         <li class="menu-header">CMS</li>@php
                         $role = Auth::user()->getRoleNames()->first();
                         $children = [
@@ -406,6 +410,7 @@
                                 </li>
                             </ul>
                         </li>
+                        @endrole
                     </ul>
                     <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
                         <a href="" class="btn btn-primary btn-lg btn-block btn-icon-split">

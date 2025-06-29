@@ -127,6 +127,9 @@ Route::middleware(['auth'])
             ->name('user.')
             ->group(function () {
                 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+                Route::get('/children-profile/{child}', [ChildController::class, 'childProfile'])->name('children.profile');
+                Route::get('/children/educational-plan/{child}', [ChildController::class, 'childEducationalPlan'])->name('educational.index');
+                Route::get('/children/progress-report/{child}/', [ChildController::class, 'childProgressReport'])->name('progress.index');
                 Route::get('/consent-form', [EnrollmentController::class, 'consentForm'])->name('consent.index');
                 Route::post('/consent-form/store', [EnrollmentController::class, 'consentStore'])->name('consent.store');
                 Route::get('/enrollment-form', [EnrollmentController::class, 'index'])->name('enrollment.index');
